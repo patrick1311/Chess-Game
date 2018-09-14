@@ -13,13 +13,13 @@ public class Main {
 		JFrame frame = new JFrame("Chess");
 		frame.setSize(ChessBoard.TILE_SIZE * 8, ChessBoard.TILE_SIZE * 8 + TOPBORDER);
 		frame.setLocationRelativeTo(null);
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new ChessBoard());
+		frame.add(new Game());
 		frame.setVisible(true);
 	}
 	
 
-	
 	public static void main(String args[]) {
 		new Main();
 	}
