@@ -18,8 +18,6 @@ public class Main {
 		frame.setVisible(true);
 	}
 	
-
-	
 	public static void main(String args[]) {
 		new Main();
 	}
