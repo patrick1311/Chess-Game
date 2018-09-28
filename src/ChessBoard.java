@@ -2,10 +2,18 @@ public class ChessBoard {
 	
 	public static final int TILE_SIZE = 80;
 	
-	private Piece p[][] = new Piece[8][8];
+	private Piece board[][] = new Piece[8][8];
+	
+	public void setBoard(Piece[][] board) {
+		this.board = board;
+	}
 
-	public Piece[][] getP() {
-		return p;
-	}	
+	public Piece[][] getBoard() {
+		return board;
+	}
+	
+	public Piece getPiece(int x, int y) {
+		return board[x][y];
+	}
 	
 }
