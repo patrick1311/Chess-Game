@@ -1,2 +1,11 @@
+<<<<<<< HEAD
 /Main.class
 /Player.class
+=======
+/Game.class
+/Player.class
+/images/
+/PieceMoveSet.class
+/Display.class
+/Window.class
+>>>>>>> b58561cac74875cc50ffc947afaadcb2595285c0

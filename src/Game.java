@@ -1,9 +1,3 @@
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class Game extends JPanel {
@@ -13,27 +7,29 @@ public class Game extends JPanel {
 	public Player p2;
 	public ChessBoard board;
 	public String currentPlayer;
+
+	public Display display;
 	
 	public Game() {
 		p1 = new Player("WHITE");
 		p2 = new Player("BLACK");
-		board = new ChessBoard();
+		board = new ChessBoard();	
 		
 	}
 	
 	public void gameLoop() {
 		while(inGame) {
-			//player.move() and repaint() is called after event happen
-			repaint();
+			//display.drawboard
+			
+			//check player click or not
+				//update board, p1, p2, currentplayer
+				//then draw the rest
+
 		}
-	}
-	
-	public void paint(Graphics g) {
-		super.paintComponent(g);
 		
-		Graphics2D g2d = (Graphics2D) g;
-		board.draw(g2d);
+		//display options
 	}
+
 	
 	
 }
