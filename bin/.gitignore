@@ -1,6 +1,7 @@
-/Game.class
-/Player.class
-/images/
-/PieceMoveSet.class
-/Display.class
-/Window.class
+/Pawn.class
+/Rook.class
+/Knight.class
+/Bishop.class
+/King.class
+/Queen.class
+/Validator.class

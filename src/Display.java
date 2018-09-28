@@ -2,31 +2,34 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class Display extends JPanel{
+public class Display extends JPanel implements ActionListener{
 
+	private Game chess;
 	//Parameter board, 
-	public Display() {
+	public Display(Game chess) {
+		
+		this.chess = chess;
 		
 		// Display the frame
 		//draw homescreen
 		
 		//when click play 
-		
 
 	}
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-		
 		Graphics2D g2d = (Graphics2D) g;
-		drawBoard(g2d);
+		drawBoard(g2d, chess.board);
 	}
 
-	public void drawBoard(Graphics2D g2d) {
+	public void drawBoard(Graphics2D g2d, ChessBoard board) {
 		//paint the board tiles
 		for(int j = 0; j < 8; j++) {
 			for(int i = 0; i < 8; i++) {
@@ -47,57 +50,42 @@ public class Display extends JPanel{
 			}
 		}
 
-		placeStartingPieces(g2d);
+		drawPieces(g2d, board);
 
 	}
 	
-	
-	public void drawPieces(ChessBoard chessBoard) {
+	public void drawPieces(Graphics2D g2d, ChessBoard chessBoard) {
 		
-		Piece[][] board = chessBoard.getP();
+		Piece[][] board = chessBoard.getBoard();
 		
 		for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board.length; j++) {
 				if(board[i][j] != null) {
-					drawPiece(board[i][j]);
+					drawPiece(g2d, board[i][j], i, j);
 				}
 				
 			}
 		}
 	}
 	
-	public void drawPiece(Piece piece) {
+	public void drawPiece(Graphics2D g2d, Piece piece, int x, int y) {
 		
-	}
-
-	public void placeStartingPieces(Graphics2D g2d) {
-
-		g2d.drawImage(getRook("black"), 0, 0, null);
-		g2d.drawImage(getKnight("black"), ChessBoard.TILE_SIZE, 0, null);
-		g2d.drawImage(getBishop("black"), ChessBoard.TILE_SIZE * 2, 0, null);
-		g2d.drawImage(getQueen("black"), ChessBoard.TILE_SIZE * 3, 0, null);
-		g2d.drawImage(getKing("black"), 320, 0, null);
-		g2d.drawImage(getBishop("black"), 400, 0, null);
-		g2d.drawImage(getKnight("black"), 480, 0, null);
-		g2d.drawImage(getRook("black"), 560, 0, null);
-
-		for(int i = 0; i <= 560; i += 80) {
-			g2d.drawImage(getPawn("black"), i, ChessBoard.TILE_SIZE, null);
-		}
-
-		g2d.drawImage(getRook("white"), 0, 560, null);
-		g2d.drawImage(getKnight("white"), 80, 560, null);
-		g2d.drawImage(getBishop("white"), 160, 560, null);
-		g2d.drawImage(getQueen("white"), 240, 560, null);
-		g2d.drawImage(getKing("white"), 320, 560, null);
-		g2d.drawImage(getBishop("white"), 400, 560, null);
-		g2d.drawImage(getKnight("white"), 480, 560, null);
-		g2d.drawImage(getRook("white"), 560, 560, null);
-
-		for(int i = 0; i <= 560; i += 80) {
-			g2d.drawImage(getPawn("white"), i, 480, null);
-		}
-
+		String type = piece.getName();
+		String color = piece.getColor();
+		
+		if(type.equals("pawn"))
+			g2d.drawImage(getPawn(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+		else if(type.equals("rook"))
+			g2d.drawImage(getRook(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+		else if(type.equals("knight"))
+			g2d.drawImage(getKnight(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+		else if(type.equals("bishop"))
+			g2d.drawImage(getBishop(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+		else if(type.equals("queen"))
+			g2d.drawImage(getQueen(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+		else if(type.equals("king"))
+			g2d.drawImage(getKing(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
+				
 	}
 
 	public Image getKing(String color){
@@ -128,6 +116,12 @@ public class Display extends JPanel{
 	public Image getPawn(String color) {
 		ImageIcon image = new ImageIcon(getClass().getResource("/images/" + color + "_pawn.png"));
 		return image.getImage();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
