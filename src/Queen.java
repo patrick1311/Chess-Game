@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Queen extends Piece{
 	
@@ -10,9 +12,12 @@ public class Queen extends Piece{
 	public String getColor() {
 		return color;
 	}
-	@Override
-	public void move() {
-		// Move all around		
+	
+	public ArrayList<BoardCoordinate> moves(int x, int y){
+		
+		ArrayList<BoardCoordinate> coordinates = new ArrayList<>();
+		
+		return coordinates;
 	}
 
 	@Override

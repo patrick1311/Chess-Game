@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Bishop extends Piece{
 	
@@ -12,7 +13,7 @@ public class Bishop extends Piece{
 	}
 
 	@Override
-	public void move() {
+	public ArrayList<BoardCoordinate> moves(int x, int y){
 		// Move in diagonal 
 		
 	}

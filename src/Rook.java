@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Rook extends Piece{
 
@@ -11,10 +13,19 @@ public class Rook extends Piece{
 		return color;
 	}
 	
-	@Override
-	public void move() {
-		// Move vertical and horizontal 
+	public ArrayList<BoardCoordinate>moves(int x, int y){
 		
+		ArrayList<BoardCoordinate>coordinates = new ArrayList<BoardCoordinate>();
+		
+		int xPos = x;
+		int yPos = y;
+		
+		for(int i = 0; i < 8;i++) {
+			coordinates.add(new BoardCoordinate(xPos, i));
+			coordinates.add(new BoardCoordinate(i, yPos));
+		}
+		
+		return coordinates;		
 	}
 
 	@Override
