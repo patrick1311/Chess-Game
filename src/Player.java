@@ -2,18 +2,14 @@ import java.util.ArrayList;
 
 public class Player {
 	
-	private String name;
+	private String color;
 	private boolean turn; 
 	private ArrayList<Piece> pieceList;
 	
 	public Player(String name) {
-		this.name = name;
-		init();
+		this.color = name;
 	}
-	
-	public void init() {
-		//generate original position of pieces
-	}
+
 	
 
 }
