@@ -1,4 +1,5 @@
-	import javax.swing.JPanel;
+import javax.swing.JPanel;
+
 
 public class Game extends JPanel {
 
@@ -6,6 +7,7 @@ public class Game extends JPanel {
 	public Player p1;
 	public Player p2;
 	public ChessBoard board;
+	public Piece p[][]; 
 	public String currentPlayer;
 
 	public Display display;
@@ -47,7 +49,6 @@ public class Game extends JPanel {
 		}
 		
 		board.setBoard(b);
-		
 	}
 	
 	public void gameLoop() {
