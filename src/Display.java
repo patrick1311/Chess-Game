@@ -2,27 +2,31 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class Display extends JPanel {
+public class Display extends JPanel implements ActionListener{
 
-	private Game game;
-	private ChessBoard board;
+	private Game chess;
 	//Parameter board, 
-	
-	public Display(ChessBoard board) {
+	public Display(Game chess) {
 		
-		this.board = board;
+		this.chess = chess;
 		
+		// Display the frame
+		//draw homescreen
+		
+		//when click play 
+
 	}
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-		drawBoard(g2d, board);
-		drawPieces(g2d, board);
+		drawBoard(g2d, chess.board);
 	}
 
 	public void drawBoard(Graphics2D g2d, ChessBoard board) {
@@ -45,7 +49,10 @@ public class Display extends JPanel {
 				}
 			}
 		}
-		
+
+
+		drawPieces(g2d, board);
+
 	}
 	
 	public void drawPieces(Graphics2D g2d, ChessBoard chessBoard) {
@@ -63,21 +70,19 @@ public class Display extends JPanel {
 	}
 	
 	public void drawPiece(Graphics2D g2d, Piece piece, int x, int y) {
-		
-		String type = piece.getName();
 		String color = piece.getColor();
 		
-		if(type.equals("pawn"))
+		if(Pawn.class.isInstance(piece))
 			g2d.drawImage(getPawn(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
-		else if(type.equals("rook"))
+		else if(Rook.class.isInstance(piece))
 			g2d.drawImage(getRook(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
-		else if(type.equals("knight"))
+		else if(Knight.class.isInstance(piece))
 			g2d.drawImage(getKnight(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
-		else if(type.equals("bishop"))
+		else if(Bishop.class.isInstance(piece))
 			g2d.drawImage(getBishop(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
-		else if(type.equals("queen"))
+		else if(Queen.class.isInstance(piece))
 			g2d.drawImage(getQueen(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
-		else if(type.equals("king"))
+		else if(King.class.isInstance(piece))
 			g2d.drawImage(getKing(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
 
 	}
@@ -112,4 +117,9 @@ public class Display extends JPanel {
 		return image.getImage();
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }

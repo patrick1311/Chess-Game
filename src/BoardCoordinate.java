@@ -1,5 +1,4 @@
 public class BoardCoordinate {
-	
 	private int x;
 	private int y; 
 	
