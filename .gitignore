@@ -2,5 +2,5 @@
 *.class
 .DS_Store
 .project
-.settings
+.settings/*
 .classpath
