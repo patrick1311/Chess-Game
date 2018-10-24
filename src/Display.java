@@ -5,7 +5,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class Display extends JPanel implements ActionListener{
+public class Display extends JPanel {
 
 	private Game chess;
 	//Parameter board, 
