@@ -1,3 +1,6 @@
 #Class files and DS Store
 *.class
-.DS_Store
+*.DS_Store
+.settings/*
+.project
+.classpath
