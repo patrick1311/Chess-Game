@@ -16,7 +16,8 @@ public class Display extends JPanel {
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-		drawBoard(g2d, chess.board);
+		drawBoard(g2d, board);
+		drawPieces(g2d, board);
 	}
 
 	public void drawBoard(Graphics2D g2d, ChessBoard board) {
