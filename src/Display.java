@@ -6,8 +6,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class Display extends JPanel {
-
-	private Game chess;
+	private Game game;
+	private ChessBoard board;
 	//Parameter board, 
 	public Display(Game chess) {
 		
