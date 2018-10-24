@@ -1,7 +1,10 @@
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JFrame;
 
-public class Window {
+public class Window implements MouseListener {
 	
 	public static final int TOPBORDER = 22;
 	
@@ -14,13 +17,43 @@ public class Window {
 		frame.add(game);
 	
 		frame.setVisible(true);
+		frame.addMouseListener(this);
 	}
 	
 	public static void main(String args[]) {
-		Game chess = new Game();
-		chess.setupBoard();
-		Display x = new Display(chess);
+		Game game = new Game();
+		Display x = new Display(game.getBoard());
 		Window window = new Window(x);
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		System.out.println("clicked");
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 	

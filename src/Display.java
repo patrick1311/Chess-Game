@@ -2,31 +2,27 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class Display extends JPanel implements ActionListener{
+public class Display extends JPanel {
 
-	private Game chess;
+	private Game game;
+	private ChessBoard board;
 	//Parameter board, 
-	public Display(Game chess) {
+	
+	public Display(ChessBoard board) {
 		
-		this.chess = chess;
+		this.board = board;
 		
-		// Display the frame
-		//draw homescreen
-		
-		//when click play 
-
 	}
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-		drawBoard(g2d, chess.board);
+		drawBoard(g2d, board);
+		drawPieces(g2d, board);
 	}
 
 	public void drawBoard(Graphics2D g2d, ChessBoard board) {
@@ -49,10 +45,7 @@ public class Display extends JPanel implements ActionListener{
 				}
 			}
 		}
-
-
-		drawPieces(g2d, board);
-
+		
 	}
 	
 	public void drawPieces(Graphics2D g2d, ChessBoard chessBoard) {
@@ -119,9 +112,4 @@ public class Display extends JPanel implements ActionListener{
 		return image.getImage();
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 }
