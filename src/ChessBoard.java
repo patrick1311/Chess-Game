@@ -1,3 +1,6 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
+
 public class ChessBoard {
 	
 	public static final int TILE_SIZE = 80;
@@ -11,7 +14,7 @@ public class ChessBoard {
 
 	public Piece[][] getBoard() {
 		return board;
-	
+	}
 	
 	public void draw(Graphics2D g2d) {
 
@@ -50,9 +53,8 @@ public class ChessBoard {
 			}
 		}	
 		
-		g2d.setColor(Color.GREEN);
-		g2d.fillRect(3*TILE_SIZE, 0*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		g2d.drawImage(getKing(), 240, 0, null);
+		//g2d.setColor(Color.GREEN);
+		//g2d.fillRect(3*TILE_SIZE, 0*TILE_SIZE, TILE_SIZE, TILE_SIZE);
 	}
 	
 	private Piece p[][] = new Piece[8][8];
