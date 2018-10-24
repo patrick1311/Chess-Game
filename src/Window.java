@@ -17,7 +17,6 @@ public class Window {
 	}
 	
 	public static void main(String args[]) {
-		
 		Game chess = new Game();
 		chess.setupBoard();
 		Display x = new Display(chess);

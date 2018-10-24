@@ -50,6 +50,7 @@ public class Display extends JPanel implements ActionListener{
 			}
 		}
 
+
 		drawPieces(g2d, board);
 
 	}
@@ -85,7 +86,7 @@ public class Display extends JPanel implements ActionListener{
 			g2d.drawImage(getQueen(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
 		else if(type.equals("king"))
 			g2d.drawImage(getKing(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
-				
+
 	}
 
 	public Image getKing(String color){
@@ -123,5 +124,4 @@ public class Display extends JPanel implements ActionListener{
 		// TODO Auto-generated method stub
 		
 	}
-
 }
