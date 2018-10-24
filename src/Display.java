@@ -10,11 +10,7 @@ public class Display extends JPanel {
 	private ChessBoard board;
 	//Parameter board,
 	public Display(ChessBoard board) {
-		// Display the frame
-		//draw homescreen
-		
-		//when click play 
-
+		this.board = board;
 	}
 	
 	public void paint(Graphics g) {
