@@ -1,7 +1,16 @@
 public class ChessBoard {
 	
 	public static final int TILE_SIZE = 80;
-<<<<<<< HEAD
+	public static final int BOARD_LENGTH = 8;
+	
+	private Piece board[][] = new Piece[8][8];
+	
+	public void setBoard(Piece[][] board) {
+		this.board = board;
+	}
+
+	public Piece[][] getBoard() {
+		return board;
 	
 	
 	public void draw(Graphics2D g2d) {
@@ -45,13 +54,14 @@ public class ChessBoard {
 		g2d.fillRect(3*TILE_SIZE, 0*TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		g2d.drawImage(getKing(), 240, 0, null);
 	}
-=======
 	
 	private Piece p[][] = new Piece[8][8];
 
 	public Piece[][] getP() {
 		return p;
 	}	
->>>>>>> 737a97c04844ce84a820bbd0582dc64b25d77a56
 	
+	public Piece getPiece(int x, int y) {
+		return board[x][y];
+	}
 }

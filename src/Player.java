@@ -1,17 +1,15 @@
+import java.util.ArrayList;
 
 public class Player {
+
+	private String color;
+	private boolean turn; 
+	private ArrayList<Piece> pieceList;
 	
-	private String name;
-	public Piece p;
-	
-	public Player(String name) {
-		this.name = name;
+	public Player(String color) {
+		this.color = color;
+		
+		
 	}
-	
-	public void init() {
-		if(name.equals("Black")) {
-			
-		}
-		//generate original position of pieces
-	}
+
 }
