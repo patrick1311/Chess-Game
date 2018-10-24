@@ -1,26 +1,27 @@
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
 
-
-public class Main {
+public class Window {
 	
 	public static final int TOPBORDER = 22;
 	
-	public Main() {
+	public Window(Display game) {
 		JFrame frame = new JFrame("Chess");
 		frame.setSize(ChessBoard.TILE_SIZE * 8, ChessBoard.TILE_SIZE * 8 + TOPBORDER);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new Game());
+		frame.add(game);
+	
 		frame.setVisible(true);
 	}
 	
-
 	public static void main(String args[]) {
-		new Main();
+		
+		Display x = new Display();
+		Window window = new Window(x);
+		
 	}
+	
+	
 }

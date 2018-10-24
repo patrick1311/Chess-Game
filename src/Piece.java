@@ -1,4 +1,3 @@
-
 abstract public class Piece {
 	
 	//public abstract void checkMove();

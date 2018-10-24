@@ -1,15 +1,7 @@
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-
-
 public class ChessBoard {
 	
 	public static final int TILE_SIZE = 80;
+<<<<<<< HEAD
 	
 	
 	public void draw(Graphics2D g2d) {
@@ -53,9 +45,13 @@ public class ChessBoard {
 		g2d.fillRect(3*TILE_SIZE, 0*TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		g2d.drawImage(getKing(), 240, 0, null);
 	}
+=======
 	
-	public Image getKing(){
-		ImageIcon image = new ImageIcon(getClass().getResource("/images/white_king.png"));
-		return image.getImage();
-	}
+	private Piece p[][] = new Piece[8][8];
+
+	public Piece[][] getP() {
+		return p;
+	}	
+>>>>>>> 737a97c04844ce84a820bbd0582dc64b25d77a56
+	
 }
