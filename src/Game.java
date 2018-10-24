@@ -16,6 +16,11 @@ public class Game extends JPanel {
 		p1 = new Player("white");
 		p2 = new Player("black");
 		board = new ChessBoard();	
+		setupBoard();
+	}
+	
+	public void startGame() {
+		inGame = true;
 	}
 	
 	public void setupBoard() {
@@ -49,6 +54,10 @@ public class Game extends JPanel {
 		}
 		
 		board.setBoard(b);
+	}
+	
+	public ChessBoard getBoard() {
+		return board;
 	}
 	
 	public void gameLoop() {
