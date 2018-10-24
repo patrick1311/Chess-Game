@@ -8,9 +8,8 @@ import javax.swing.JPanel;
 public class Display extends JPanel {
 	private Game game;
 	private ChessBoard board;
-	//Parameter board, 
-	public Display(Game chess) {
-		public Display(ChessBoard board) {
+	//Parameter board,
+	public Display(ChessBoard board) {
 		// Display the frame
 		//draw homescreen
 		
