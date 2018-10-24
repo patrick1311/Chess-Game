@@ -1,4 +1,7 @@
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JFrame;
 
 public class Window {
@@ -12,17 +15,15 @@ public class Window {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(game);
-	
 		frame.setVisible(true);
+		
+		new MouseInput(frame);
 	}
 	
 	public static void main(String args[]) {
-		Game chess = new Game();
-		chess.setupBoard();
-		Display x = new Display(chess);
+		Game game = new Game();
+		Display x = new Display(game.getBoard());
 		Window window = new Window(x);
 		
 	}
-	
-	
 }

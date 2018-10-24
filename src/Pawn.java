@@ -15,6 +15,10 @@ public class Pawn extends Piece{
 		return color;
 	}
 	
+	public boolean getFirstMove() {
+		return firstMove;
+	}
+	
 	public List<BoardCoordinate> moves(int x, int y){
 		
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();

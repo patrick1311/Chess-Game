@@ -9,13 +9,21 @@ public class Game extends JPanel {
 	public ChessBoard board;
 	public Piece p[][]; 
 	public String currentPlayer;
+	public Validator validator;
 
 	public Display display;
 	
 	public Game() {
 		p1 = new Player("white");
 		p2 = new Player("black");
-		board = new ChessBoard();	
+		board = new ChessBoard();
+		validator = new Validator(board);
+		
+		setupBoard();
+	}
+	
+	public void startGame() {
+		inGame = true;
 	}
 	
 	public void setupBoard() {
@@ -49,6 +57,10 @@ public class Game extends JPanel {
 		}
 		
 		board.setBoard(b);
+	}
+	
+	public ChessBoard getBoard() {
+		return board;
 	}
 	
 	public void gameLoop() {
