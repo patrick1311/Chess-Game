@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.List;
 
 public class Validator {
 	
@@ -10,10 +10,14 @@ public class Validator {
 		return false;
 	}
 	
-	public ArrayList<BoardCoordinate> validMoves(ArrayList<BoardCoordinate> moves){
+	public List<BoardCoordinate> validMoves(List<BoardCoordinate> moves){
 		
 		for(int i = 0; i < moves.size(); i++) {
 			BoardCoordinate move = moves.get(i);
+			
+			if(move.getX() > 8 || move.getY() > 8)
+				moves.remove(move);
+			
 			
 			
 		}

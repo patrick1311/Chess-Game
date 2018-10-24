@@ -1,5 +1,5 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Queen extends Piece{
 	
@@ -13,9 +13,34 @@ public class Queen extends Piece{
 		return color;
 	}
 	
-	public ArrayList<BoardCoordinate> moves(int x, int y){
+	public List<BoardCoordinate> moves(int x, int y){
 		
-		ArrayList<BoardCoordinate> coordinates = new ArrayList<>();
+		List<BoardCoordinate> coordinates = new LinkedList<>();
+		
+		//Diagonal to the bottom right
+		for(int xPos = x, yPos = y; xPos < ChessBoard.BOARD_LENGTH;) {
+			coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
+		}
+		
+		//Diagonal to the top right
+		for(int xPos = x, yPos = y; xPos <= 0;) {
+			coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
+		}
+		
+		//Diagonal to the bottom left
+		for(int xPos = x, yPos = y; xPos <= ChessBoard.BOARD_LENGTH;) {
+			coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
+		}
+		
+		//Diagonal to the top left
+		for(int xPos = x, yPos = y; xPos < 0; xPos++) {
+			coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
+		}
+		
+		for(int i = 0; i < ChessBoard.BOARD_LENGTH;i++) {
+			coordinates.add(new BoardCoordinate(x, i));
+			coordinates.add(new BoardCoordinate(i, y));
+		}
 		
 		return coordinates;
 	}

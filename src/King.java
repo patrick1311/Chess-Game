@@ -1,5 +1,5 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class King extends Piece{
 	
@@ -13,9 +13,9 @@ public class King extends Piece{
 		return color;
 	}
 
-	public ArrayList<BoardCoordinate> moves(int x, int y){
+	public List<BoardCoordinate> moves(int x, int y){
 		
-		ArrayList<BoardCoordinate>coordinates = new ArrayList<BoardCoordinate>();
+		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 		
 		int[] X = { 0, 0, 1, -1, 1, -1, 1, -1};
 		int[] Y = { 1, -1, 0, 0, 1, 1, -1, -1};

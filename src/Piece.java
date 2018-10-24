@@ -1,8 +1,8 @@
-import java.util.ArrayList;
+import java.util.List;
 
 abstract public class Piece {
 		
-	public abstract ArrayList<BoardCoordinate> moves(int x, int y);
+	public abstract List<BoardCoordinate> moves(int x, int y);
 	public abstract String getColor();
 	public abstract String getName();
 
