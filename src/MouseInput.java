@@ -2,8 +2,14 @@
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JFrame;
+
 public class MouseInput implements MouseListener {
 
+	public MouseInput(JFrame frame) {
+		frame.addMouseListener(this);
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
