@@ -10,10 +10,25 @@ import javax.swing.JPanel;
 public class ChessBoard {
 	
 	public static final int TILE_SIZE = 80;
-	public Piece p[][] = new Piece[8][8];
+	
 	
 	public void draw(Graphics2D g2d) {
+
+		drawTiles(g2d);
+		//drawPieces(g2d);
+	}
+	
+	public void drawPieces(Graphics2D g2d) {
 		
+		String pieceName;
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				
+			}
+		}
+	}
+	
+	public void drawTiles(Graphics2D g2d) {
 		//paint the board tiles
 		for(int j = 0; j < 8; j++) {
 			for(int i = 0; i < 8; i++) {
@@ -34,7 +49,9 @@ public class ChessBoard {
 			}
 		}	
 		
-		g2d.drawImage(getKing(), 80, 0, null);
+		g2d.setColor(Color.GREEN);
+		g2d.fillRect(3*TILE_SIZE, 0*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		g2d.drawImage(getKing(), 240, 0, null);
 	}
 	
 	public Image getKing(){
