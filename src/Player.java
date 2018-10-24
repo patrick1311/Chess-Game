@@ -6,8 +6,10 @@ public class Player {
 	private boolean turn; 
 	private ArrayList<Piece> pieceList;
 	
-	public Player(String name) {
-		this.color = name;
+	public Player(String color) {
+		this.color = color;
+		
+		
 	}
 
 	

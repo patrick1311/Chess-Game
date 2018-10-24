@@ -14,7 +14,11 @@ public class Bishop extends Piece{
 
 	@Override
 	public ArrayList<BoardCoordinate> moves(int x, int y){
-		// Move in diagonal 
+		
+		ArrayList<BoardCoordinate>coordinates = new ArrayList<BoardCoordinate>();
+		
+		return coordinates;
+ 
 		
 	}
 

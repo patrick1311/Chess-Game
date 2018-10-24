@@ -3,10 +3,11 @@ import java.util.ArrayList;
 public class Pawn extends Piece{
 
 	private String color;
-	private boolean firstMove = true;
+	private boolean firstMove;
 	
 	public Pawn(String color) {
 		this.color = color;
+		this.firstMove = true;
 	}
 	
 	public String getColor() {
