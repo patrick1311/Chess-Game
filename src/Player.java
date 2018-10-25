@@ -6,6 +6,7 @@ public class Player {
 	
 	public Player(String color) {
 		this.color = color;
+		pieceList = new LinkedList<Piece>();
 		pieceList.add(new King(this, color));
 		pieceList.add(new Queen(this, color));
 		for(int i = 0; i < 2; i++) {
