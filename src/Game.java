@@ -1,9 +1,12 @@
+import java.util.LinkedList;
+
 public class Game {
 	private Player white;
 	private Player black;
 	private Player currentPlayer;
 	private ChessBoard board;
 	private Validator validator;
+	private Piece selectedPiece;
 	
 	public Game(Player white, Player black) {
 		this.white = white;
@@ -12,10 +15,10 @@ public class Game {
 		board = new ChessBoard();
 		setupBoard();
 		validator = new Validator();
+		selectedPiece = null;
 	}
 	
 	public void setupBoard() {
-		//White
 		board.getBoard()[4][7] = white.getPieceList().get(0);	//King
 		board.getBoard()[3][7] = white.getPieceList().get(1);	//Queen
 		board.getBoard()[0][7] = white.getPieceList().get(2);	//Rook
@@ -28,7 +31,6 @@ public class Game {
 			board.getBoard()[i][6] = white.getPieceList().get(8 + i);	//Pawn
 		}
 		
-		//Black
 		board.getBoard()[4][0] = black.getPieceList().get(0);	//King
 		board.getBoard()[3][0] = black.getPieceList().get(1);	//Queen
 		board.getBoard()[0][0] = black.getPieceList().get(2);	//Rook
@@ -47,35 +49,56 @@ public class Game {
 	}
 	
 	public void run() {
-		Piece selectedPiece;
-		BoardCoordinate validCoordinate;
 		do {
-			selectedPiece = null;
-			validCoordinate = null;
-			//BoardCoordinate selectedTile = actionListener input
-			do {
-			selectedPiece = currentPlayer.selectTile();
-			validCoordinate = currentPlayer.selectTile();
-			currentPlayer.move(selectedPiece, validCoordinate);
-			} while(selectedPiece != null && validCoordinate != null);
-			//display.drawboard
-			
-			if(validator.isValidMove(validMoves, move)) {
-				
-			}
-			
-			//check player click or not
-				//update board, p1, p2, currentplayer
-				//then draw the rest
+			selectTile();
 			if(validator.underCheckmate(currentPlayer)) {
 				//display victory
 				break;
 			}
 			else if(validator.isDraw()) {
-				//Draw
+				//display draw
 				break;
 			}
+			changeTurn();
 		} while(true);
 		//display options
+	}
+	
+	private void selectTile() {
+		BoardCoordinate tile = null;//Listener
+		//display.clearHighlights();
+		Piece currentPiece = board.getPiece(tile.getX(), tile.getY());
+		if(currentPiece != null 
+				&& currentPlayer.equals(currentPiece.getOwner())
+				&& !currentPiece.getCoordinate().equals(tile)) {//Unsure if this works
+			selectedPiece = currentPiece;
+			//LinkedList<BoardCoordinates> moves = validator.calculateValidMoves(selectedPiece);
+			//display.highlightTiles(moves);
+			selectTile();
+		}
+		else {
+			LinkedList<BoardCoordinate> moves = null;//validator.calculateValidMoves(selectedPiece);//moves == class variable?
+			if(selectedPiece != null && validator.isValidMove(moves, tile)) {
+				move(selectedPiece, tile);
+				//display.drawMove(selectedPiece, tile);
+			}
+			else {
+				selectTile();
+			}
+			selectedPiece = null;
+		}
+	}
+	
+	private void move(Piece piece, BoardCoordinate tile) {
+		
+	}
+	
+	private void changeTurn() {
+		if(currentPlayer == white) {
+			currentPlayer = black;
+		}
+		else {
+			currentPlayer = white;
+		}
 	}
 }

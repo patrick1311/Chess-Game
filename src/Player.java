@@ -5,6 +5,7 @@ public class Player {
 	private String color;
 	private LinkedList<Piece> pieceList;
 	private Stack<Piece> graveyard;
+	private boolean underCheck;
 	
 	public Player(String color) {
 		this.color = color;
@@ -38,8 +39,19 @@ public class Player {
 		pieceList.remove(piece);
 	}
 	
+	public boolean underCheck() {
+		return underCheck;
+	}
+	
+	public void setCheck(boolean underCheck) {
+		this.underCheck = underCheck;
+	}
+	
+	/*
 	public Piece selectTile(BoardCoordinate tile) {
 		Piece selectedPiece;
+		
+		display.clearHighlights();
 		//code
 		//
 		return selectedPiece;
@@ -47,5 +59,5 @@ public class Player {
 	
 	public void move(Piece piece, BoardCoordinate destination) {
 		
-	}
+	}*/
 }
