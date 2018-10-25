@@ -31,9 +31,4 @@ public class King extends Piece{
 		return coordinates ;		
 	}
 
-	@Override
-	public String getName() {
-		return "king";
-	}
-
 }

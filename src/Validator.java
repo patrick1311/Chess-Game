@@ -3,13 +3,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Validator {
-	
+
 	ChessBoard board;
 
 	public Validator(ChessBoard board) {
 		this.board = board;
 	}
-	
+
 	public boolean isSameColor(Piece p1, Piece p2) {
 
 		if(p1.getColor().equals(p2.getColor()))
@@ -22,8 +22,10 @@ public class Validator {
 
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 
-		int xPos = x;
-		int yPos = y;
+		BoardCoordinate coor = pawn.getCoordinate();
+
+		int xPos = coor.getX();
+		int yPos = coor.getY();
 
 		int[] X = {0, 0, 1, -1};
 		int[] Y = {2, 1, 1, 1};
@@ -52,12 +54,53 @@ public class Validator {
 
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 
-		int xPos = x;
-		int yPos = y;
+		BoardCoordinate coor = rook.getCoordinate();
 
-		for(int i = 0; i < ChessBoard.BOARD_LENGTH;i++) {
-			coordinates.add(new BoardCoordinate(xPos, i));
-			coordinates.add(new BoardCoordinate(i, yPos));
+		int xPos = coor.getX();
+		int yPos = coor.getY();
+
+		for(int i = xPos + 1; i < ChessBoard.BOARD_LENGTH;i++) {
+			if(board.getPiece(i,yPos) == null)
+				coordinates.add(new BoardCoordinate(i, yPos));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(i,yPos))){
+				coordinates.add(new BoardCoordinate(i, yPos));
+				break;
+			}
+			else 
+				break;
+		}
+		
+		for(int i = xPos - 1; i <= 0 ;i--) {		
+			if(board.getPiece(i,yPos) == null)
+				coordinates.add(new BoardCoordinate(i, yPos));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(i,yPos))){
+				coordinates.add(new BoardCoordinate(i, yPos));
+				break;
+			}
+			else 
+				break;
+		}
+		
+		for(int i = yPos + 1; i < ChessBoard.BOARD_LENGTH; i++) {
+			if(board.getPiece(xPos,i) == null)
+				coordinates.add(new BoardCoordinate(xPos,i));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos,i))){
+				coordinates.add(new BoardCoordinate(xPos,i));
+				break;
+			}
+			else 
+				break;			
+		}
+		
+		for(int i = yPos - 1; i <= 0 ; i--) {
+			if(board.getPiece(xPos,i) == null)
+				coordinates.add(new BoardCoordinate(xPos,i));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos,i))){
+				coordinates.add(new BoardCoordinate(xPos,i));
+				break;
+			}
+			else 
+				break;			
 		}
 
 		return coordinates;	
@@ -68,14 +111,17 @@ public class Validator {
 
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 
-		int xPos = x;
-		int yPos = y;
+		BoardCoordinate coor = knight.getCoordinate();
+
+		int xPos = coor.getX();
+		int yPos = coor.getY();
 
 		int X[] = { 2, 1, -1, -2, -2, -1, 1, 2 }; 
 		int Y[] = { 1, 2, 2, 1, -1, -2, -2, -1 };
 
 		for(int i = 0; i < ChessBoard.BOARD_LENGTH; i++) {
-			coordinates.add(new BoardCoordinate(xPos+=X[i],yPos+=Y[i]));
+			if(board.getPiece(xPos+X[i],yPos+Y[i]) == null || !isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+X[i],yPos+Y[i])))
+				coordinates.add(new BoardCoordinate(xPos+=X[i],yPos+=Y[i]));
 		}
 
 
@@ -85,24 +131,57 @@ public class Validator {
 	public List<BoardCoordinate> calculateValidMoves(Bishop bishop){
 		ArrayList<BoardCoordinate>coordinates = new ArrayList<BoardCoordinate>();
 
+		BoardCoordinate coor = bishop.getCoordinate();
+
+		int x = coor.getX();
+		int y = coor.getY();
+
 		//Diagonal to the bottom right
 		for(int xPos = x, yPos = y; xPos < ChessBoard.BOARD_LENGTH;) {
-			coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
+			if(board.getPiece(xPos=+1,yPos=+1) == null)
+				coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+=1,yPos+=1))){
+				coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
+				break;
+			}
+			else 
+				break;
 		}
 
 		//Diagonal to the top right
 		for(int xPos = x, yPos = y; xPos <= 0;) {
-			coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
+			if(board.getPiece(xPos-=1, yPos+=1) == null)
+				coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos-=1,yPos+=1))){
+				coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
+				break;
+			}
+			else 
+				break;
 		}
 
 		//Diagonal to the bottom left
 		for(int xPos = x, yPos = y; xPos <= ChessBoard.BOARD_LENGTH;) {
-			coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
+			if(board.getPiece(xPos+=1, yPos-=1) == null)
+				coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+=1,yPos-=1))){
+				coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
+				break;
+			}
+			else 
+				break;
 		}
 
 		//Diagonal to the top left
 		for(int xPos = x, yPos = y; xPos < 0; xPos++) {
-			coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
+			if(board.getPiece(xPos-=1, yPos-=1) == null)
+				coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos-=1,yPos-=1))){
+				coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
+				break;
+			}
+			else 
+				break;
 		}
 
 		return coordinates;
@@ -112,24 +191,58 @@ public class Validator {
 
 		List<BoardCoordinate> coordinates = new LinkedList<>();
 
+		BoardCoordinate coor = queen.getCoordinate();
+
+		int x = coor.getX();
+		int y = coor.getY();
+
 		//Diagonal to the bottom right
 		for(int xPos = x, yPos = y; xPos < ChessBoard.BOARD_LENGTH;) {
-			coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
+			if(board.getPiece(xPos=+1,yPos=+1) == null)
+				coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+=1,yPos+=1))){
+				coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
+				break;
+			}
+			else 
+				break;
+
 		}
 
 		//Diagonal to the top right
 		for(int xPos = x, yPos = y; xPos <= 0;) {
-			coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
+			if(board.getPiece(xPos-=1, yPos+=1) == null)
+				coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos-=1,yPos+=1))){
+				coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
+				break;
+			}
+			else 
+				break;
 		}
 
 		//Diagonal to the bottom left
 		for(int xPos = x, yPos = y; xPos <= ChessBoard.BOARD_LENGTH;) {
-			coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
+			if(board.getPiece(xPos+=1, yPos-=1) == null)
+				coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+=1,yPos-=1))){
+				coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
+				break;
+			}
+			else 
+				break;
 		}
 
 		//Diagonal to the top left
 		for(int xPos = x, yPos = y; xPos < 0; xPos++) {
-			coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
+			if(board.getPiece(xPos-=1, yPos-=1) == null)
+				coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos-=1,yPos-=1))){
+				coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
+				break;
+			}
+			else 
+				break;
 		}
 
 		for(int i = 0; i < ChessBoard.BOARD_LENGTH;i++) {
@@ -144,14 +257,17 @@ public class Validator {
 
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 
+		BoardCoordinate coor = king.getCoordinate();
+
+		int x = coor.getX();
+		int y = coor.getY();
+
 		int[] X = { 0, 0, 1, -1, 1, -1, 1, -1};
 		int[] Y = { 1, -1, 0, 0, 1, 1, -1, -1};
 
-		int xPos = x;
-		int yPos = y;
-
-		for(int i = 0; i < 8; i++) {
-			coordinates.add(new BoardCoordinate(xPos+=X[i],yPos+=Y[i]));
+		for(int xPos = x, yPos = y, i = 0; i < 8; i++) {	
+			if(board.getPiece(xPos+X[i],yPos+Y[i]) == null || !isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+X[i],yPos+Y[i])))
+				coordinates.add(new BoardCoordinate(xPos+=X[i],yPos+=Y[i]));
 		}
 
 

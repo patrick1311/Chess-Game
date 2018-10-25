@@ -3,7 +3,8 @@ import java.util.List;
 
 public class Pawn extends Piece{
 
-	private String color;
+	protected Player owner;
+	protected String color;
 	private boolean firstMove;
 	
 	public Pawn(String color) {
@@ -19,40 +20,8 @@ public class Pawn extends Piece{
 		return firstMove;
 	}
 	
-	public List<BoardCoordinate> moves(int x, int y){
-		
-		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
-		
-		int xPos = x;
-		int yPos = y;
-		
-		int[] X = {0, 0, 1, -1};
-		int[] Y = {2, 1, 1, 1};
-		
-		if(firstMove) {
-			firstMove = false;
-			
-			for(int i = 0; i < X.length; i++) {
-				coordinates.add(new BoardCoordinate(xPos+=X[i], yPos+=Y[i]));
-			}
-			
-			return coordinates;	
-		}
-		else {
-			
-			for(int i = 1; i < X.length; i++) {
-				coordinates.add(new BoardCoordinate(xPos+=X[i], yPos+=Y[i]));
-			}
-			
-			return coordinates;
-		}
-
-		
-	}
-
-	@Override
-	public String getName() {
-		return "pawn";
+	public void setFirstMove(boolean firstMove) {
+		this.firstMove = firstMove;
 	}
 
 }
