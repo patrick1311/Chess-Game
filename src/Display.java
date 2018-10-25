@@ -103,10 +103,4 @@ public class Display extends JPanel {
 		ImageIcon image = new ImageIcon(getClass().getResource("/images/" + color + "_pawn.png"));
 		return image.getImage();
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 }
