@@ -1,7 +1,6 @@
 import javax.swing.JPanel;
 
 public class Game extends JPanel {
-
 	public boolean inGame = false;
 	public Player p1;
 	public Player p2;
