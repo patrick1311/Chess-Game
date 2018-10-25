@@ -4,10 +4,6 @@ public class ChessBoard {
 	
 	private Piece board[][] = new Piece[8][8];
 	
-	public void setBoard(Piece[][] board) {
-		this.board = board;
-	}
-
 	public Piece[][] getBoard() {
 		return board;
 	}

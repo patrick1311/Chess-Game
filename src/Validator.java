@@ -1,26 +1,30 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Validator {
-	
 	public boolean isSameColor(Piece p1, Piece p2) {
-		
 		if(p1.getColor().equals(p2.getColor()))
 			return true;
-
 		return false;
 	}
 	
-	public ArrayList<BoardCoordinate> validMoves(ArrayList<BoardCoordinate> moves){
-		
-		for(int i = 0; i < moves.size(); i++) {
-			BoardCoordinate move = moves.get(i);
-			
-			
+	public boolean isValidMove(LinkedList<BoardCoordinate> validMoves, BoardCoordinate move) {
+		for(BoardCoordinate validMove: validMoves) {
+			if(move.getX() == validMove.getX() && move.getY() == validMove.getY()) {
+				return true;
+			}
 		}
-		
-		return moves;
+		return false;
 	}
 	
+	public boolean underCheck(Player currentPlayer) {
+		
+	}
 	
+	public boolean underCheckmate(Player currentPlayer) {
+		
+	}
 	
+	public boolean isDraw() {
+		
+	}
 }

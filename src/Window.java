@@ -1,11 +1,6 @@
-
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import javax.swing.JFrame;
 
 public class Window {
-	
 	public static final int TOPBORDER = 22;
 	
 	public Window(Display game) {
@@ -21,9 +16,12 @@ public class Window {
 	}
 	
 	public static void main(String args[]) {
-		Game game = new Game();
+		Player white = new Player("White");
+		Player black = new Player("Black");
+		Game game = new Game(white, black);
 		Display x = new Display(game.getBoard());
 		Window window = new Window(x);
 		
+		game.run();
 	}
 }
