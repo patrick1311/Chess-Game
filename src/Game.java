@@ -52,6 +52,10 @@ public class Game extends JPanel {
 		board.setBoard(b);
 	}
 	
+	public ChessBoard getBoard() {
+		return board;
+	}
+	
 	public void gameLoop() {
 		while(inGame) {
 			//display.drawboard
