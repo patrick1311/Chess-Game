@@ -1,6 +1,8 @@
+
 import javax.swing.JFrame;
 
 public class Window {
+	
 	public static final int TOPBORDER = 22;
 	
 	public Window(Display game) {
@@ -12,6 +14,7 @@ public class Window {
 		frame.add(game);
 		frame.setVisible(true);
 		
-		new MouseInput(frame);
+		//new MouseInput(frame, b);
 	}
+	
 }

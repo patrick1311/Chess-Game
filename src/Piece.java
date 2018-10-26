@@ -1,9 +1,11 @@
 abstract public class Piece {
+
 	protected Player owner;
 	protected String color;
 	private BoardCoordinate location;
 	
-	public Player getOwner() {
+
+	public Player getPlayer() {
 		return owner;
 	}
 	

@@ -3,4 +3,9 @@ public class Bishop extends Piece{
 		this.owner = owner;
 		this.color = color;
 	}
+	
+	public String getColor() {
+		return color;
+	}
+
 }

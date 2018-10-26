@@ -1,6 +1,24 @@
 public class Pawn extends Piece{
-	public Pawn(Player owner, String color) {
-		this.owner = owner;
+
+	protected Player owner;
+	protected String color;
+	private boolean firstMove;
+	
+	public Pawn(String color) {
 		this.color = color;
 	}
+
+	
+	public String getColor() {
+		return color;
+	}
+	
+	public boolean getFirstMove() {
+		return firstMove;
+	}
+	
+	public void setFirstMove(boolean firstMove) {
+		this.firstMove = firstMove;
+	}
+
 }

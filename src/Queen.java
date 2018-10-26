@@ -3,4 +3,5 @@ public class Queen extends Piece{
 		this.owner = owner;
 		this.color = color;
 	}
+
 }

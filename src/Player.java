@@ -19,7 +19,7 @@ public class Player {
 			pieceList.add(new Knight(this, color));
 		}
 		for(int i = 0; i < 8; i++) {
-			pieceList.add(new Pawn(this, color));
+			pieceList.add(new Pawn(color));
 		}
 	}
 	
