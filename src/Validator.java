@@ -28,26 +28,31 @@ public class Validator {
 
 		int x = coor.getX();
 		int y = coor.getY();
+		int direction = 0; 
+		
+		String color = pawn.getColor();
 		
 		Piece source = board.getPiece(x, y);
+		
+		if(color.equals("White"))
+			direction = UP;
+		else
+			direction = DOWN;
 
-		addValid(coordinates, source, board.getPiece(x + 2, y - 1));
-
-		if(pawn.getFirstMove()) {
-			pawn.setFirstMove(false);
-			addValid(coordinates, source, board.getPiece(x , y + 1));
-			addValid(coordinates, source, board.getPiece(x , y + 2));
-		}
-		else 
-			addValid(coordinates, source, board.getPiece(x , y + 1));
-
-		if(board.getPiece(x + 1, y + 1) != null && !isSameColor(source, board.getPiece(x + 1, y + 1) )) {
-			coordinates.add(board.getPiece(x + 1, y + 1).getCoordinate());
+		if(board.getPiece(x, y+direction) == null) {
+			coordinates.add(board.getPiece(x, y + direction).getCoordinate());
+			
+			if(board.getPiece(x, y+(direction*2)) == null && pawn.getFirstMove())
+				coordinates.add(board.getPiece(x, y + (direction*2)).getCoordinate());
 		}
 		
-		if(board.getPiece(x - 1, y + 1) != null && !isSameColor(source, board.getPiece(x - 1, y + 1) )) {
-			coordinates.add(board.getPiece(x - 1, y + 1).getCoordinate());
-		}			
+		if(board.getPiece(x + direction, y + RIGHT) != null && !isSameColor(source, board.getPiece(x + direction, y + RIGHT) )) 
+			coordinates.add(board.getPiece(x + direction, y + RIGHT).getCoordinate());
+		
+		
+		if(board.getPiece(x + direction, y + LEFT) != null && !isSameColor(source, board.getPiece(x + direction, y + LEFT) )) 
+			coordinates.add(board.getPiece(x + direction, y + LEFT).getCoordinate());
+					
 
 		return coordinates;
 	}
