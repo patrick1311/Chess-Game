@@ -28,9 +28,4 @@ public class Rook extends Piece{
 		return coordinates;		
 	}
 
-	@Override
-	public String getName() {
-		return "rook";
-	}
-
 }

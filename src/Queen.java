@@ -45,9 +45,5 @@ public class Queen extends Piece{
 		return coordinates;
 	}
 
-	@Override
-	public String getName() {
-		return "queen";
-	}
 
 }

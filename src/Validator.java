@@ -245,9 +245,49 @@ public class Validator {
 				break;
 		}
 
-		for(int i = 0; i < ChessBoard.BOARD_LENGTH;i++) {
-			coordinates.add(new BoardCoordinate(x, i));
-			coordinates.add(new BoardCoordinate(i, y));
+		//Up and down 
+		for(int i = x + 1; i < ChessBoard.BOARD_LENGTH;i++) {
+			if(board.getPiece(i,y) == null)
+				coordinates.add(new BoardCoordinate(i, y));
+			else if(!isSameColor(board.getPiece(x, y),board.getPiece(i,y))){
+				coordinates.add(new BoardCoordinate(i, y));
+				break;
+			}
+			else 
+				break;
+		}
+		
+		for(int i = x - 1; i <= 0 ;i--) {		
+			if(board.getPiece(i,y) == null)
+				coordinates.add(new BoardCoordinate(i, y));
+			else if(!isSameColor(board.getPiece(x, y),board.getPiece(i,y))){
+				coordinates.add(new BoardCoordinate(i, y));
+				break;
+			}
+			else 
+				break;
+		}
+		
+		for(int i = y + 1; i < ChessBoard.BOARD_LENGTH; i++) {
+			if(board.getPiece(x,i) == null)
+				coordinates.add(new BoardCoordinate(x,i));
+			else if(!isSameColor(board.getPiece(x, y),board.getPiece(x,i))){
+				coordinates.add(new BoardCoordinate(x,i));
+				break;
+			}
+			else 
+				break;			
+		}
+		
+		for(int i = y - 1; i <= 0 ; i--) {
+			if(board.getPiece(x,i) == null)
+				coordinates.add(new BoardCoordinate(x,i));
+			else if(!isSameColor(board.getPiece(x, y),board.getPiece(x,i))){
+				coordinates.add(new BoardCoordinate(x,i));
+				break;
+			}
+			else 
+				break;			
 		}
 
 		return coordinates;
@@ -273,9 +313,6 @@ public class Validator {
 
 		return coordinates ;	
 	}
-
-
-
 
 
 }
