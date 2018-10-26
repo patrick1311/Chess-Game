@@ -5,7 +5,7 @@ public class Chess {
 		Game game = new Game(white, black);
 		Display x = new Display(game.getBoard());
 		Window window = new Window(x);
-		
+		MouseInput mouseListener = new MouseInput(x);
 		//game.run();
 	}
 }
