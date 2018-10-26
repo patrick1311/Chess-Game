@@ -15,7 +15,10 @@ public class Validator {
 			return true;
 		return false;
 	}
-
+	
+	public List<BoardCoordinate> calculateValidMoves(Piece piece) throws Exception{
+		throw new Exception("You are not supposed to be here.");
+	}
 
 	public List<BoardCoordinate> calculateValidMoves(Pawn pawn){
 
@@ -55,52 +58,13 @@ public class Validator {
 
 		BoardCoordinate coor = rook.getCoordinate();
 
-		int xPos = coor.getX();
-		int yPos = coor.getY();
+		int x = coor.getX();
+		int y = coor.getY();
 
-		for(int i = xPos + 1; i < ChessBoard.BOARD_LENGTH;i++) {
-			if(board.getPiece(i,yPos) == null)
-				coordinates.add(new BoardCoordinate(i, yPos));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(i,yPos))){
-				coordinates.add(new BoardCoordinate(i, yPos));
-				break;
-			}
-			else 
-				break;
-		}
-		
-		for(int i = xPos - 1; i <= 0 ;i--) {		
-			if(board.getPiece(i,yPos) == null)
-				coordinates.add(new BoardCoordinate(i, yPos));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(i,yPos))){
-				coordinates.add(new BoardCoordinate(i, yPos));
-				break;
-			}
-			else 
-				break;
-		}
-		
-		for(int i = yPos + 1; i < ChessBoard.BOARD_LENGTH; i++) {
-			if(board.getPiece(xPos,i) == null)
-				coordinates.add(new BoardCoordinate(xPos,i));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos,i))){
-				coordinates.add(new BoardCoordinate(xPos,i));
-				break;
-			}
-			else 
-				break;			
-		}
-		
-		for(int i = yPos - 1; i <= 0 ; i--) {
-			if(board.getPiece(xPos,i) == null)
-				coordinates.add(new BoardCoordinate(xPos,i));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos,i))){
-				coordinates.add(new BoardCoordinate(xPos,i));
-				break;
-			}
-			else 
-				break;			
-		}
+		verticalMoveDown(coordinates,x,y);
+		verticalMoveUp(coordinates,x,y);
+		horizontalMoveRight(coordinates,x,y);
+		horizontalMoveLeft(coordinates,x,y);
 
 		return coordinates;	
 
@@ -134,54 +98,12 @@ public class Validator {
 
 		int x = coor.getX();
 		int y = coor.getY();
+		
+		btmLeftDiagonalMove(coordinates,x,y);
+		btmRightDiagonalMove(coordinates,x,y);
+		topLeftDiagonalMove(coordinates,x,y);
+		topRightDiagonalMove(coordinates,x,y);
 
-		//Diagonal to the bottom right
-		for(int xPos = x, yPos = y; xPos < ChessBoard.BOARD_LENGTH;) {
-			if(board.getPiece(xPos=+1,yPos=+1) == null)
-				coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+=1,yPos+=1))){
-				coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
-				break;
-			}
-			else 
-				break;
-		}
-
-		//Diagonal to the top right
-		for(int xPos = x, yPos = y; xPos <= 0;) {
-			if(board.getPiece(xPos-=1, yPos+=1) == null)
-				coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos-=1,yPos+=1))){
-				coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
-				break;
-			}
-			else 
-				break;
-		}
-
-		//Diagonal to the bottom left
-		for(int xPos = x, yPos = y; xPos <= ChessBoard.BOARD_LENGTH;) {
-			if(board.getPiece(xPos+=1, yPos-=1) == null)
-				coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+=1,yPos-=1))){
-				coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
-				break;
-			}
-			else 
-				break;
-		}
-
-		//Diagonal to the top left
-		for(int xPos = x, yPos = y; xPos < 0; xPos++) {
-			if(board.getPiece(xPos-=1, yPos-=1) == null)
-				coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos-=1,yPos-=1))){
-				coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
-				break;
-			}
-			else 
-				break;
-		}
 
 		return coordinates;
 	}
@@ -194,100 +116,17 @@ public class Validator {
 
 		int x = coor.getX();
 		int y = coor.getY();
-
-		//Diagonal to the bottom right
-		for(int xPos = x, yPos = y; xPos < ChessBoard.BOARD_LENGTH;) {
-			if(board.getPiece(xPos=+1,yPos=+1) == null)
-				coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+=1,yPos+=1))){
-				coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
-				break;
-			}
-			else 
-				break;
-
-		}
-
-		//Diagonal to the top right
-		for(int xPos = x, yPos = y; xPos <= 0;) {
-			if(board.getPiece(xPos-=1, yPos+=1) == null)
-				coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos-=1,yPos+=1))){
-				coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
-				break;
-			}
-			else 
-				break;
-		}
-
-		//Diagonal to the bottom left
-		for(int xPos = x, yPos = y; xPos <= ChessBoard.BOARD_LENGTH;) {
-			if(board.getPiece(xPos+=1, yPos-=1) == null)
-				coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+=1,yPos-=1))){
-				coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
-				break;
-			}
-			else 
-				break;
-		}
-
-		//Diagonal to the top left
-		for(int xPos = x, yPos = y; xPos < 0; xPos++) {
-			if(board.getPiece(xPos-=1, yPos-=1) == null)
-				coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos-=1,yPos-=1))){
-				coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
-				break;
-			}
-			else 
-				break;
-		}
-
-		//Up and down 
-		for(int i = x + 1; i < ChessBoard.BOARD_LENGTH;i++) {
-			if(board.getPiece(i,y) == null)
-				coordinates.add(new BoardCoordinate(i, y));
-			else if(!isSameColor(board.getPiece(x, y),board.getPiece(i,y))){
-				coordinates.add(new BoardCoordinate(i, y));
-				break;
-			}
-			else 
-				break;
-		}
 		
-		for(int i = x - 1; i <= 0 ;i--) {		
-			if(board.getPiece(i,y) == null)
-				coordinates.add(new BoardCoordinate(i, y));
-			else if(!isSameColor(board.getPiece(x, y),board.getPiece(i,y))){
-				coordinates.add(new BoardCoordinate(i, y));
-				break;
-			}
-			else 
-				break;
-		}
 		
-		for(int i = y + 1; i < ChessBoard.BOARD_LENGTH; i++) {
-			if(board.getPiece(x,i) == null)
-				coordinates.add(new BoardCoordinate(x,i));
-			else if(!isSameColor(board.getPiece(x, y),board.getPiece(x,i))){
-				coordinates.add(new BoardCoordinate(x,i));
-				break;
-			}
-			else 
-				break;			
-		}
-		
-		for(int i = y - 1; i <= 0 ; i--) {
-			if(board.getPiece(x,i) == null)
-				coordinates.add(new BoardCoordinate(x,i));
-			else if(!isSameColor(board.getPiece(x, y),board.getPiece(x,i))){
-				coordinates.add(new BoardCoordinate(x,i));
-				break;
-			}
-			else 
-				break;			
-		}
+		btmLeftDiagonalMove(coordinates,x,y);
+		btmRightDiagonalMove(coordinates,x,y);
+		topLeftDiagonalMove(coordinates,x,y);
+		topRightDiagonalMove(coordinates,x,y);
+
+		verticalMoveDown(coordinates,x,y);
+		verticalMoveUp(coordinates,x,y);
+		horizontalMoveRight(coordinates,x,y);
+		horizontalMoveLeft(coordinates,x,y);
 
 		return coordinates;
 	}
@@ -322,6 +161,119 @@ public class Validator {
 		return false;
 	}
 	
+	private void verticalMoveDown(List<BoardCoordinate> coordinates, int xPos, int yPos) {
+		
+		for(int i = xPos + 1; i < ChessBoard.BOARD_LENGTH;i++) {
+			if(board.getPiece(i,yPos) == null)
+				coordinates.add(new BoardCoordinate(i, yPos));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(i,yPos))){
+				coordinates.add(new BoardCoordinate(i, yPos));
+				break;
+			}
+			else 
+				break;
+		}
+	}
+	
+	private void verticalMoveUp(List<BoardCoordinate> coordinates, int xPos, int yPos) {
+		
+		for(int i = xPos - 1; i <= 0;i--) {
+			if(board.getPiece(i,yPos) == null)
+				coordinates.add(new BoardCoordinate(i, yPos));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(i,yPos))){
+				coordinates.add(new BoardCoordinate(i, yPos));
+				break;
+			}
+			else 
+				break;
+		}
+		
+	}
+	
+	private void horizontalMoveRight(List<BoardCoordinate> coordinates, int xPos, int yPos) {
+		for(int i = yPos + 1; i < ChessBoard.BOARD_LENGTH; i++) {
+			if(board.getPiece(xPos,i) == null)
+				coordinates.add(new BoardCoordinate(xPos,i));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos,i))){
+				coordinates.add(new BoardCoordinate(xPos,i));
+				break;
+			}
+			else 
+				break;			
+		}
+	}
+	
+	private void horizontalMoveLeft(List<BoardCoordinate> coordinates, int xPos, int yPos) {
+		for(int i = yPos - 1; i <= 0 ; i--) {
+			if(board.getPiece(xPos,i) == null)
+				coordinates.add(new BoardCoordinate(xPos,i));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos,i))){
+				coordinates.add(new BoardCoordinate(xPos,i));
+				break;
+			}
+			else 
+				break;			
+		}
+	}
+	
+	private void btmRightDiagonalMove(List<BoardCoordinate> coordinates, int x, int y) {
+		for(int xPos = x, yPos = y; xPos < ChessBoard.BOARD_LENGTH;) {
+			if(board.getPiece(xPos=+1,yPos=+1) == null)
+				coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+=1,yPos+=1))){
+				coordinates.add(new BoardCoordinate(xPos+=1, yPos+=1));
+				break;
+			}
+			else 
+				break;
+			
+		}
+	}
+	
+	private void topRightDiagonalMove(List<BoardCoordinate> coordinates, int x, int y) {
+		for(int xPos = x, yPos = y; xPos <= 0;) {
+			if(board.getPiece(xPos-=1, yPos+=1) == null)
+				coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos-=1,yPos+=1))){
+				coordinates.add(new BoardCoordinate(xPos-=1, yPos+=1));
+				break;
+			}
+			else 
+				break;
+		}
+		
+	}
+
+
+
+	private void btmLeftDiagonalMove(List<BoardCoordinate> coordinates, int x, int y) {
+		for(int xPos = x, yPos = y; xPos <= ChessBoard.BOARD_LENGTH;) {
+			if(board.getPiece(xPos+=1, yPos-=1) == null)
+				coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+=1,yPos-=1))){
+				coordinates.add(new BoardCoordinate(xPos+=1, yPos-=1));
+				break;
+			}
+			else 
+				break;
+		}
+		
+	}
+	
+	private void topLeftDiagonalMove(List<BoardCoordinate> coordinates, int x, int y) {
+		for(int xPos = x, yPos = y; xPos < 0; xPos++) {
+			if(board.getPiece(xPos-=1, yPos-=1) == null)
+				coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
+			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos-=1,yPos-=1))){
+				coordinates.add(new BoardCoordinate(xPos-=1, yPos-=1));
+				break;
+			}
+			else 
+				break;
+		}	
+	}
+
+		
 	public boolean underCheck(Player currentPlayer) {
 		return false;//King is in validMove of enemy piece?
 	}
