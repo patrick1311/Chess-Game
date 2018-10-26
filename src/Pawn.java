@@ -1,6 +1,3 @@
-import java.util.LinkedList;
-import java.util.List;
-
 public class Pawn extends Piece{
 
 	protected Player owner;
@@ -9,8 +6,8 @@ public class Pawn extends Piece{
 	
 	public Pawn(String color) {
 		this.color = color;
-		this.firstMove = true;
 	}
+
 	
 	public String getColor() {
 		return color;

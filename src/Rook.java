@@ -2,10 +2,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Rook extends Piece{
-
-	private String color;
-	
-	public Rook(String color) {
+	public Rook(Player owner, String color) {
+		this.owner = owner;
 		this.color = color;
 	}
 	
