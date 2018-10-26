@@ -15,7 +15,7 @@ public class Validator {
 			return true;
 		return false;
 	}
-	
+
 	public List<BoardCoordinate> calculateValidMoves(Piece piece) throws Exception{
 		throw new Exception("You are not supposed to be here.");
 	}
@@ -61,10 +61,10 @@ public class Validator {
 		int x = coor.getX();
 		int y = coor.getY();
 
-		verticalMove(coordinates,x,y,1);
-		verticalMove(coordinates,x,y,-1);
-		horizontalMove(coordinates,x,y,1);
-		horizontalMove(coordinates,x,y,-1);
+		getValidMoves(coordinates,x,y,1, 0);
+		getValidMoves(coordinates,x,y,-1, 0);
+		getValidMoves(coordinates,x,y,0, 1);
+		getValidMoves(coordinates,x,y,0, -1);
 
 		return coordinates;	
 
@@ -87,22 +87,22 @@ public class Validator {
 				coordinates.add(new BoardCoordinate(xPos+=X[i],yPos+=Y[i]));
 		}
 
-
 		return coordinates;
 	}
 
 	public List<BoardCoordinate> calculateValidMoves(Bishop bishop){
-		ArrayList<BoardCoordinate>coordinates = new ArrayList<BoardCoordinate>();
+		
+		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 
 		BoardCoordinate coor = bishop.getCoordinate();
 
 		int x = coor.getX();
 		int y = coor.getY();
-		
-		btmDiagonalMove(coordinates, x, y, 1, 1); 
-		btmDiagonalMove(coordinates, x, y, -1, -1); 
-		topDiagonalMove(coordinates, x, y, -1, 1);
-		topDiagonalMove(coordinates, x, y, 1, -1);
+
+		getValidMoves(coordinates, x, y, 1, 1); 
+		getValidMoves(coordinates, x, y, -1, -1); 
+		getValidMoves(coordinates, x, y, -1, 1);
+		getValidMoves(coordinates, x, y, 1, -1);
 
 
 		return coordinates;
@@ -116,17 +116,17 @@ public class Validator {
 
 		int x = coor.getX();
 		int y = coor.getY();
-		
-		
-		btmDiagonalMove(coordinates, x, y, 1, 1); 
-		btmDiagonalMove(coordinates, x, y, -1, -1); 
-		topDiagonalMove(coordinates, x, y, -1, 1);
-		topDiagonalMove(coordinates, x, y, 1, -1);
 
-		verticalMove(coordinates,x,y,1, ChessBoard.BOARD_LENGTH);
-		verticalMove(coordinates,x,y,-1, 0);
-		horizontalMove(coordinates,x,y,1, ChessBoard.BOARD_LENGTH);
-		horizontalMove(coordinates,x,y,-1, 0);
+
+		getValidMoves(coordinates, x, y, 1, 1); 
+		getValidMoves(coordinates, x, y, -1, -1); 
+		getValidMoves(coordinates, x, y, -1, 1);
+		getValidMoves(coordinates, x, y, 1, -1);
+
+		getValidMoves(coordinates,x,y,1, 0);
+		getValidMoves(coordinates,x,y,-1, 0);
+		getValidMoves(coordinates,x,y,0, 1);
+		getValidMoves(coordinates,x,y,0, -1);
 
 		return coordinates;
 	}
@@ -151,7 +151,7 @@ public class Validator {
 
 		return coordinates ;	
 	}
-	
+
 	public boolean isValidMove(LinkedList<BoardCoordinate> validMoves, BoardCoordinate move) {
 		for(BoardCoordinate validMove: validMoves) {
 			if(move.getX() == validMove.getX() && move.getY() == validMove.getY()) {
@@ -160,69 +160,34 @@ public class Validator {
 		}
 		return false;
 	}
-	
-	private void verticalMove(List<BoardCoordinate> coordinates, int xPos, int yPos, int dir, int length) {
-			for(int i = xPos + dir; i <= length;i+=dir) {
-				if(board.getPiece(i,yPos) == null)
-					coordinates.add(new BoardCoordinate(i, yPos));
-				else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(i,yPos))){
-					coordinates.add(new BoardCoordinate(i, yPos));
-					break;
-				}
-				else 
-					break;
-			}
-	}
-	
-	private void horizontalMove(List<BoardCoordinate> coordinates, int xPos, int yPos, int dir, int length) {
-			for(int i = yPos + dir; i < length; i=+ dir) {
-				if(board.getPiece(xPos,i) == null)
-					coordinates.add(new BoardCoordinate(xPos,i));
-				else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos,i))){
-					coordinates.add(new BoardCoordinate(xPos,i));
-					break;
-				}
-				else 
-					break;			
-			}	
-	}
-	
-	private void topDiagonalMove(List<BoardCoordinate> coordinates, int x, int y, int left, int right) {
-		for(int xPos = x, yPos = y; xPos <= 0;) {
-			if(board.getPiece(xPos+=left, yPos+=right) == null)
-				coordinates.add(new BoardCoordinate(xPos+=left, yPos+=right));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+=left,yPos+=right))){
-				coordinates.add(new BoardCoordinate(xPos+=left, yPos+=right));
-				break;
-			}
-			else 
-				break;
-		}
-	}
-	
-	private void btmDiagonalMove(List<BoardCoordinate> coordinates, int x, int y, int left, int right) {
-		for(int xPos = x, yPos = y; xPos < ChessBoard.BOARD_LENGTH;) {
-			if(board.getPiece(xPos+=left,yPos+=right) == null)
-				coordinates.add(new BoardCoordinate(xPos+=left, yPos+=right));
-			else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos+=left,yPos+=right))){
-				coordinates.add(new BoardCoordinate(xPos+=left, yPos+=right));
-				break;
-			}
-			else 
-				break;
-			
-		}
-	}
+
+	private void getValidMoves(List<BoardCoordinate> coordinates, int xPos, int yPos, int horizontal, int vertical) {
+
+	    assert xPos >= 0 && xPos <= 7 && yPos >= 0 && yPos <= 7;
 		
+		for(
+				int x = xPos + horizontal, y = yPos + vertical; 
+				(x >= 0 && x <= 7) && (y >= 0 && y <= 7) ; 
+				x += horizontal, y += vertical) 
+		{
+			if(board.getPiece(x,y) == null || !isSameColor(board.getPiece(x,y),board.getPiece(x,y)))
+				coordinates.add(new BoardCoordinate(x,y));
+			
+			if(board.getPiece(x, y) != null)
+				break;
+		}
+		
+	}
+
 	public boolean underCheck(Player currentPlayer) {
 		return false;//King is in validMove of enemy piece?
 	}
-	
+
 	public boolean underCheckmate(Player currentPlayer) {
 		return false;//If currentPlayer's King is under check & no validMoves 
 		//for any of player's pieces
 	}
-	
+
 	public boolean isDraw() {
 		return false;//stalemate
 		//fifty-move rule
