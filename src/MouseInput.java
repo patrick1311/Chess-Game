@@ -6,15 +6,25 @@ import javax.swing.JFrame;
 
 public class MouseInput implements MouseListener {
 
-	public MouseInput(JFrame frame) {
-		frame.addMouseListener(this);
-	}
+	private Display display;
 	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println("mouse click");
-	}
+	public MouseInput(Display display) {
+        this.display = display;
+        display.addMouseListener(this);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // TODO Auto-generated method stub
+        int x = e.getX() / 80;
+        int y = e.getY() / 80;
+        System.out.println("mouse click: " + e.getX() + ", " + e.getY());
+        System.out.println("highlightX, highlightY: " + x + " " + y);
+
+        //display.drawHighlight(x, y);
+
+        display.repaint();    //after everyclick repaint
+    }
 
 	@Override
 	public void mousePressed(MouseEvent e) {

@@ -1,11 +1,11 @@
 public class Chess {
 	public static void main(String args[]) {
-		Player white = new Player("White");
-		Player black = new Player("Black");
-		Game game = new Game(white, black);
+		Player p1 = new Player();
+		Player p2 = new Player();
+		Game game = new Game(p1, p2);
 		Display x = new Display(game.getBoard());
 		Window window = new Window(x);
-		
+		MouseInput mouseListener = new MouseInput(x);
 		//game.run();
 	}
 }
