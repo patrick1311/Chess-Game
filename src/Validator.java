@@ -28,22 +28,26 @@ public class Validator {
 
 		int x = coor.getX();
 		int y = coor.getY();
+		
+		Piece source = board.getPiece(x, y);
 
-		int[] X = {0, 0, 1, -1};
-		int[] Y = {2, 1, 1, 1};
+		addValid(coordinates, source, board.getPiece(x + 2, y - 1));
 
 		if(pawn.getFirstMove()) {
-			
 			pawn.setFirstMove(false);
-
-			getValidMoves(coordinates, x, y, NOOP, UP);
-			getValidMoves(coordinates, x, y, NOOP, UP+1);
-
+			addValid(coordinates, source, board.getPiece(x , y + 1));
+			addValid(coordinates, source, board.getPiece(x , y + 2));
 		}
 		else 
-			getValidMoves(coordinates, x, y, NOOP, UP);
+			addValid(coordinates, source, board.getPiece(x , y + 1));
 
-
+		if(board.getPiece(x + 1, y + 1) != null && !isSameColor(source, board.getPiece(x + 1, y + 1) )) {
+			coordinates.add(board.getPiece(x + 1, y + 1).getCoordinate());
+		}
+		
+		if(board.getPiece(x - 1, y + 1) != null && !isSameColor(source, board.getPiece(x - 1, y + 1) )) {
+			coordinates.add(board.getPiece(x - 1, y + 1).getCoordinate());
+		}			
 
 		return coordinates;
 	}
