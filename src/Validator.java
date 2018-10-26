@@ -123,10 +123,10 @@ public class Validator {
 		topDiagonalMove(coordinates, x, y, -1, 1);
 		topDiagonalMove(coordinates, x, y, 1, -1);
 
-		verticalMove(coordinates,x,y,1);
-		verticalMove(coordinates,x,y,-1);
-		horizontalMove(coordinates,x,y,1);
-		horizontalMove(coordinates,x,y,-1);
+		verticalMove(coordinates,x,y,1, ChessBoard.BOARD_LENGTH);
+		verticalMove(coordinates,x,y,-1, 0);
+		horizontalMove(coordinates,x,y,1, ChessBoard.BOARD_LENGTH);
+		horizontalMove(coordinates,x,y,-1, 0);
 
 		return coordinates;
 	}
@@ -161,9 +161,8 @@ public class Validator {
 		return false;
 	}
 	
-	private void verticalMove(List<BoardCoordinate> coordinates, int xPos, int yPos, int dir) {
-		if(dir == 1) {
-			for(int i = xPos + dir; i <= ChessBoard.BOARD_LENGTH;i+=dir) {
+	private void verticalMove(List<BoardCoordinate> coordinates, int xPos, int yPos, int dir, int length) {
+			for(int i = xPos + dir; i <= length;i+=dir) {
 				if(board.getPiece(i,yPos) == null)
 					coordinates.add(new BoardCoordinate(i, yPos));
 				else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(i,yPos))){
@@ -173,25 +172,10 @@ public class Validator {
 				else 
 					break;
 			}
-		}
-		else {
-			for(int i = xPos + dir; i <= 0;i+=dir) {
-				if(board.getPiece(i,yPos) == null)
-					coordinates.add(new BoardCoordinate(i, yPos));
-				else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(i,yPos))){
-					coordinates.add(new BoardCoordinate(i, yPos));
-					break;
-				}
-				else 
-					break;
-			}	
-		}
-		
 	}
 	
-	private void horizontalMove(List<BoardCoordinate> coordinates, int xPos, int yPos, int dir) {
-		if(dir == 1) {
-			for(int i = yPos + dir; i < ChessBoard.BOARD_LENGTH; i=+ dir) {
+	private void horizontalMove(List<BoardCoordinate> coordinates, int xPos, int yPos, int dir, int length) {
+			for(int i = yPos + dir; i < length; i=+ dir) {
 				if(board.getPiece(xPos,i) == null)
 					coordinates.add(new BoardCoordinate(xPos,i));
 				else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos,i))){
@@ -201,19 +185,6 @@ public class Validator {
 				else 
 					break;			
 			}	
-		}
-		else {
-			for(int i = yPos + dir; i < 0; i=+ dir) {
-				if(board.getPiece(xPos,i) == null)
-					coordinates.add(new BoardCoordinate(xPos,i));
-				else if(!isSameColor(board.getPiece(xPos, yPos),board.getPiece(xPos,i))){
-					coordinates.add(new BoardCoordinate(xPos,i));
-					break;
-				}
-				else 
-					break;			
-			}
-		}
 	}
 	
 	private void topDiagonalMove(List<BoardCoordinate> coordinates, int x, int y, int left, int right) {
