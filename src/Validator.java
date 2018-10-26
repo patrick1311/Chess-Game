@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,28 +26,35 @@ public class Validator {
 
 		BoardCoordinate coor = pawn.getCoordinate();
 
-		int xPos = coor.getX();
-		int yPos = coor.getY();
+		int x = coor.getX();
+		int y = coor.getY();
+		int direction = 0; 
+		
+		String color = pawn.getColor();
+		
+		Piece source = board.getPiece(x, y);
+		
+		if(color.equals("White"))
+			direction = UP;
+		else
+			direction = DOWN;
 
-		int[] X = {0, 0, 1, -1};
-		int[] Y = {2, 1, 1, 1};
-
-		if(pawn.getFirstMove()) {
-			pawn.setFirstMove(false);
-
-			for(int i = 0; i < X.length; i++) {
-				coordinates.add(new BoardCoordinate(xPos+=X[i], yPos+=Y[i]));
-			}
-
-			return coordinates;	
+		if(board.getPiece(x, y+direction) == null) {
+			coordinates.add(board.getPiece(x, y + direction).getCoordinate());
+			
+			if(board.getPiece(x, y+(direction*2)) == null && pawn.getFirstMove())
+				coordinates.add(board.getPiece(x, y + (direction*2)).getCoordinate());
 		}
-		else {
-			for(int i = 1; i < X.length; i++) {
-				coordinates.add(new BoardCoordinate(xPos+=X[i], yPos+=Y[i]));
-			}
+		
+		if(board.getPiece(x + direction, y + RIGHT) != null && !isSameColor(source, board.getPiece(x + direction, y + RIGHT) )) 
+			coordinates.add(board.getPiece(x + direction, y + RIGHT).getCoordinate());
+		
+		
+		if(board.getPiece(x + direction, y + LEFT) != null && !isSameColor(source, board.getPiece(x + direction, y + LEFT) )) 
+			coordinates.add(board.getPiece(x + direction, y + LEFT).getCoordinate());
+					
 
-			return coordinates;
-		}
+		return coordinates;
 	}
 
 	public List<BoardCoordinate> calculateValidMoves(Rook rook) {
@@ -68,32 +74,32 @@ public class Validator {
 	}
 
 	private void addValid(List<BoardCoordinate> coordinates, Piece source, Piece destination) {
-	    if(destination == null || !isSameColor(source, destination)) {
-	        coordinates.add(destination.getCoordinate());
-	    }
+		if(destination == null || !isSameColor(source, destination)) {
+			coordinates.add(destination.getCoordinate());
+		}
 	}
 
 	public List<BoardCoordinate> calculateValidMoves(Knight knight) {
-	    List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
-	    BoardCoordinate coordinate = knight.getCoordinate();
-	    int x = coordinate.getX();
-	    int y = coordinate.getY();
-	    Piece source = board.getPiece(x, y);
-	    
-	    addValid(coordinates, source, board.getPiece(x + 2, y - 1));
-	    addValid(coordinates, source, board.getPiece(x + 2, y + 1));
-	    addValid(coordinates, source, board.getPiece(x - 2, y - 1));
-	    addValid(coordinates, source, board.getPiece(x - 2, y + 1));
-	    addValid(coordinates, source, board.getPiece(x + 1, y - 2));
-	    addValid(coordinates, source, board.getPiece(x + 1, y + 2));
-	    addValid(coordinates, source, board.getPiece(x - 1, y - 2));
-	    addValid(coordinates, source, board.getPiece(x - 1, y + 2));
+		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
+		BoardCoordinate coordinate = knight.getCoordinate();
+		int x = coordinate.getX();
+		int y = coordinate.getY();
+		Piece source = board.getPiece(x, y);
 
-	    return coordinates;
+		addValid(coordinates, source, board.getPiece(x + 2, y - 1));
+		addValid(coordinates, source, board.getPiece(x + 2, y + 1));
+		addValid(coordinates, source, board.getPiece(x - 2, y - 1));
+		addValid(coordinates, source, board.getPiece(x - 2, y + 1));
+		addValid(coordinates, source, board.getPiece(x + 1, y - 2));
+		addValid(coordinates, source, board.getPiece(x + 1, y + 2));
+		addValid(coordinates, source, board.getPiece(x - 1, y - 2));
+		addValid(coordinates, source, board.getPiece(x - 1, y + 2));
+
+		return coordinates;
 	}
 
 	public List<BoardCoordinate> calculateValidMoves(Bishop bishop){
-		
+
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 
 		BoardCoordinate coor = bishop.getCoordinate();
@@ -132,25 +138,25 @@ public class Validator {
 	}
 
 	public List<BoardCoordinate> calculateValidMoves(King king) {
-	    List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
-	    BoardCoordinate coordinate = king.getCoordinate();
+		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
+		BoardCoordinate coordinate = king.getCoordinate();
 
-	    for(
-	        int x = coordinate.getX(), y = coordinate.getY(), i = -1, j = -1;
-	        i < 2 && j < 2;
-	        i++, j++
-	    ) {
-	        Piece source = board.getPiece(x, y);
-	        Piece destination = board.getPiece(x + i, y + j);
+		for(
+				int x = coordinate.getX(), y = coordinate.getY(), i = -1, j = -1;
+				i < 2 && j < 2;
+				i++, j++
+				) {
+			Piece source = board.getPiece(x, y);
+			Piece destination = board.getPiece(x + i, y + j);
 
-	        if(
-	            (i != 0 || j != 0) && 
-	            (destination == null || !isSameColor(source, destination))
-	        ) {
-	            coordinates.add(destination.getCoordinate());
-	        }
-	    }
-	    return coordinates;
+			if(
+					(i != 0 || j != 0) && 
+					(destination == null || !isSameColor(source, destination))
+					) {
+				coordinates.add(destination.getCoordinate());
+			}
+		}
+		return coordinates;
 	}
 
 	public boolean isValidMove(List<BoardCoordinate> validMoves, BoardCoordinate move) {
@@ -163,17 +169,17 @@ public class Validator {
 	}
 
 	private void getValidMoves(List<BoardCoordinate> coordinates, int xPos, int yPos, int horizontal, int vertical) {
-	    assert xPos >= 0 && xPos <= 7 && yPos >= 0 && yPos <= 7;
-		
+		assert xPos >= 0 && xPos <= 7 && yPos >= 0 && yPos <= 7;
+
 		for(
-			int x = xPos + horizontal, y = yPos + vertical; 
-			(x >= 0 && x <= 7) && (y >= 0 && y <= 7); 
-			x += horizontal, y += vertical
-		) {
+				int x = xPos + horizontal, y = yPos + vertical; 
+				(x >= 0 && x <= 7) && (y >= 0 && y <= 7); 
+				x += horizontal, y += vertical
+				) {
 			if(board.getPiece(x,y) == null || !isSameColor(board.getPiece(x,y),board.getPiece(x,y))) {
 				coordinates.add(new BoardCoordinate(x,y));
 			}
-			
+
 			if(board.getPiece(x, y) != null) {
 				break;
 			}
@@ -188,7 +194,7 @@ public class Validator {
 		return false;//If currentPlayer's King is under check & no validMoves 
 		//for any of player's pieces
 	}
-	
+
 	public boolean isStalemate() { //private?
 		return false; //If no valid moves but not under check
 	}
