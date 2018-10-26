@@ -8,9 +8,11 @@ public class Game {
 	private Validator validator;
 	private Piece selectedPiece;
 	
-	public Game(Player white, Player black) {
-		this.white = white;
-		this.black = black;
+	public Game(Player p1, Player p2) {
+		p1.initialize("White");
+		p2.initialize("Black");
+		this.white = p1;
+		this.black = p2;
 		currentPlayer = white;
 		board = new ChessBoard();
 		setupBoard();
