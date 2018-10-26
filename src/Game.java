@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.List;
 
 public class Game {
 	private Player white;
@@ -72,12 +72,12 @@ public class Game {
 				&& currentPlayer.equals(currentPiece.getPlayer())
 				&& !currentPiece.getCoordinate().equals(tile)) {//Unsure if this works
 			selectedPiece = currentPiece;
-			//LinkedList<BoardCoordinates> moves = validator.calculateValidMoves(selectedPiece);
+			List<BoardCoordinate> moves = validator.calculateValidMoves(selectedPiece);
 			//display.highlightTiles(moves);
 			selectTile();
 		}
 		else {
-			LinkedList<BoardCoordinate> moves = null;//validator.calculateValidMoves(selectedPiece);//moves == class variable?
+			List<BoardCoordinate> moves = null;//validator.calculateValidMoves(selectedPiece);//moves == class variable?
 			if(selectedPiece != null && validator.isValidMove(moves, tile)) {
 				move(selectedPiece, tile);
 				//display.drawMove(selectedPiece, tile);

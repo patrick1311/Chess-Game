@@ -22,4 +22,13 @@ public class BoardCoordinate {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	//Override
+	public boolean equals(Object o) {
+		if(!(o instanceof BoardCoordinate)) {
+			return false;
+		}
+		BoardCoordinate other = (BoardCoordinate) o;
+		return other.getX() == this.x && other.getY() == this.y;
+	}
 }

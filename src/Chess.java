@@ -6,6 +6,6 @@ public class Chess {
 		Display x = new Display(game.getBoard());
 		Window window = new Window(x);
 		
-		game.run();
+		//game.run();
 	}
 }
