@@ -7,10 +7,17 @@ public class Player {
 	private Stack<Piece> graveyard;
 	private boolean underCheck;
 	
-	public Player(String color) {
-		this.color = color;
-		graveyard = new Stack<Piece>();
+	public Player() {
+	}
+	
+	public void initialize(String color) {
 		pieceList = new LinkedList<Piece>();
+		graveyard = new Stack<Piece>();
+		this.color = color;
+		this.initializePieces();
+	}
+	
+	private void initializePieces() {
 		pieceList.add(new King(this, color));
 		pieceList.add(new Queen(this, color));
 		for(int i = 0; i < 2; i++) {
@@ -46,18 +53,4 @@ public class Player {
 	public void setCheck(boolean underCheck) {
 		this.underCheck = underCheck;
 	}
-	
-	/*
-	public Piece selectTile(BoardCoordinate tile) {
-		Piece selectedPiece;
-		
-		display.clearHighlights();
-		//code
-		//
-		return selectedPiece;
-	}
-	
-	public void move(Piece piece, BoardCoordinate destination) {
-		
-	}*/
 }
