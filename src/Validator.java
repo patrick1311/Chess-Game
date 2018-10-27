@@ -75,7 +75,7 @@ public class Validator implements ValidMoveVisitor {
 			//Need to add a move history and checking for whether it was a first move pawn 
 			
 			if(toCapture instanceof Pawn && !isSameColor(pawn, toCapture) && ((Pawn) toCapture).getFirstMove()) {
-				coordinates.add(new BoardCoordinate(x + direction, toCapture.getCoordinate().getY() + direction));
+				coordinates.add(new BoardCoordinate(x + direction, toCapture.getCoordinate().getY()));
 			}
 			
 			return true;	
