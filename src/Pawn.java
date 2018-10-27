@@ -1,9 +1,12 @@
+import java.util.List;
+
 public class Pawn extends Piece {
 	private boolean firstMove;
 	
 	public Pawn(Player owner, String color) {
 		this.owner = owner;
 		this.color = color;
+		firstMove = true;
 	}
 	
 	public boolean getFirstMove() {

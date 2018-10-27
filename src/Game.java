@@ -71,36 +71,22 @@ public class Game {
 		return board;
 	}
 	
-	public void run() {/*
-		do {
-			selectTile();
-			if(validator.underCheckmate(currentPlayer)) {
-				//display victory
-				break;
-			}
-			else if(validator.isDraw()) {
-				//display draw
-				break;
-			}
-			changeTurn();
-		} while(true);
-		//display options*/
-	}
-	
 	public void selectTile(BoardCoordinate tile, Display display) {
 		List<BoardCoordinate> moves;
 		display.clearHighlights();
 		Piece currentPiece = board.getPiece(tile.getX(), tile.getY());
 		if(currentPiece != null 
 				&& currentPlayer.equals(currentPiece.getPlayer())
-				&& !currentPiece.getCoordinate().equals(tile)) { //Don't select same piece
+				&& selectedPiece != currentPiece) { //Don't select same piece
 			selectedPiece = currentPiece;
-			moves = selectedPiece.accept(validator);
-			display.highlightTiles(moves);
+			moves = currentPiece.accept(validator);
+			display.setHighlights(moves);
+			display.setSourceHighlight(currentPiece.getCoordinate());
+			display.setEnemyHighlights(validator.filterForEnemyHighlights(moves));
 		}
-		else {
+		else if(selectedPiece != null) {
 			moves = selectedPiece.accept(validator); //moves == class variable?
-			if(selectedPiece != null && validator.isValidMove(moves, tile)) {
+			if(moves.contains(tile)) {
 				move(selectedPiece, tile);
 				display.drawMove(selectedPiece, tile);
 			}

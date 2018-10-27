@@ -1,11 +1,13 @@
+import java.util.List;
+
 interface ValidMoveVisitor {
-	List<BoardCoordinate> calculateValidMoves(King);
-	List<BoardCoordinate> calculateValidMoves(Queen);
-	List<BoardCoordinate> calculateValidMoves(Bishop);
-	List<BoardCoordinate> calculateValidMoves(Knight);
-	List<BoardCoordinate> calculateValidMoves(Rook);
-	List<BoardCoordinate> calculateValidMoves(Pawn);
-	List<BoardCoordinate> calculateValidMoves(Piece);
+	List<BoardCoordinate> calculateValidMoves(Piece piece);
+	List<BoardCoordinate> calculateValidMoves(King piece);
+	List<BoardCoordinate> calculateValidMoves(Queen piece);
+	List<BoardCoordinate> calculateValidMoves(Rook piece);
+	List<BoardCoordinate> calculateValidMoves(Bishop piece);
+	List<BoardCoordinate> calculateValidMoves(Knight piece);
+	List<BoardCoordinate> calculateValidMoves(Pawn piece);
 }
 
 interface ValidMoveVisitorHost {

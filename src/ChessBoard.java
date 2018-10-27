@@ -9,7 +9,10 @@ public class ChessBoard {
 	}
 	
 	public Piece getPiece(int x, int y) {
-		return board[x][y];
+		if(x >= 0 && x < board.length && y >= 0 && y < board[0].length) {
+			return board[x][y];
+		}
+		return null;
 	}
 	
 	public void move(Piece piece, BoardCoordinate tile) {
@@ -23,5 +26,8 @@ public class ChessBoard {
 		board[piece.getCoordinate().getX()][piece.getCoordinate().getY()] = null;
 		board[x][y] = piece;
 		piece.setCoordinate(tile);
+		if(piece instanceof Pawn) {
+			((Pawn)piece).setFirstMove(false);
+		}
 	}
 }
