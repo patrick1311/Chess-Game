@@ -2,10 +2,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class Display extends JPanel {
 	private static final Color GREEN = new Color(0x96, 0xFF, 0x96);
@@ -19,7 +23,9 @@ public class Display extends JPanel {
 	private List<BoardCoordinate> highlights;
 	private List<BoardCoordinate> enemyHighlights;
 	private BoardCoordinate sourceHighlight;
-	//Parameter board,
+	private Timer timer;
+	//private boolean inAnimation = false;
+	
 	public Display(Game game) {
 		this.highlights = new LinkedList<BoardCoordinate>();
 		this.enemyHighlights = new LinkedList<BoardCoordinate>();
@@ -145,6 +151,29 @@ public class Display extends JPanel {
 	}
 	
 	public void drawMove(Piece piece, BoardCoordinate tile) { //Animation
-		
+		int totalAnimationTime = 1000; //1 second
+		int FPS = 60;
+		int frameRate = (int) totalAnimationTime / FPS;	//16.6667
+		int delx = tile.getX() - piece.getCoordinate().getX();
+		int dely = tile.getY() - piece.getCoordinate().getY();
+		int increaseX = delx / FPS;
+		int increaseY = dely / FPS;
+		System.out.println("src: " + piece.getCoordinate().getX() + "," + piece.getCoordinate().getY());
+		System.out.println("des: " + tile.getX() + "," + tile.getY());
+		System.out.println("delta: " + delx + "," + dely);
+
+		timer = new Timer(frameRate, new ActionListener() {
+			int i = 0;
+            public void actionPerformed(ActionEvent e) {
+            	//update
+            	if(i == 60) timer.stop();
+            	else {
+            		//i++;
+            		//System.out.println("i: " + i);
+            		repaint();
+            	}
+            }
+        });
+		timer.restart();
 	}
 }

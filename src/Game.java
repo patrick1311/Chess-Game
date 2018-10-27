@@ -87,8 +87,8 @@ public class Game {
 		else if(selectedPiece != null) {
 			moves = selectedPiece.accept(validator); //moves == class variable?
 			if(moves.contains(tile)) {
-				move(selectedPiece, tile);
 				display.drawMove(selectedPiece, tile);
+				move(selectedPiece, tile);
 			}
 			selectedPiece = null;
 		}
