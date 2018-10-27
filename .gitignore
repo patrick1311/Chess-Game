@@ -1,16 +1,6 @@
 #Class files and DS Store
 *.class
-<<<<<<< HEAD
-.DS_Store
-.project
-<<<<<<< HEAD
-.settings
-=======
 *.DS_Store
 .settings/*
 .project
->>>>>>> 39e4fbbe7493941324989677d0202293fa38cfd8
-=======
-.settings/*
->>>>>>> 00cbd1b7d8901c165373706f2d38a4b8a2e08582
 .classpath
