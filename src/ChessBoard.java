@@ -11,4 +11,17 @@ public class ChessBoard {
 	public Piece getPiece(int x, int y) {
 		return board[x][y];
 	}
+	
+	public void move(Piece piece, BoardCoordinate tile) {
+		int x = tile.getX();
+		int y = tile.getY();
+		Piece tilePiece = getPiece(x, y);
+		
+		if(tilePiece != null) {
+			tilePiece.getPlayer().addToGraveyard(tilePiece);
+		}
+		board[piece.getCoordinate().getX()][piece.getCoordinate().getY()] = null;
+		board[x][y] = piece;
+		piece.setCoordinate(tile);
+	}
 }

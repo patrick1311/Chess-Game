@@ -34,7 +34,7 @@ public class Validator {
 		
 		Piece source = board.getPiece(x, y);
 		
-		if(color.equals("White"))
+		if(color.equals("white"))
 			direction = UP;
 		else
 			direction = DOWN;
