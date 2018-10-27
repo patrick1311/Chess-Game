@@ -95,11 +95,11 @@ public class Game {
 				&& currentPlayer.equals(currentPiece.getPlayer())
 				&& !currentPiece.getCoordinate().equals(tile)) { //Don't select same piece
 			selectedPiece = currentPiece;
-			moves = validator.calculateValidMoves(selectedPiece);
+			moves = selectedPiece.accept(validator);
 			display.highlightTiles(moves);
 		}
 		else {
-			moves = validator.calculateValidMoves(selectedPiece); //moves == class variable?
+			moves = selectedPiece.accept(validator); //moves == class variable?
 			if(selectedPiece != null && validator.isValidMove(moves, tile)) {
 				move(selectedPiece, tile);
 				display.drawMove(selectedPiece, tile);

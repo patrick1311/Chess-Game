@@ -1,7 +1,7 @@
 import java.util.LinkedList;
 import java.util.List;
 
-public class Validator {
+public class Validator implements ValidMoveVisitor {
 	public static final int LEFT = -1;
 	public static final int DOWN = -1;
 	public static final int UP = 1;
@@ -17,11 +17,11 @@ public class Validator {
 		return p1.getColor().equals(p2.getColor());
 	}
 
-	public List<BoardCoordinate> calculateValidMoves(Piece piece) {
+	public List<BoardCoordinate> calculateValidMoves(final Piece piece) {
 		return null;
 	}
 
-	public List<BoardCoordinate> calculateValidMoves(Pawn pawn) {
+	public List<BoardCoordinate> calculateValidMoves(final Pawn pawn) {
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 
 		BoardCoordinate coor = pawn.getCoordinate();
@@ -57,7 +57,7 @@ public class Validator {
 		return coordinates;
 	}
 
-	public List<BoardCoordinate> calculateValidMoves(Rook rook) {
+	public List<BoardCoordinate> calculateValidMoves(final Rook rook) {
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 
 		BoardCoordinate coor = rook.getCoordinate();
@@ -79,7 +79,7 @@ public class Validator {
 		}
 	}
 
-	public List<BoardCoordinate> calculateValidMoves(Knight knight) {
+	public List<BoardCoordinate> calculateValidMoves(final Knight knight) {
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 		BoardCoordinate coordinate = knight.getCoordinate();
 		int x = coordinate.getX();
@@ -98,8 +98,7 @@ public class Validator {
 		return coordinates;
 	}
 
-	public List<BoardCoordinate> calculateValidMoves(Bishop bishop){
-
+	public List<BoardCoordinate> calculateValidMoves(final Bishop bishop){
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 
 		BoardCoordinate coor = bishop.getCoordinate();
@@ -115,8 +114,7 @@ public class Validator {
 		return coordinates;
 	}
 
-	public List<BoardCoordinate> calculateValidMoves(Queen queen){
-
+	public List<BoardCoordinate> calculateValidMoves(final Queen queen){
 		List<BoardCoordinate> coordinates = new LinkedList<>();
 
 		BoardCoordinate coor = queen.getCoordinate();
@@ -137,7 +135,7 @@ public class Validator {
 		return coordinates;
 	}
 
-	public List<BoardCoordinate> calculateValidMoves(King king) {
+	public List<BoardCoordinate> calculateValidMoves(final King king) {
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 		BoardCoordinate coordinate = king.getCoordinate();
 

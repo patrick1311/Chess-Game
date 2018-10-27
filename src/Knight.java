@@ -3,4 +3,8 @@ public class Knight extends Piece {
 		this.owner = owner;
 		this.color = color;
 	}
+
+	public List<BoardCoordinate> accept(ValidMoveVisitor visitor) {
+		return visitor.calculateValidMoves(this);
+	}
 }
