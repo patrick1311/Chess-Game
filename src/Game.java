@@ -92,7 +92,6 @@ public class Game {
 	}
 	
 	private void move(Piece piece, BoardCoordinate tile) {
-		
 	}
 	
 	private void changeTurn() {
