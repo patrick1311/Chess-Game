@@ -24,13 +24,15 @@ public class Display extends JPanel {
 	private List<BoardCoordinate> enemyHighlights;
 	private BoardCoordinate sourceHighlight;
 	private Timer timer;
-	//private boolean inAnimation = false;
+	private boolean inAnimation;
+	private Piece currentMovingPiece;
 	
 	public Display(Game game) {
 		this.highlights = new LinkedList<BoardCoordinate>();
 		this.enemyHighlights = new LinkedList<BoardCoordinate>();
 		this.game = game;
 		this.board = game.getBoard();
+		inAnimation = false;
 	}
 	
 	public void paint(Graphics g) {
@@ -151,6 +153,7 @@ public class Display extends JPanel {
 	}
 	
 	public void drawMove(Piece piece, BoardCoordinate tile) { //Animation
+		currentMovingPiece = piece;
 		int totalAnimationTime = 1000; //1 second
 		int FPS = 60;
 		int frameRate = (int) totalAnimationTime / FPS;	//16.6667
@@ -163,14 +166,18 @@ public class Display extends JPanel {
 		System.out.println("delta: " + delx + "," + dely);
 
 		timer = new Timer(frameRate, new ActionListener() {
-			int i = 0;
+			private int remainingFrame = 60;
+			
             public void actionPerformed(ActionEvent e) {
-            	//update
-            	if(i == 60) timer.stop();
+            	if(remainingFrame == 0) {
+            		inAnimation = false;
+            		timer.stop();
+            	}
             	else {
-            		//i++;
-            		//System.out.println("i: " + i);
+            		inAnimation = true;
+            		
             		repaint();
+            		remainingFrame--;
             	}
             }
         });
