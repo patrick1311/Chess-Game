@@ -108,7 +108,6 @@ public class Game {
 			}
 			selectedPiece = null;
 		}
-		display.repaint();
 	}
 	
 	private void move(Piece piece, BoardCoordinate tile) {
