@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class Display extends JPanel {
+	private Graphics2D g2d;
 	private Game game;
 	private ChessBoard board;
 	//Parameter board,
@@ -17,12 +18,12 @@ public class Display extends JPanel {
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g;
-		drawBoard(g2d);
-		drawPieces(g2d);
+		g2d = (Graphics2D) g;
+		drawBoard();
+		drawPieces();
 	}
 
-	public void drawBoard(Graphics2D g2d) {
+	private void drawBoard() {
 	    //paint the board tiles
 	    for(int j = 0; j < 8; j++) {
 	        for(int i = 0; i < 8; i++) {
@@ -39,18 +40,18 @@ public class Display extends JPanel {
 	    }
 	}
 	
-	public void drawPieces(Graphics2D g2d) {
+	private void drawPieces() {
 		Piece[][] board = this.board.getBoard();
 		for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board.length; j++) {
 				if(board[i][j] != null) {
-					drawPiece(g2d, board[i][j], i, j);
+					drawPiece(board[i][j], i, j);
 				}
 			}
 		}
 	}
 	
-	public void drawPiece(Graphics2D g2d, Piece piece, int x, int y) {
+	private void drawPiece(Piece piece, int x, int y) {
 		String color = piece.getColor();
 		
 		if(Pawn.class.isInstance(piece))
@@ -67,7 +68,7 @@ public class Display extends JPanel {
 			g2d.drawImage(getPiece(color, "king"), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
 	}
 
-	public Image getPiece(String color, String piece){
+	private Image getPiece(String color, String piece){
 		ImageIcon image = new ImageIcon(getClass().getResource("/images/" + color + "_" + piece + ".png"));
 		return image.getImage();
 	}
@@ -77,11 +78,17 @@ public class Display extends JPanel {
 	}
 	
 	public void clearHighlights() {
-		
+		drawBoard();
 	}
 	
 	public void highlightTiles(List<BoardCoordinate> moves) {
-		
+		g2d.setColor(Color.CYAN);
+		int x, y;
+		for(BoardCoordinate move: moves) {
+			x = move.getX();
+			y = move.getX();
+			g2d.fillRect(x * ChessBoard.TILE_SIZE, y * ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE);
+		}
 	}
 	
 	public void drawMove(Piece piece, BoardCoordinate tile) { //Animation
