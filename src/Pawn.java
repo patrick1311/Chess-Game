@@ -13,4 +13,8 @@ public class Pawn extends Piece {
 	public void setFirstMove(boolean firstMove) {
 		this.firstMove = firstMove;
 	}
+
+	public List<BoardCoordinate> accept(ValidMoveVisitor visitor) {
+		return visitor.visit(this);
+	}
 }

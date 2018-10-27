@@ -3,4 +3,8 @@ public class King extends Piece {
 		this.owner = owner;
 		this.color = color;
 	}
+
+	public List<BoardCoordinate> accept(ValidMoveVisitor visitor) {
+		return visitor.visit(this);
+	}
 }
