@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -9,8 +11,9 @@ public class Display extends JPanel {
 	private Game game;
 	private ChessBoard board;
 	//Parameter board,
-	public Display(ChessBoard board) {
-		this.board = board;
+	public Display(Game game) {
+		this.game = game;
+		this.board = game.getBoard();
 	}
 	
 	public void paint(Graphics g) {
@@ -43,15 +46,12 @@ public class Display extends JPanel {
 	}
 	
 	public void drawPieces(Graphics2D g2d, ChessBoard chessBoard) {
-		
 		Piece[][] board = chessBoard.getBoard();
-		
 		for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board.length; j++) {
 				if(board[i][j] != null) {
 					drawPiece(g2d, board[i][j], i, j);
 				}
-				
 			}
 		}
 	}
@@ -71,7 +71,6 @@ public class Display extends JPanel {
 			g2d.drawImage(getQueen(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
 		else if(King.class.isInstance(piece))
 			g2d.drawImage(getKing(color), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
-
 	}
 
 	public Image getKing(String color){
@@ -102,5 +101,21 @@ public class Display extends JPanel {
 	public Image getPawn(String color) {
 		ImageIcon image = new ImageIcon(getClass().getResource("/images/" + color + "_pawn.png"));
 		return image.getImage();
+	}
+	
+	public Game getGame() {
+		return game;
+	}
+	
+	public void clearHighlights() {
+		
+	}
+	
+	public void highlightTiles(List<BoardCoordinate> moves) {
+		
+	}
+	
+	public void drawMove(Piece piece, BoardCoordinate tile) { //Animation
+		
 	}
 }

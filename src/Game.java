@@ -9,8 +9,8 @@ public class Game {
 	private Piece selectedPiece;
 	
 	public Game(Player p1, Player p2) {
-		p1.initialize("White");
-		p2.initialize("Black");
+		p1.initialize("white");
+		p2.initialize("black");
 		this.white = p1;
 		this.black = p2;
 		currentPlayer = white;
@@ -24,10 +24,10 @@ public class Game {
 		board.getBoard()[4][7] = white.getPieceList().get(0);	//King
 		board.getBoard()[3][7] = white.getPieceList().get(1);	//Queen
 		board.getBoard()[0][7] = white.getPieceList().get(2);	//Rook
-		board.getBoard()[7][7] = white.getPieceList().get(3);	//Rook
-		board.getBoard()[2][7] = white.getPieceList().get(4);	//Bishop
-		board.getBoard()[5][7] = white.getPieceList().get(5);	//Bishop
-		board.getBoard()[1][7] = white.getPieceList().get(6);	//Knight
+		board.getBoard()[2][7] = white.getPieceList().get(3);	//Bishop
+		board.getBoard()[1][7] = white.getPieceList().get(4);	//Knight
+		board.getBoard()[7][7] = white.getPieceList().get(5);	//Rook
+		board.getBoard()[5][7] = white.getPieceList().get(6);	//Bishop
 		board.getBoard()[6][7] = white.getPieceList().get(7);	//Knight
 		for(int i = 0; i < 8; i++) {
 			board.getBoard()[i][6] = white.getPieceList().get(8 + i);	//Pawn
@@ -35,14 +35,35 @@ public class Game {
 		
 		board.getBoard()[4][0] = black.getPieceList().get(0);	//King
 		board.getBoard()[3][0] = black.getPieceList().get(1);	//Queen
-		board.getBoard()[0][0] = black.getPieceList().get(2);	//Rook
-		board.getBoard()[7][0] = black.getPieceList().get(3);	//Rook
-		board.getBoard()[2][0] = black.getPieceList().get(4);	//Bishop
-		board.getBoard()[5][0] = black.getPieceList().get(5);	//Bishop
-		board.getBoard()[1][0] = black.getPieceList().get(6);	//Knight
+		board.getBoard()[0][0] = black.getPieceList().get(2);	//Rook  
+		board.getBoard()[2][0] = black.getPieceList().get(3);	//Bishop
+		board.getBoard()[1][0] = black.getPieceList().get(4);	//Knight
+		board.getBoard()[7][0] = black.getPieceList().get(5);	//Rook  
+		board.getBoard()[5][0] = black.getPieceList().get(6);	//Bishop
 		board.getBoard()[6][0] = black.getPieceList().get(7);	//Knight
 		for(int i = 0; i < 8; i++) {
 			board.getBoard()[i][1] = black.getPieceList().get(8 + i);	//Pawn
+		}
+		
+		board.getBoard()[4][7].setCoordinate(new BoardCoordinate(4, 7));
+		board.getBoard()[3][7].setCoordinate(new BoardCoordinate(3, 7));
+		board.getBoard()[0][7].setCoordinate(new BoardCoordinate(0, 7));
+		board.getBoard()[2][7].setCoordinate(new BoardCoordinate(2, 7));
+		board.getBoard()[1][7].setCoordinate(new BoardCoordinate(1, 7));
+		board.getBoard()[7][7].setCoordinate(new BoardCoordinate(7, 7));
+		board.getBoard()[5][7].setCoordinate(new BoardCoordinate(5, 7));
+		board.getBoard()[6][7].setCoordinate(new BoardCoordinate(6, 7));
+		board.getBoard()[4][0].setCoordinate(new BoardCoordinate(4, 0));
+		board.getBoard()[3][0].setCoordinate(new BoardCoordinate(3, 0));
+		board.getBoard()[0][0].setCoordinate(new BoardCoordinate(0, 0));
+		board.getBoard()[2][0].setCoordinate(new BoardCoordinate(2, 0));
+		board.getBoard()[1][0].setCoordinate(new BoardCoordinate(1, 0));
+		board.getBoard()[7][0].setCoordinate(new BoardCoordinate(7, 0));
+		board.getBoard()[5][0].setCoordinate(new BoardCoordinate(5, 0));
+		board.getBoard()[6][0].setCoordinate(new BoardCoordinate(6, 0));
+		for(int i = 0; i < 8; i++) {
+			board.getBoard()[i][6].setCoordinate(new BoardCoordinate(i, 6));
+			board.getBoard()[i][1].setCoordinate(new BoardCoordinate(i, 1));
 		}
 	}
 	
@@ -50,7 +71,7 @@ public class Game {
 		return board;
 	}
 	
-	public void run() {
+	public void run() {/*
 		do {
 			selectTile();
 			if(validator.underCheckmate(currentPlayer)) {
@@ -63,35 +84,43 @@ public class Game {
 			}
 			changeTurn();
 		} while(true);
-		//display options
+		//display options*/
 	}
 	
-	private void selectTile() {
-		BoardCoordinate tile = null;//Listener
-		//display.clearHighlights();
+	public void selectTile(BoardCoordinate tile, Display display) {
+		List<BoardCoordinate> moves;
+		display.clearHighlights();
 		Piece currentPiece = board.getPiece(tile.getX(), tile.getY());
 		if(currentPiece != null 
 				&& currentPlayer.equals(currentPiece.getPlayer())
-				&& !currentPiece.getCoordinate().equals(tile)) {//Unsure if this works
+				&& !currentPiece.getCoordinate().equals(tile)) { //Don't select same piece
 			selectedPiece = currentPiece;
-			List<BoardCoordinate> moves = validator.calculateValidMoves(selectedPiece);
-			//display.highlightTiles(moves);
-			selectTile();
+			moves = validator.calculateValidMoves(selectedPiece);
+			display.highlightTiles(moves);
 		}
 		else {
-			List<BoardCoordinate> moves = null;//validator.calculateValidMoves(selectedPiece);//moves == class variable?
+			moves = validator.calculateValidMoves(selectedPiece); //moves == class variable?
 			if(selectedPiece != null && validator.isValidMove(moves, tile)) {
 				move(selectedPiece, tile);
-				//display.drawMove(selectedPiece, tile);
-			}
-			else {
-				selectTile();
+				display.drawMove(selectedPiece, tile);
 			}
 			selectedPiece = null;
 		}
 	}
 	
 	private void move(Piece piece, BoardCoordinate tile) {
+		board.move(piece, tile);
+		checkGameStatus();
+		changeTurn();
+	}
+	
+	private void checkGameStatus() {
+		if(validator.underCheckmate(currentPlayer)) {
+			
+		}
+		else if(validator.isDraw()) {
+			
+		}
 	}
 	
 	private void changeTurn() {

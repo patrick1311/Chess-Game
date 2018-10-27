@@ -1,9 +1,10 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class Player {
 	private String color;
-	private LinkedList<Piece> pieceList;
+	private List<Piece> pieceList;
 	private Stack<Piece> graveyard;
 	private boolean underCheck;
 	
@@ -11,7 +12,7 @@ public class Player {
 	}
 	
 	public void initialize(String color) {
-		pieceList = new LinkedList<Piece>();
+		pieceList = new ArrayList<Piece>();
 		graveyard = new Stack<Piece>();
 		this.color = color;
 		this.initializePieces();
@@ -34,15 +35,16 @@ public class Player {
 		return color;
 	}
 	
-	public LinkedList<Piece> getPieceList() {
+	public List<Piece> getPieceList() {
 		return pieceList;
 	}
 	
 	public void addToGraveyard(Piece piece) {
 		graveyard.push(piece);
+		removePiece(piece);
 	}
 	
-	public void removePiece(Piece piece) {
+	private void removePiece(Piece piece) {
 		pieceList.remove(piece);
 	}
 	
