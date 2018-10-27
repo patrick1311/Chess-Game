@@ -71,22 +71,6 @@ public class Game {
 		return board;
 	}
 	
-	public void run() {/*
-		do {
-			selectTile();
-			if(validator.underCheckmate(currentPlayer)) {
-				//display victory
-				break;
-			}
-			else if(validator.isDraw()) {
-				//display draw
-				break;
-			}
-			changeTurn();
-		} while(true);
-		//display options*/
-	}
-	
 	public void selectTile(BoardCoordinate tile, Display display) {
 		List<BoardCoordinate> moves;
 		display.clearHighlights();
