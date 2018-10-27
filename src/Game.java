@@ -91,21 +91,24 @@ public class Game {
 		List<BoardCoordinate> moves;
 		display.clearHighlights();
 		Piece currentPiece = board.getPiece(tile.getX(), tile.getY());
+		//System.out.println(currentPiece.getCoordinate().getX());
 		if(currentPiece != null 
 				&& currentPlayer.equals(currentPiece.getPlayer())
-				&& !currentPiece.getCoordinate().equals(tile)) { //Don't select same piece
+				) {//&& !currentPiece.getCoordinate().equals(tile)) { //Don't select same piece
 			selectedPiece = currentPiece;
-			moves = selectedPiece.accept(validator);
-			display.highlightTiles(moves);
+			moves = currentPiece.accept(validator);
+			display.setHighlights(moves);
+			//display.highlightTiles(moves);
 		}
-		else {
+		else if(selectedPiece != null) {
 			moves = selectedPiece.accept(validator); //moves == class variable?
-			if(selectedPiece != null && validator.isValidMove(moves, tile)) {
+			if(moves.contains(tile)) {
 				move(selectedPiece, tile);
 				display.drawMove(selectedPiece, tile);
 			}
 			selectedPiece = null;
 		}
+		display.repaint();
 	}
 	
 	private void move(Piece piece, BoardCoordinate tile) {

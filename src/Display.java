@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -10,8 +11,10 @@ public class Display extends JPanel {
 	private Graphics2D g2d;
 	private Game game;
 	private ChessBoard board;
+	private List<BoardCoordinate> highlights;
 	//Parameter board,
 	public Display(Game game) {
+		this.highlights = new LinkedList<BoardCoordinate>();
 		this.game = game;
 		this.board = game.getBoard();
 	}
@@ -20,6 +23,7 @@ public class Display extends JPanel {
 		super.paintComponent(g);
 		g2d = (Graphics2D) g;
 		drawBoard();
+		highlightTiles(highlights);
 		drawPieces();
 	}
 
@@ -77,8 +81,12 @@ public class Display extends JPanel {
 		return game;
 	}
 	
+	public void setHighlights(List<BoardCoordinate> highlights) {
+		this.highlights = highlights;
+	}
+	
 	public void clearHighlights() {
-		drawBoard();
+		this.highlights.clear();
 	}
 	
 	public void highlightTiles(List<BoardCoordinate> moves) {
@@ -86,7 +94,8 @@ public class Display extends JPanel {
 		int x, y;
 		for(BoardCoordinate move: moves) {
 			x = move.getX();
-			y = move.getX();
+			y = move.getY();
+			System.out.println(x + "X Y" + y);
 			g2d.fillRect(x * ChessBoard.TILE_SIZE, y * ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE);
 		}
 	}

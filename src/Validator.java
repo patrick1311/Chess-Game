@@ -73,9 +73,12 @@ public class Validator implements ValidMoveVisitor {
 		return coordinates;	
 	}
 
-	private void addValid(List<BoardCoordinate> coordinates, Piece source, Piece destination) {
-		if(destination == null || !isSameColor(source, destination)) {
-			coordinates.add(destination.getCoordinate());
+	private void addValid(List<BoardCoordinate> coordinates, Piece source, int x, int y) {
+		if(x >= 0 && x < board.getBoard().length && y >= 0 && y < board.getBoard()[0].length) {
+			Piece destination = board.getPiece(x, y);
+			if(destination == null || !isSameColor(source, destination)) {
+				coordinates.add(new BoardCoordinate(x, y));
+			}
 		}
 	}
 
@@ -86,14 +89,14 @@ public class Validator implements ValidMoveVisitor {
 		int y = coordinate.getY();
 		Piece source = board.getPiece(x, y);
 
-		addValid(coordinates, source, board.getPiece(x + 2, y - 1));
-		addValid(coordinates, source, board.getPiece(x + 2, y + 1));
-		addValid(coordinates, source, board.getPiece(x - 2, y - 1));
-		addValid(coordinates, source, board.getPiece(x - 2, y + 1));
-		addValid(coordinates, source, board.getPiece(x + 1, y - 2));
-		addValid(coordinates, source, board.getPiece(x + 1, y + 2));
-		addValid(coordinates, source, board.getPiece(x - 1, y - 2));
-		addValid(coordinates, source, board.getPiece(x - 1, y + 2));
+		addValid(coordinates, source, x + 2, y - 1);
+		addValid(coordinates, source, x + 2, y + 1);
+		addValid(coordinates, source, x - 2, y - 1);
+		addValid(coordinates, source, x - 2, y + 1);
+		addValid(coordinates, source, x + 1, y - 2);
+		addValid(coordinates, source, x + 1, y + 2);
+		addValid(coordinates, source, x - 1, y - 2);
+		addValid(coordinates, source, x - 1, y + 2);
 
 		return coordinates;
 	}
@@ -138,25 +141,31 @@ public class Validator implements ValidMoveVisitor {
 	public List<BoardCoordinate> calculateValidMoves(final King king) {
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 		BoardCoordinate coordinate = king.getCoordinate();
-
+		
 		for(
-				int x = coordinate.getX(), y = coordinate.getY(), i = -1, j = -1;
-				i < 2 && j < 2;
-				i++, j++
-				) {
+			int x = coordinate.getX(), y = coordinate.getY(), i = -1, j = -1;
+			i < 2 && j < 2;
+			i++, j++
+		) {
+			if(i != 0 || j != 0) {
+				continue;
+			}
+			if((x + i < 0 || x + i > 7) || (y + j < 0 || y + j > 7)) {
+				continue;
+			}
 			Piece source = board.getPiece(x, y);
 			Piece destination = board.getPiece(x + i, y + j);
-
+			
 			if(
-					(i != 0 || j != 0) && 
-					(destination == null || !isSameColor(source, destination))
-					) {
-				coordinates.add(destination.getCoordinate());
+				(destination == null || !isSameColor(source, destination))
+			) {
+				System.out.println(x + "x " + y + "y " + i + "i " + j + "j");
+				coordinates.add(new BoardCoordinate(x, y));
 			}
 		}
 		return coordinates;
 	}
-
+	/*
 	public boolean isValidMove(List<BoardCoordinate> validMoves, BoardCoordinate move) {
 		for(BoardCoordinate validMove: validMoves) {
 			if(move.getX() == validMove.getX() && move.getY() == validMove.getY()) {
@@ -164,22 +173,22 @@ public class Validator implements ValidMoveVisitor {
 			}
 		}
 		return false;
-	}
+	}*/
 
 	private void getValidMoves(List<BoardCoordinate> coordinates, int xPos, int yPos, int horizontal, int vertical) {
 		assert xPos >= 0 && xPos <= 7 && yPos >= 0 && yPos <= 7;
 
 		for(
-				int x = xPos + horizontal, y = yPos + vertical; 
-				(x >= 0 && x <= 7) && (y >= 0 && y <= 7); 
-				x += horizontal, y += vertical
-				) {
-			if(board.getPiece(x,y) == null || !isSameColor(board.getPiece(x,y),board.getPiece(x,y))) {
-				coordinates.add(new BoardCoordinate(x,y));
+			int x = xPos + horizontal, y = yPos + vertical;
+			(x >= 0 && x <= 7) && (y >= 0 && y <= 7);
+			x += horizontal, y += vertical
+		) {
+			if(board.getPiece(x, y) == null || !isSameColor(board.getPiece(x, y), board.getPiece(xPos, yPos))){
+				coordinates.add(new BoardCoordinate(x, y));
 			}
 
 			if(board.getPiece(x, y) != null) {
-				break;
+			    break;            
 			}
 		}
 	}
