@@ -5,6 +5,6 @@ public class Rook extends Piece {
 	}
 
 	public List<BoardCoordinate> accept(ValidMoveVisitor visitor) {
-		return visitor.visit(this);
+		return visitor.calculateValidMoves(this);
 	}
 }
