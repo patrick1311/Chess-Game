@@ -11,7 +11,5 @@ public class Window {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(game);
 		frame.setVisible(true);
-		
-		//new MouseInput(frame, b);
 	}
 }

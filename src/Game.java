@@ -91,14 +91,14 @@ public class Game {
 		List<BoardCoordinate> moves;
 		display.clearHighlights();
 		Piece currentPiece = board.getPiece(tile.getX(), tile.getY());
-		//System.out.println(currentPiece.getCoordinate().getX());
 		if(currentPiece != null 
 				&& currentPlayer.equals(currentPiece.getPlayer())
-				) {//&& !currentPiece.getCoordinate().equals(tile)) { //Don't select same piece
+				&& selectedPiece != currentPiece) { //Don't select same piece
 			selectedPiece = currentPiece;
 			moves = currentPiece.accept(validator);
 			display.setHighlights(moves);
-			//display.highlightTiles(moves);
+			display.setSourceHighlight(currentPiece.getCoordinate());
+			display.setEnemyHighlights(validator.filterForEnemyHighlights(moves));
 		}
 		else if(selectedPiece != null) {
 			moves = selectedPiece.accept(validator); //moves == class variable?

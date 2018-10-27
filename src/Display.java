@@ -8,13 +8,21 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class Display extends JPanel {
+	private static final Color GREEN = new Color(0x96, 0xFF, 0x96);
+	private static final Color LIGHT_BLUE = new Color(0xC8, 0xE6, 0xFF);
+	private static final Color DARK_BLUE = new Color(0x7D, 0xC8, 0xFF);
+	private static final Color LIGHT_RED = new Color(0xFF, 0x50, 0x50);
+	private static final Color DARK_RED = new Color(0xC8, 0x00, 0x00);
 	private Graphics2D g2d;
 	private Game game;
 	private ChessBoard board;
 	private List<BoardCoordinate> highlights;
+	private List<BoardCoordinate> enemyHighlights;
+	private BoardCoordinate sourceHighlight;
 	//Parameter board,
 	public Display(Game game) {
 		this.highlights = new LinkedList<BoardCoordinate>();
+		this.enemyHighlights = new LinkedList<BoardCoordinate>();
 		this.game = game;
 		this.board = game.getBoard();
 	}
@@ -23,17 +31,17 @@ public class Display extends JPanel {
 		super.paintComponent(g);
 		g2d = (Graphics2D) g;
 		drawBoard();
-		highlightTiles(highlights);
+		highlightTiles(sourceHighlight, enemyHighlights, highlights);
 		drawPieces();
 	}
 
 	private void drawBoard() {
 	    //paint the board tiles
-	    for(int j = 0; j < 8; j++) {
-	        for(int i = 0; i < 8; i++) {
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
 	            if(
-	                (j % 2 == 0 && i % 2 == 0) || // Both are even
-	                (j % 2 == 1 && i % 2 == 1)    // Both are odd
+	                (i % 2 == 0 && j % 2 == 0) || // Both are even
+	                (i % 2 == 1 && j % 2 == 1)    // Both are odd
 	            ) {
 	                g2d.setColor(Color.WHITE);
 	            } else {
@@ -81,21 +89,57 @@ public class Display extends JPanel {
 		return game;
 	}
 	
+	public void setSourceHighlight(BoardCoordinate sourceHighlight) {
+		this.sourceHighlight = sourceHighlight;
+	}
+	
 	public void setHighlights(List<BoardCoordinate> highlights) {
 		this.highlights = highlights;
 	}
 	
-	public void clearHighlights() {
-		this.highlights.clear();
+	public void setEnemyHighlights(List<BoardCoordinate> enemyHighlights) {
+		this.enemyHighlights = enemyHighlights;
 	}
 	
-	public void highlightTiles(List<BoardCoordinate> moves) {
-		g2d.setColor(Color.CYAN);
+	public void clearHighlights() {
+		this.sourceHighlight = null;
+		this.highlights.clear();
+		this.enemyHighlights.clear();
+	}
+	
+	public void highlightTiles(BoardCoordinate source, List<BoardCoordinate> enemyMoves, List<BoardCoordinate> moves) {
 		int x, y;
+		
+		if(source != null) {
+			g2d.setColor(GREEN);
+			g2d.fillRect(source.getX() * ChessBoard.TILE_SIZE, source.getY() * ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE);
+		}
 		for(BoardCoordinate move: moves) {
 			x = move.getX();
 			y = move.getY();
-			System.out.println(x + "X Y" + y);
+			
+			if(
+				(x % 2 == 0 && y % 2 == 0) || // Both are even
+				(x % 2 == 1 && y % 2 == 1)    // Both are odd
+			) {
+				g2d.setColor(LIGHT_BLUE);
+			} else {
+				g2d.setColor(DARK_BLUE);
+			}
+			g2d.fillRect(x * ChessBoard.TILE_SIZE, y * ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE);
+		}
+		for(BoardCoordinate move: enemyMoves) {
+			x = move.getX();
+			y = move.getY();
+			
+			if(
+				(x % 2 == 0 && y % 2 == 0) || // Both are even
+				(x % 2 == 1 && y % 2 == 1)    // Both are odd
+			) {
+				g2d.setColor(LIGHT_RED);
+			} else {
+				g2d.setColor(DARK_RED);
+			}
 			g2d.fillRect(x * ChessBoard.TILE_SIZE, y * ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE);
 		}
 	}
