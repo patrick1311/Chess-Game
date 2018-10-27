@@ -6,7 +6,7 @@ public class Pawn extends Piece {
 	public Pawn(Player owner, String color) {
 		this.owner = owner;
 		this.color = color;
-		firstMove = true;
+		this.firstMove = true;
 	}
 	
 	public boolean getFirstMove() {
@@ -20,4 +20,5 @@ public class Pawn extends Piece {
 	public List<BoardCoordinate> accept(ValidMoveVisitor visitor) {
 		return visitor.calculateValidMoves(this);
 	}
+	
 }
