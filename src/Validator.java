@@ -72,7 +72,7 @@ public class Validator implements ValidMoveVisitor {
 
 			MoveHistory capture = board.getPreviousMove();
 
-			if(capture.getMove().getY() == y) {
+			if(capture.getMove().getY() == y && capture.getMove().getX() == x+1 || capture.getMove().getX() == x-1) {
 				System.out.println("Empty Stack: " + board.getPreviousMoves().isEmpty());
 
 				Piece toCapture = capture.getPiece();
