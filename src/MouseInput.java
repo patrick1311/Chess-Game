@@ -19,6 +19,7 @@ public class MouseInput implements MouseListener {
         
         //display.drawHighlight(x, y);
         display.getGame().selectTile(new BoardCoordinate(x, y), display);
+        System.out.println("done moving");
         display.repaint();    //after everyclick repaint
     }
 

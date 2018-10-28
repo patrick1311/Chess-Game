@@ -153,21 +153,26 @@ public class Display extends JPanel {
 	}
 	
 	public void drawMove(Piece piece, BoardCoordinate tile) { //Animation
+		System.out.println("begin drawMove()");
 		currentMovingPiece = piece;
 		final int totalAnimationTime = 500; //1 second
 		final int FPS = 50;	
 		int frameRate = totalAnimationTime / FPS;	//each 10ms will fire an action
-		int delx = tile.getX() - piece.getCoordinate().getX();
-		int dely = tile.getY() - piece.getCoordinate().getY();
-		double incrementX = delx * ChessBoard.TILE_SIZE / FPS;
-		double incrementY = dely * ChessBoard.TILE_SIZE / FPS;
+		int deltaX = (tile.getX() - piece.getCoordinate().getX()) * ChessBoard.TILE_SIZE;	//total displacement of
+		int deltaY = (tile.getY() - piece.getCoordinate().getY()) * ChessBoard.TILE_SIZE;	//x and y in pixels
+		final double incrementX = (double) deltaX / FPS;
+		final double incrementY = (double) deltaY / FPS;
 		System.out.println(incrementX + " " + incrementY);
 		System.out.println("src: " + piece.getCoordinate().getX() + "," + piece.getCoordinate().getY());
-		System.out.println("des: " + tile.getX() + "," + tile.getY());
-		System.out.println("delta: " + delx + "," + dely);
+		System.out.println("des: " + tile.getX()*ChessBoard.TILE_SIZE + "," + tile.getY()*ChessBoard.TILE_SIZE);
+		System.out.println("delta: " + deltaX + "," + deltaY);
 		
 		timer = new Timer(frameRate, new ActionListener() {
 			private int remainingFrame = FPS;
+			private int counter = 0;
+			//initial location
+			private double x = currentMovingPiece.getCoordinate().getX() * ChessBoard.TILE_SIZE;
+			private double y = currentMovingPiece.getCoordinate().getY() * ChessBoard.TILE_SIZE;
 			
             public void actionPerformed(ActionEvent e) {
             	if(remainingFrame == 0) {
@@ -178,12 +183,35 @@ public class Display extends JPanel {
             	else {
             		inAnimation = true;
             		remainingFrame--;
-            		
+            		counter++;
+            		x = x + incrementX;
+            		y = y + incrementY;
+            		drawMovingPiece(currentMovingPiece, x, y,counter);
             	}
             	
             	repaint();
             }
         });
 		timer.restart();
+		System.out.println("finished drawMove()");
+	}
+	
+	private void drawMovingPiece(Piece piece, double x, double y, int counter) {
+		String color = piece.getColor();
+		System.out.println("counter: " +counter+"\tDoubleLocation: " + x + "," + y
+							+ "\tIntLocation: " + (int)x + "," + (int)y);
+		
+		if(Pawn.class.isInstance(piece))
+			g2d.drawImage(getPiece(color, "pawn"), (int) x, (int) y, null);	
+		else if(Rook.class.isInstance(piece))
+			g2d.drawImage(getPiece(color, "rook"), (int) x, (int) y, null);
+		else if(Knight.class.isInstance(piece))
+			g2d.drawImage(getPiece(color, "knight"), (int) x, (int) y, null);	
+		else if(Bishop.class.isInstance(piece))
+			g2d.drawImage(getPiece(color, "bishop"), (int) x, (int) y, null);
+		else if(Queen.class.isInstance(piece))
+			g2d.drawImage(getPiece(color, "queen"), (int) x, (int) y, null);
+		else if(King.class.isInstance(piece))
+			g2d.drawImage(getPiece(color, "king"), (int) x, (int) y, null);
 	}
 }
