@@ -13,13 +13,12 @@ public class MouseInput implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         int x = e.getX() / 80;
         int y = e.getY() / 80;
-        System.out.println("mouse click: " + e.getX() + ", " + e.getY());
+        //System.out.println("mouse click: " + e.getX() + ", " + e.getY());
         System.out.println("highlightX, highlightY: " + x + " " + y);
         
         
         //display.drawHighlight(x, y);
         display.getGame().selectTile(new BoardCoordinate(x, y), display);
-        System.out.println("done moving");
         display.repaint();    //after everyclick repaint
     }
 
