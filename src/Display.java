@@ -24,13 +24,15 @@ public class Display extends JPanel {
 	private List<BoardCoordinate> enemyHighlights;
 	private BoardCoordinate sourceHighlight;
 	private Timer timer;
-	//private boolean inAnimation = false;
+	private boolean inAnimation;
+	private MovingPiece currentMovingPiece;
 	
 	public Display(Game game) {
 		this.highlights = new LinkedList<BoardCoordinate>();
 		this.enemyHighlights = new LinkedList<BoardCoordinate>();
 		this.game = game;
 		this.board = game.getBoard();
+		inAnimation = false;
 	}
 	
 	public void paint(Graphics g) {
@@ -39,6 +41,7 @@ public class Display extends JPanel {
 		drawBoard();
 		highlightTiles(sourceHighlight, enemyHighlights, highlights);
 		drawPieces();
+		drawMovingPiece();
 	}
 
 	private void drawBoard() {
@@ -151,29 +154,69 @@ public class Display extends JPanel {
 	}
 	
 	public void drawMove(Piece piece, BoardCoordinate tile) { //Animation
-		int totalAnimationTime = 1000; //1 second
-		int FPS = 60;
-		int frameRate = (int) totalAnimationTime / FPS;	//16.6667
-		int delx = tile.getX() - piece.getCoordinate().getX();
-		int dely = tile.getY() - piece.getCoordinate().getY();
-		int increaseX = delx / FPS;
-		int increaseY = dely / FPS;
-		System.out.println("src: " + piece.getCoordinate().getX() + "," + piece.getCoordinate().getY());
-		System.out.println("des: " + tile.getX() + "," + tile.getY());
-		System.out.println("delta: " + delx + "," + dely);
-
+		final double srcX = piece.getCoordinate().getX() * ChessBoard.TILE_SIZE;
+		final double srcY = piece.getCoordinate().getY() * ChessBoard.TILE_SIZE;
+		final double desX = tile.getX() * ChessBoard.TILE_SIZE;
+		final double desY = tile.getY() * ChessBoard.TILE_SIZE;
+		currentMovingPiece = new MovingPiece(piece, srcX, srcY, desX, desY);
+		final int totalAnimationTime = 250; // 1/4 second
+		final int FPS = 50;	
+		int frameRate = totalAnimationTime / FPS;	//each 10ms will fire an action
+		double deltaX = desX - srcX;	//total displacement of
+		double deltaY = desY - srcY;	//x and y in pixels
+		final double incrementX = deltaX / FPS;
+		final double incrementY = deltaY / FPS;
+		System.out.println("delta: " + deltaX + ", " + deltaY);
+		System.out.println("increment per frame: " + incrementX + " " + incrementY);
+		System.out.println("src[][]: " + piece.getCoordinate().getX() + ", " + piece.getCoordinate().getY() 
+							+ "\tsrc: " + srcX + ", " + srcY);
+		System.out.println("des[][]: " + tile.getX() + ", " + tile.getY() + "\tdes: " + desX + ", " + desY);
+		
 		timer = new Timer(frameRate, new ActionListener() {
-			int i = 0;
+			private int remainingFrame = FPS;
+			private int counter = 0;
+			//initial location
+			private double x = srcX;
+			private double y = srcY;
+			
             public void actionPerformed(ActionEvent e) {
-            	//update
-            	if(i == 60) timer.stop();
-            	else {
-            		//i++;
-            		//System.out.println("i: " + i);
-            		repaint();
+            	if(remainingFrame == 0) {
+            		inAnimation = false;
+            		currentMovingPiece = null;
+            		timer.stop();
             	}
+            	else {
+            		inAnimation = true;
+            		remainingFrame--;
+            		counter++;
+            		x = x + incrementX;
+            		y = y + incrementY;
+            		currentMovingPiece.update(x, y);
+            	//	drawMovingPiece(currentMovingPiece, x, y,counter);
+            	}
+            	
+            	repaint();
             }
         });
 		timer.restart();
+	}
+	
+	private void drawMovingPiece() {
+		if(currentMovingPiece == null) return;
+		
+		String color = currentMovingPiece.getPiece().getColor();
+		
+		if(Pawn.class.isInstance(currentMovingPiece.getPiece())) 
+			g2d.drawImage(getPiece(color, "pawn"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);	
+		else if(Rook.class.isInstance(currentMovingPiece.getPiece()))
+			g2d.drawImage(getPiece(color, "rook"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+		else if(Knight.class.isInstance(currentMovingPiece.getPiece())) 
+			g2d.drawImage(getPiece(color, "knight"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+		else if(Bishop.class.isInstance(currentMovingPiece.getPiece()))
+			g2d.drawImage(getPiece(color, "bishop"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+		else if(Queen.class.isInstance(currentMovingPiece.getPiece()))
+			g2d.drawImage(getPiece(color, "queen"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+		else if(King.class.isInstance(currentMovingPiece.getPiece()))
+			g2d.drawImage(getPiece(color, "king"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
 	}
 }
