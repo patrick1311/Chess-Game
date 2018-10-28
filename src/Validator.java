@@ -140,7 +140,7 @@ public class Validator implements ValidMoveVisitor {
 		return coordinates;
 	}
 
-	public List<BoardCoordinate> calculateValidMoves(final Bishop bishop){
+	public List<BoardCoordinate> calculateValidMoves(final Bishop bishop) {
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 		BoardCoordinate coor = bishop.getCoordinate();
 
@@ -155,7 +155,7 @@ public class Validator implements ValidMoveVisitor {
 		return coordinates;
 	}
 
-	public List<BoardCoordinate> calculateValidMoves(final Queen queen){
+	public List<BoardCoordinate> calculateValidMoves(final Queen queen) {
 		List<BoardCoordinate> coordinates = new LinkedList<>();
 		BoardCoordinate coor = queen.getCoordinate();
 
@@ -182,19 +182,23 @@ public class Validator implements ValidMoveVisitor {
 
 		for(int i = -1; i < 2; i++) {
 			for(int j = -1; j < 2; j++) {
-				if(i == 0 && j == 0 || (x + i < 0 || x + i > 7) || (y + j < 0 || y + j > 7)) {
+				if(i == 0 && j == 0 || 
+					(x + i < 0 || x + i > 7) || 
+					(y + j < 0 || y + j > 7)
+				) {
 					continue;
 				}
 				Piece source = board.getPiece(x, y);
 				Piece destination = board.getPiece(x + i, y + j);
-				if(destination == null || !isSameColor(source, destination)) {
+				if((destination == null || !isSameColor(source, destination)) &&
+					!moveStillUnderCheck(king, x + i, y + j)
+				) {
 					coordinates.add(new BoardCoordinate(x + i, y + j));
 				}
 			}
 		}
 
 		legalCastling(king, coordinates, x, y);
-		
 		return coordinates;
 	}
 
@@ -302,9 +306,87 @@ public class Validator implements ValidMoveVisitor {
 		}
 		return enemyHighlights;
 	}
-
+	
+	private Piece[][] deepCopyBoard() {
+		Piece[][] board = this.board.getBoard();
+		Piece[][] copy = new Piece[board.length][board[1].length];
+		
+		for(int i = 0; i < copy.length; i++) {
+			for(int j = 0; j < copy.length; j++) {
+				copy[i][j] = board[i][j];
+			}
+		}
+		return copy;
+	}
+	
+	private boolean moveStillUnderCheck(Piece piece, int moveX, int moveY) {
+		Piece[][] lookahead = deepCopyBoard();
+		
+		lookahead[piece.getCoordinate().getX()][piece.getCoordinate().getX()] = null;
+		lookahead[moveX][moveY] = piece; //Have new lookahead board state after move is made
+		
+		int x = 0, y = 0;
+		for(int i = 0; i < lookahead.length; i++) {
+			for(int j = lookahead[0].length - 1; j >= 0; j--) {
+				if(lookahead[i][j] instanceof King) {
+					x = i;
+					y = j;
+					break;
+				}
+			}
+		}
+		//Have location of king on lookahead board
+		//Now calculate if king is still in check
+		
+		
+		System.out.println("King " + x + " " + y);
+		return kingIsAttackedDiagonally(lookahead, x, y);
+	}
+	
 	public boolean underCheck(Player currentPlayer) {
 		return false;//King is in validMove of enemy piece?
+	}
+	/*
+	private boolean underCheck(Piece[][] lookahead, int x, int y) {
+		return 
+	}*/
+	
+	private boolean kingIsAttackedDiagonally(Piece[][] lookahead, int xPos, int yPos) {
+		assert xPos >= 0 && xPos <= 7 && yPos >= 0 && yPos <= 7;
+		
+		int horizontal, vertical;
+		for(int a = 0; a < 4; a++) {
+			horizontal = (a / 2 == 0) ? LEFT: RIGHT;
+			vertical = (a % 2 == 0) ? UP: DOWN;
+			
+			for(
+				int x = xPos + horizontal, y = yPos + vertical;
+				(x >= 0 && x <= 7) && (y >= 0 && y <= 7);
+				x += horizontal, y += vertical
+			) {
+				System.out.println("Checking X " + x + " Y" + y);
+				if(lookahead[x][y] != null) {
+					System.out.println(lookahead[x][y].getClass().getName());
+					if(!isSameColor(lookahead[x][y], lookahead[xPos][yPos]) &&
+						(lookahead[x][y] instanceof Bishop || lookahead[x][y] instanceof Queen)
+					) {
+						System.out.println("Attacked at" + x + " " + y);
+						return true;
+					}
+					else {
+						break;
+					}
+				}
+				else {
+					System.out.println("null");
+				}
+			}
+		}/*
+		for(BoardCoordinate coordinate: coordinates) {
+			System.out.println(coordinate.getX() + " " + coordinate.getY());
+		}*/
+		System.out.println("False");
+		return false;
 	}
 
 	public boolean underCheckmate(Player currentPlayer) {
