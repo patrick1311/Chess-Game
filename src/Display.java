@@ -40,7 +40,8 @@ public class Display extends JPanel {
 		g2d = (Graphics2D) g;
 		drawBoard();
 		highlightTiles(sourceHighlight, enemyHighlights, highlights);
-		drawPieces();	
+		drawPieces();
+		drawMovingPiece();
 	}
 
 	private void drawBoard() {
@@ -153,12 +154,12 @@ public class Display extends JPanel {
 	}
 	
 	public void drawMove(Piece piece, BoardCoordinate tile) { //Animation
-		double srcX = piece.getCoordinate().getX() * ChessBoard.TILE_SIZE;
-		double srcY = piece.getCoordinate().getY() * ChessBoard.TILE_SIZE;
-		double desX = tile.getX() * ChessBoard.TILE_SIZE;
-		double desY = tile.getY() * ChessBoard.TILE_SIZE;
+		final double srcX = piece.getCoordinate().getX() * ChessBoard.TILE_SIZE;
+		final double srcY = piece.getCoordinate().getY() * ChessBoard.TILE_SIZE;
+		final double desX = tile.getX() * ChessBoard.TILE_SIZE;
+		final double desY = tile.getY() * ChessBoard.TILE_SIZE;
 		currentMovingPiece = new MovingPiece(piece, srcX, srcY, desX, desY);
-		final int totalAnimationTime = 500; //1 second
+		final int totalAnimationTime = 250; // 1/4 second
 		final int FPS = 50;	
 		int frameRate = totalAnimationTime / FPS;	//each 10ms will fire an action
 		double deltaX = desX - srcX;	//total displacement of
@@ -175,8 +176,8 @@ public class Display extends JPanel {
 			private int remainingFrame = FPS;
 			private int counter = 0;
 			//initial location
-			//private double x = currentMovingPiece.getCoordinate().getX() * ChessBoard.TILE_SIZE;
-			//private double y = currentMovingPiece.getCoordinate().getY() * ChessBoard.TILE_SIZE;
+			private double x = srcX;
+			private double y = srcY;
 			
             public void actionPerformed(ActionEvent e) {
             	if(remainingFrame == 0) {
@@ -188,9 +189,9 @@ public class Display extends JPanel {
             		inAnimation = true;
             		remainingFrame--;
             		counter++;
-            	//	x = x + incrementX;
-            	//	y = y + incrementY;
-            	//	currentMovingPiece.update(x, y);
+            		x = x + incrementX;
+            		y = y + incrementY;
+            		currentMovingPiece.update(x, y);
             	//	drawMovingPiece(currentMovingPiece, x, y,counter);
             	}
             	
@@ -200,24 +201,22 @@ public class Display extends JPanel {
 		timer.restart();
 	}
 	
-	private void drawMovingPiece(Piece piece, double x, double y, int counter) {
-		String color = piece.getColor();
-		System.out.println("counter: " +counter+"\tDoubleLocation: " + x + "," + y
-							+ "\tIntLocation: " + (int)x + "," + (int)y);
+	private void drawMovingPiece() {
+		if(currentMovingPiece == null) return;
 		
-		if(Pawn.class.isInstance(piece)) {
-			g2d.drawImage(getPiece(color, "pawn"), (int) x, (int) y, null);	
-			System.out.println("pawn chosen");
-		}
-		else if(Rook.class.isInstance(piece))
-			g2d.drawImage(getPiece(color, "rook"), (int) x, (int) y, null);
-		else if(Knight.class.isInstance(piece)) 
-			g2d.drawImage(getPiece(color, "knight"), (int) x, (int) y, null);
-		else if(Bishop.class.isInstance(piece))
-			g2d.drawImage(getPiece(color, "bishop"), (int) x, (int) y, null);
-		else if(Queen.class.isInstance(piece))
-			g2d.drawImage(getPiece(color, "queen"), (int) x, (int) y, null);
-		else if(King.class.isInstance(piece))
-			g2d.drawImage(getPiece(color, "king"), (int) x, (int) y, null);
+		String color = currentMovingPiece.getPiece().getColor();
+		
+		if(Pawn.class.isInstance(currentMovingPiece.getPiece())) 
+			g2d.drawImage(getPiece(color, "pawn"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);	
+		else if(Rook.class.isInstance(currentMovingPiece.getPiece()))
+			g2d.drawImage(getPiece(color, "rook"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+		else if(Knight.class.isInstance(currentMovingPiece.getPiece())) 
+			g2d.drawImage(getPiece(color, "knight"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+		else if(Bishop.class.isInstance(currentMovingPiece.getPiece()))
+			g2d.drawImage(getPiece(color, "bishop"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+		else if(Queen.class.isInstance(currentMovingPiece.getPiece()))
+			g2d.drawImage(getPiece(color, "queen"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+		else if(King.class.isInstance(currentMovingPiece.getPiece()))
+			g2d.drawImage(getPiece(color, "king"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
 	}
 }
