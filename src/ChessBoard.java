@@ -5,11 +5,10 @@ public class ChessBoard {
 	public static final int BOARD_LENGTH = 8;
 	
 	private Piece board[][] = new Piece[8][8];
-	private Stack<MoveHistory> previousMoves;
+	private Stack<MoveHistory> previousMoves = new Stack<>();
 
 	
 	public Piece[][] getBoard() {
-		previousMoves = new Stack<>();
 		return board;
 	}
 	
@@ -20,7 +19,14 @@ public class ChessBoard {
 		return null;
 	}
 	
+	public Stack<MoveHistory> getPreviousMoves(){
+		return previousMoves;
+	}
+	
 	public MoveHistory getPreviousMove() {
+		if(previousMoves.isEmpty())
+			return null;
+		
 		return previousMoves.peek();
 	}
 	
@@ -33,6 +39,9 @@ public class ChessBoard {
 		if(tilePiece != null) {
 			tilePiece.getPlayer().addToGraveyard(tilePiece);
 		}
+				
+		this.previousMoves.push(new MoveHistory(piece,tile));
+		
 		board[piece.getCoordinate().getX()][piece.getCoordinate().getY()] = null;
 		board[x][y] = piece;
 		piece.setCoordinate(tile);
