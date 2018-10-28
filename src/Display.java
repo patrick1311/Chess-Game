@@ -40,7 +40,7 @@ public class Display extends JPanel {
 		g2d = (Graphics2D) g;
 		drawBoard();
 		highlightTiles(sourceHighlight, enemyHighlights, highlights);
-		drawPieces();
+		drawPieces();	
 	}
 
 	private void drawBoard() {
@@ -64,7 +64,7 @@ public class Display extends JPanel {
 		Piece[][] board = this.board.getBoard();
 		for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board.length; j++) {
-				if(board[i][j] != null) {
+				if(board[i][j] != null && board[i][j] != currentMovingPiece) {
 					drawPiece(board[i][j], i, j);
 				}
 			}
@@ -154,31 +154,34 @@ public class Display extends JPanel {
 	
 	public void drawMove(Piece piece, BoardCoordinate tile) { //Animation
 		currentMovingPiece = piece;
-		int totalAnimationTime = 1000; //1 second
-		int FPS = 60;
-		int frameRate = (int) totalAnimationTime / FPS;	//16.6667
+		final int totalAnimationTime = 500; //1 second
+		final int FPS = 50;	
+		int frameRate = totalAnimationTime / FPS;	//each 10ms will fire an action
 		int delx = tile.getX() - piece.getCoordinate().getX();
 		int dely = tile.getY() - piece.getCoordinate().getY();
-		int increaseX = delx / FPS;
-		int increaseY = dely / FPS;
+		double incrementX = delx * ChessBoard.TILE_SIZE / FPS;
+		double incrementY = dely * ChessBoard.TILE_SIZE / FPS;
+		System.out.println(incrementX + " " + incrementY);
 		System.out.println("src: " + piece.getCoordinate().getX() + "," + piece.getCoordinate().getY());
 		System.out.println("des: " + tile.getX() + "," + tile.getY());
 		System.out.println("delta: " + delx + "," + dely);
-
+		
 		timer = new Timer(frameRate, new ActionListener() {
-			private int remainingFrame = 60;
+			private int remainingFrame = FPS;
 			
             public void actionPerformed(ActionEvent e) {
             	if(remainingFrame == 0) {
             		inAnimation = false;
+            		currentMovingPiece = null;
             		timer.stop();
             	}
             	else {
             		inAnimation = true;
-            		
-            		repaint();
             		remainingFrame--;
+            		
             	}
+            	
+            	repaint();
             }
         });
 		timer.restart();
