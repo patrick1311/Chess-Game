@@ -95,8 +95,8 @@ public class Game {
 	}
 	
 	private void move(Piece piece, BoardCoordinate tile) {
-		board.move(piece, tile);
 		checkGameStatus();
+		board.move(piece, tile);
 		changeTurn();
 	}
 	

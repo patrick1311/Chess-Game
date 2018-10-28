@@ -34,19 +34,30 @@ public class Validator implements ValidMoveVisitor {
 			direction = DOWN;
 
 		if(board.getPiece(x, y + direction) == null) {
-			coordinates.add(new BoardCoordinate(x, y + direction));
-
-			if(board.getPiece(x, y + (direction * 2)) == null && pawn.getFirstMove()) {
+			if(!moveStillUnderCheck(source, x, y + direction)) {
+				coordinates.add(new BoardCoordinate(x, y + direction));
+			}
+			
+			if(board.getPiece(x, y + (direction * 2)) == null &&
+				pawn.getFirstMove() &&
+				!moveStillUnderCheck(source, x, y + (direction * 2))
+			) {
 				coordinates.add(new BoardCoordinate(x, y + (direction * 2)));
 			}
 		}
-
-		if(board.getPiece(x + RIGHT, y + direction) != null && !isSameColor(source, board.getPiece(x + RIGHT, y + direction) )) 
+		
+		if(board.getPiece(x + RIGHT, y + direction) != null && 
+			!isSameColor(source, board.getPiece(x + RIGHT, y + direction)) &&
+			!moveStillUnderCheck(source, x + RIGHT, y + direction)
+		) {
 			coordinates.add(board.getPiece(x + RIGHT, y + direction).getCoordinate());
-		
-		if(board.getPiece(x + LEFT, y + direction) != null && !isSameColor(source, board.getPiece(x + LEFT, y + direction) )) 
+		}
+		if(board.getPiece(x + LEFT, y + direction) != null &&
+			!isSameColor(source, board.getPiece(x + LEFT, y + direction)) &&
+			!moveStillUnderCheck(source, x + LEFT, y + direction)
+			) {
 			coordinates.add(board.getPiece(x + LEFT, y + direction).getCoordinate());
-		
+		}
 		legalEnPassant(pawn, coordinates, direction, x, y);
 		legalPromotion(pawn, x, y);
 		return coordinates;
@@ -116,7 +127,10 @@ public class Validator implements ValidMoveVisitor {
 
 	private void addValid(List<BoardCoordinate> coordinates, Piece source, int x, int y) {
 		Piece destination = board.getPiece(x, y);
-		if(destination == null || !isSameColor(source, destination)) {
+		if((x >= 0 && x <= 7 && y >= 0 && y <= 7) &&
+			(destination == null || !isSameColor(source, destination)) &&
+			!moveStillUnderCheck(source, x, y)
+		) {
 			coordinates.add(new BoardCoordinate(x, y));
 		}
 	}
@@ -182,7 +196,7 @@ public class Validator implements ValidMoveVisitor {
 
 		for(int i = -1; i < 2; i++) {
 			for(int j = -1; j < 2; j++) {
-				if(i == 0 && j == 0 || 
+				if((i == 0 && j == 0) || 
 					(x + i < 0 || x + i > 7) || 
 					(y + j < 0 || y + j > 7)
 				) {
@@ -280,11 +294,13 @@ public class Validator implements ValidMoveVisitor {
 		assert xPos >= 0 && xPos <= 7 && yPos >= 0 && yPos <= 7;
 
 		for(
-				int x = xPos + horizontal, y = yPos + vertical;
-				(x >= 0 && x <= 7) && (y >= 0 && y <= 7);
-				x += horizontal, y += vertical
-				) {
-			if(board.getPiece(x, y) == null || !isSameColor(board.getPiece(x, y), board.getPiece(xPos, yPos))){
+			int x = xPos + horizontal, y = yPos + vertical;
+			(x >= 0 && x <= 7) && (y >= 0 && y <= 7);
+			x += horizontal, y += vertical
+		) {
+			if((board.getPiece(x, y) == null || !isSameColor(board.getPiece(x, y), board.getPiece(xPos, yPos))) &&
+				!moveStillUnderCheck(board.getPiece(xPos, yPos), x, y)
+			) {
 				coordinates.add(new BoardCoordinate(x, y));
 			}
 
@@ -307,7 +323,7 @@ public class Validator implements ValidMoveVisitor {
 		return enemyHighlights;
 	}
 	
-	private Piece[][] deepCopyBoard() {
+	private Piece[][] copyBoard() {
 		Piece[][] board = this.board.getBoard();
 		Piece[][] copy = new Piece[board.length][board[1].length];
 		
@@ -320,15 +336,15 @@ public class Validator implements ValidMoveVisitor {
 	}
 	
 	private boolean moveStillUnderCheck(Piece piece, int moveX, int moveY) {
-		Piece[][] lookahead = deepCopyBoard();
+		Piece[][] lookahead = copyBoard();
 		
-		lookahead[piece.getCoordinate().getX()][piece.getCoordinate().getX()] = null;
+		lookahead[piece.getCoordinate().getX()][piece.getCoordinate().getY()] = null;
 		lookahead[moveX][moveY] = piece; //Have new lookahead board state after move is made
 		
 		int x = 0, y = 0;
 		for(int i = 0; i < lookahead.length; i++) {
 			for(int j = lookahead[0].length - 1; j >= 0; j--) {
-				if(lookahead[i][j] instanceof King) {
+				if(lookahead[i][j] instanceof King && lookahead[i][j].getPlayer() == piece.getPlayer()) {
 					x = i;
 					y = j;
 					break;
@@ -337,61 +353,187 @@ public class Validator implements ValidMoveVisitor {
 		}
 		//Have location of king on lookahead board
 		//Now calculate if king is still in check
-		
-		
-		System.out.println("King " + x + " " + y);
-		return kingIsAttackedDiagonally(lookahead, x, y);
+
+		return underCheck(lookahead, x, y);
 	}
 	
 	public boolean underCheck(Player currentPlayer) {
-		return false;//King is in validMove of enemy piece?
+		List<Piece> pieces = currentPlayer.getPieceList();
+		int x = 0, y = 0;
+		for(Piece piece: pieces) {
+			if(piece instanceof King) {
+				System.out.println(piece.getClass().getName());
+				System.out.println(piece.getPlayer().getColor());
+				x = piece.getCoordinate().getX();
+				y = piece.getCoordinate().getY();
+				System.out.println(x + "X      " + y + "Y");
+				return underCheck(board.getBoard(), x, y);
+			}
+		}
+		return false;
 	}
-	/*
-	private boolean underCheck(Piece[][] lookahead, int x, int y) {
-		return 
-	}*/
 	
-	private boolean kingIsAttackedDiagonally(Piece[][] lookahead, int xPos, int yPos) {
+	private boolean underCheck(Piece[][] lookahead, int x, int y) {
+		return kingAttackedDiagonally(lookahead, x, y) ||
+		kingAttackedOrthogonally(lookahead, x, y) ||
+		kingAttackedByPawn(lookahead, x, y) ||
+		kingAttackedByKnight(lookahead, x, y) ||
+		kingAttackedByKing(lookahead, x, y);
+	}
+	
+	private boolean kingAttackedDiagonally(Piece[][] lookahead, int xPos, int yPos) {
 		assert xPos >= 0 && xPos <= 7 && yPos >= 0 && yPos <= 7;
 		
-		int horizontal, vertical;
+		int horizontal, vertical, x, y;
 		for(int a = 0; a < 4; a++) {
 			horizontal = (a / 2 == 0) ? LEFT: RIGHT;
 			vertical = (a % 2 == 0) ? UP: DOWN;
 			
 			for(
-				int x = xPos + horizontal, y = yPos + vertical;
+				x = xPos + horizontal, y = yPos + vertical;
 				(x >= 0 && x <= 7) && (y >= 0 && y <= 7);
 				x += horizontal, y += vertical
 			) {
-				System.out.println("Checking X " + x + " Y" + y);
 				if(lookahead[x][y] != null) {
-					System.out.println(lookahead[x][y].getClass().getName());
 					if(!isSameColor(lookahead[x][y], lookahead[xPos][yPos]) &&
 						(lookahead[x][y] instanceof Bishop || lookahead[x][y] instanceof Queen)
 					) {
-						System.out.println("Attacked at" + x + " " + y);
 						return true;
 					}
 					else {
 						break;
 					}
 				}
-				else {
-					System.out.println("null");
+			}
+		}
+		return false;
+	}
+	
+	private boolean kingAttackedOrthogonally(Piece[][] lookahead, int xPos, int yPos) {
+		assert xPos >= 0 && xPos <= 7 && yPos >= 0 && yPos <= 7;
+		
+		int horizontal, vertical, x, y;
+		for(int a = 0; a < 4; a++) {
+			if(a / 2 == 0) {
+				horizontal = (a % 2 == 0) ? LEFT: RIGHT;
+				vertical = NOOP;
+			}
+			else {
+				horizontal = NOOP;
+				vertical = (a % 2 == 0) ? UP: DOWN;
+			}
+			
+			for(
+				x = xPos + horizontal, y = yPos + vertical;
+				(x >= 0 && x <= 7) && (y >= 0 && y <= 7);
+				x += horizontal, y += vertical
+			) {
+				if(lookahead[x][y] != null) {
+					if(!isSameColor(lookahead[x][y], lookahead[xPos][yPos]) &&
+						(lookahead[x][y] instanceof Rook || lookahead[x][y] instanceof Queen)
+					) {
+						return true;
+					}
+					else {
+						break;
+					}
 				}
 			}
-		}/*
-		for(BoardCoordinate coordinate: coordinates) {
-			System.out.println(coordinate.getX() + " " + coordinate.getY());
-		}*/
-		System.out.println("False");
+		}
 		return false;
 	}
 
+	private boolean kingAttackedByKnight(Piece[][] lookahead, int xPos, int yPos) {
+		assert xPos >= 0 && xPos <= 7 && yPos >= 0 && yPos <= 7;
+		
+		int horizontal, vertical, x, y;
+		for(int a = 0; a < 8; a++) {
+			if(a / 4 == 0) {
+				horizontal = ((a / 2) % 2 == 0) ? LEFT: RIGHT;
+				horizontal *= 2;
+				vertical = (a % 2 == 0) ? UP: DOWN;
+			}
+			else {
+				horizontal = ((a / 2) % 2 == 0) ? LEFT: RIGHT;
+				vertical = (a % 2 == 0) ? UP: DOWN;
+				vertical *= 2;
+			}
+			
+			x = xPos + horizontal;
+			y = yPos + vertical;
+			
+			if(((x >= 0 && x <= 7) && (y >= 0 && y <= 7)) &&
+				lookahead[x][y] != null &&
+				!isSameColor(lookahead[x][y], lookahead[xPos][yPos]) &&
+				lookahead[x][y] instanceof Knight
+			) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean kingAttackedByKing(Piece[][] lookahead, int xPos, int yPos) {
+		int x, y;
+		for(int i = -1; i < 2; i++) {
+			for(int j = -1; j < 2; j++) {
+				if(i == 0 && j == 0) {
+					continue;
+				}
+				x = xPos + i;
+				y = yPos + j;
+				
+				if(((x >= 0 && x <= 7) && (y >= 0 && y <= 7)) &&
+					lookahead[x][y] != null &&
+					!isSameColor(lookahead[x][y], lookahead[xPos][yPos]) &&
+					lookahead[x][y] instanceof King
+				) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean kingAttackedByPawn(Piece[][] lookahead, int xPos, int yPos) {
+		assert xPos >= 0 && xPos <= 7 && yPos >= 0 && yPos <= 7;
+		
+		int horizontal, x, y;
+		if(lookahead[xPos][yPos].getColor().equals("white") ) {
+			y = yPos + UP;
+		}
+		else {
+			y = yPos + DOWN;
+		}
+		for(int a = 0; a < 2; a++) {
+			horizontal = (a % 2 == 0) ? LEFT: RIGHT;
+			x = xPos + horizontal;
+			if(((x >= 0 && x <= 7) && (y >= 0 && y <= 7)) &&
+				lookahead[x][y] != null &&
+				!isSameColor(lookahead[x][y], lookahead[xPos][yPos]) &&
+				lookahead[x][y] instanceof Pawn
+			) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public boolean underCheckmate(Player currentPlayer) {
-		return false;//If currentPlayer's King is under check & no validMoves 
-		//for any of player's pieces
+		List<BoardCoordinate> validMoves;
+		if(underCheck(currentPlayer)) {
+			for(Piece piece: currentPlayer.getPieceList()) {
+				System.out.println(piece.getColor());
+				validMoves = piece.accept(this);
+				if(validMoves.size() > 0) {
+					return false;
+				}
+			}
+			System.out.println("checkmate");
+			return true;
+		}
+		System.out.println("not in check");
+		return false;
 	}
 
 	public boolean isStalemate() { //private?
