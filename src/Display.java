@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -191,6 +192,7 @@ public class Display extends JPanel {
             		counter++;
             		x = x + incrementX;
             		y = y + incrementY;
+            		
             		currentMovingPiece.update(x, y);
             	//	drawMovingPiece(currentMovingPiece, x, y,counter);
             	}

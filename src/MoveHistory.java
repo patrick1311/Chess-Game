@@ -24,6 +24,4 @@ public class MoveHistory {
 		this.move = move;
 	}
 	
-	
-
 }

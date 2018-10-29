@@ -47,6 +47,7 @@ public class Validator implements ValidMoveVisitor {
 				coordinates.add(new BoardCoordinate(x, y + (direction * 2)));
 			}
 		}
+
 		
 		if(board.getPiece(x + RIGHT, y + direction) != null && 
 			!isSameColor(source, board.getPiece(x + RIGHT, y + direction)) &&
@@ -60,11 +61,12 @@ public class Validator implements ValidMoveVisitor {
 			) {
 			coordinates.add(board.getPiece(x + LEFT, y + direction).getCoordinate());
 		}
-		//legalEnPassant(pawn, coordinates, direction, x, y);
-		//legalPromotion(pawn, x, y);
+		legalEnPassant(pawn, coordinates, direction, x, y);
+		legalPromotion(pawn, x, y);
+
 		return coordinates;
 	}
-	
+
 	/*
 	 * EnPassant Rules
 	 * 1) Capturing pawn must be on the fifth rank. Fifth row of its respective color.
@@ -72,41 +74,44 @@ public class Validator implements ValidMoveVisitor {
 	 * 3) Must be done immediately after captured pawn move or else it cannot be done again. 
 	 * 
 	 */
-	
-	public boolean legalEnPassant(Pawn pawn, List<BoardCoordinate> coordinates, int direction, int x, int y) {
+
+	private boolean legalEnPassant(Pawn pawn, List<BoardCoordinate> coordinates, int direction, int x, int y) {
 		String color = pawn.getColor();
-		
+
 		int fifthRank = 3;
-		
-		if(color.equals("Black"))
+
+		if(color.equals("black"))
 			fifthRank += 1;
+
+		MoveHistory capture = board.getPreviousMove();
 		
-		if(x == fifthRank) {
-			
-			Piece toCapture = board.getPreviousMove().getPiece();
-			
-			//Need to add a move history and checking for whether it was a first move pawn 
-			
-			if(toCapture instanceof Pawn && !isSameColor(pawn, toCapture) && ((Pawn) toCapture).getFirstMove()) {
-				coordinates.add(new BoardCoordinate(x + direction, toCapture.getCoordinate().getY()));
+		if(y == fifthRank && capture.getPiece() instanceof Pawn) {
+
+			if(capture.getMove().getY() == y && capture.getMove().getX() == x+1 || capture.getMove().getX() == x-1) {
+
+				Piece toCapture = capture.getPiece();
+
+				if(toCapture != null && !isSameColor(pawn, toCapture) && !((Pawn) toCapture).getFirstMove()) 
+					coordinates.add(new BoardCoordinate(toCapture.getCoordinate().getX(), toCapture.getCoordinate().getY() + direction));
+
 			}
-			
+
 			return true;	
 		}
-			
-		return false;
 
+		return false;
 	}
-	
-	public boolean legalPromotion(Pawn pawn, int x, int y) {
+
+	private boolean legalPromotion(Pawn pawn, int y) {
 		String color = pawn.getColor(); 
-		
+
 		int pos = 0;
-		
+
 		if(color.equals("Black"))
 			pos = 7;
-		
-		return x == pos;
+
+		return y==pos;
+
 	}
 
 	public List<BoardCoordinate> calculateValidMoves(final Rook rook) {
@@ -212,6 +217,7 @@ public class Validator implements ValidMoveVisitor {
 		}
 
 		legalCastling(king, coordinates, x, y);
+
 		return coordinates;
 	}
 
@@ -279,12 +285,12 @@ public class Validator implements ValidMoveVisitor {
 				//This needs to be done after checking whether castling is done
 				BoardCoordinate rook = leftRook.getCoordinate();
 				rook.setY(y - 2);
-				
+
 			}
 			return true;
 
 		}
-		
+
 		return false;
 
 	}
