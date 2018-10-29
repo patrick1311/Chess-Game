@@ -44,6 +44,10 @@ public class Player {
 		removePiece(piece);
 	}
 	
+	public Stack<Piece> getGraveyard() {
+		return graveyard;
+	}
+	
 	private void removePiece(Piece piece) {
 		pieceList.remove(piece);
 	}

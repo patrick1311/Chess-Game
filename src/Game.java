@@ -8,6 +8,9 @@ public class Game {
 	private ChessBoard board;
 	private Validator validator;
 	private Piece selectedPiece;
+	private int turn;
+	private int lastCapture;
+	private int lastPawnMove;
 	
 	public Game(Player p1, Player p2) {
 		p1.initialize("White");
@@ -20,6 +23,7 @@ public class Game {
 		setupBoard();
 		validator = new Validator(board);
 		selectedPiece = null;
+		turn = 1;
 	}
 	
 	private void setupBoard() {
@@ -97,17 +101,27 @@ public class Game {
 	}
 	
 	private void move(Piece piece, BoardCoordinate tile) {
+		int graveyardSize = waitingPlayer.getGraveyard().size();
 		board.move(piece, tile);
+		if(piece instanceof Pawn) {
+			lastPawnMove = turn;
+		}
+		if(waitingPlayer.getGraveyard().size() > graveyardSize) {
+			lastCapture = turn;
+		}
 		checkGameStatus();
 		changeTurn();
 	}
 	
 	private void checkGameStatus() {
 		if(validator.underCheckmate(waitingPlayer)) {
-			System.out.println("Checkmate. " + currentPlayer.getColor() + " wins!");
+			System.out.println("Checkmate! " + currentPlayer.getColor() + " wins!");
 		}
-		else if(validator.isDraw(waitingPlayer)) {
-			System.out.println("Draw");
+		else if(validator.isStalemate(waitingPlayer)) {
+			System.out.println("Stalemate. Draw.");
+		}
+		else if(validator.isFiftyMove(turn, lastCapture, lastPawnMove)) {
+			System.out.println("Fifty-move rule. Draw.");
 		}
 	}
 	
@@ -119,6 +133,7 @@ public class Game {
 		else {
 			currentPlayer = white;
 			waitingPlayer = black;
+			turn++;
 		}
 	}
 }

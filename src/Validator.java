@@ -372,12 +372,12 @@ public class Validator implements ValidMoveVisitor {
 		return false;
 	}
 	
-	private boolean underCheck(Piece[][] lookahead, int x, int y) {
-		return kingAttackedDiagonally(lookahead, x, y) ||
-		kingAttackedOrthogonally(lookahead, x, y) ||
-		kingAttackedByPawn(lookahead, x, y) ||
-		kingAttackedByKnight(lookahead, x, y) ||
-		kingAttackedByKing(lookahead, x, y);
+	private boolean underCheck(Piece[][] board, int x, int y) {
+		return kingAttackedDiagonally(board, x, y) ||
+		kingAttackedOrthogonally(board, x, y) ||
+		kingAttackedByPawn(board, x, y) ||
+		kingAttackedByKnight(board, x, y) ||
+		kingAttackedByKing(board, x, y);
 	}
 	
 	private boolean kingAttackedDiagonally(Piece[][] lookahead, int xPos, int yPos) {
@@ -536,17 +536,20 @@ public class Validator implements ValidMoveVisitor {
 		return false;
 	}
 
-	private boolean isStalemate(Player waitingPlayer) { //private?
+	public boolean isStalemate(Player waitingPlayer) { //private?
 		return !hasValidMoves(waitingPlayer);
 	}
-
+	
+	public boolean isFiftyMove(int turn, int lastCapture, int lastPawnMove) { //private?
+		return turn >= lastCapture + 50 && turn >= lastPawnMove + 50;
+	}
+	/*
 	public boolean isDraw(Player waitingPlayer) {
 		return isStalemate(waitingPlayer);//stalemate
 		//three-fold repetition
 		//fifty-move rule
-		/*dead position? no sequence of legal moves can lead to checkmate, 
-		 * most commonly when neither player has sufficient 
-		 * material to checkmate the opponent.
-		 */
-	}
+		//dead position? no sequence of legal moves can lead to checkmate, 
+		// most commonly when neither player has sufficient 
+		// material to checkmate the opponent.
+	}*/
 }
