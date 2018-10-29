@@ -62,7 +62,7 @@ public class Validator implements ValidMoveVisitor {
 			coordinates.add(board.getPiece(x + LEFT, y + direction).getCoordinate());
 		}
 		legalEnPassant(pawn, coordinates, direction, x, y);
-		legalPromotion(pawn, x, y);
+		legalPromotion(pawn, y);
 
 		return coordinates;
 	}
