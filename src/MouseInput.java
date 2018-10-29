@@ -14,7 +14,7 @@ public class MouseInput implements MouseListener {
         int x = e.getX() / 80;
         int y = e.getY() / 80;
         //System.out.println("mouse click: " + e.getX() + ", " + e.getY());
-        System.out.println("highlightX, highlightY: " + x + " " + y);
+        //System.out.println("highlightX, highlightY: " + x + " " + y);
         
         
         //display.drawHighlight(x, y);
