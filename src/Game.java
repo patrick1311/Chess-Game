@@ -4,23 +4,25 @@ public class Game {
 	private Player white;
 	private Player black;
 	private Player currentPlayer;
+	private Player waitingPlayer;
 	private ChessBoard board;
 	private Validator validator;
 	private Piece selectedPiece;
 	
 	public Game(Player p1, Player p2) {
-		p1.initialize("white");
-		p2.initialize("black");
+		p1.initialize("White");
+		p2.initialize("Black");
 		this.white = p1;
 		this.black = p2;
 		currentPlayer = white;
+		waitingPlayer = black;
 		board = new ChessBoard();
 		setupBoard();
 		validator = new Validator(board);
 		selectedPiece = null;
 	}
 	
-	public void setupBoard() {
+	private void setupBoard() {
 		board.getBoard()[4][7] = white.getPieceList().get(0);	//King
 		board.getBoard()[3][7] = white.getPieceList().get(1);	//Queen
 		board.getBoard()[0][7] = white.getPieceList().get(2);	//Rook
@@ -95,26 +97,28 @@ public class Game {
 	}
 	
 	private void move(Piece piece, BoardCoordinate tile) {
-		checkGameStatus();
 		board.move(piece, tile);
+		checkGameStatus();
 		changeTurn();
 	}
 	
 	private void checkGameStatus() {
-		if(validator.underCheckmate(currentPlayer)) {
-			
+		if(validator.underCheckmate(waitingPlayer)) {
+			System.out.println("Checkmate. " + currentPlayer.getColor() + " wins!");
 		}
-		else if(validator.isDraw()) {
-			
+		else if(validator.isDraw(waitingPlayer)) {
+			System.out.println("Draw");
 		}
 	}
 	
 	private void changeTurn() {
 		if(currentPlayer == white) {
 			currentPlayer = black;
+			waitingPlayer = white;
 		}
 		else {
 			currentPlayer = white;
+			waitingPlayer = black;
 		}
 	}
 }

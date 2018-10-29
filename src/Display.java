@@ -73,7 +73,7 @@ public class Display extends JPanel {
 	}
 	
 	private void drawPiece(Piece piece, int x, int y) {
-		String color = piece.getColor();
+		String color = piece.getColor().toLowerCase();
 		
 		if(Pawn.class.isInstance(piece))
 			g2d.drawImage(getPiece(color, "pawn"), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	

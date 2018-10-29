@@ -27,11 +27,13 @@ public class Validator implements ValidMoveVisitor {
 		int x = coor.getX(), y = coor.getY(), direction; 
 		String color = pawn.getColor();
 		Piece source = board.getPiece(x, y);
-
-		if(color.equals("white")) 
+		
+		if(color.equals("White")) {
 			direction = UP;
-		else
+		}
+		else {
 			direction = DOWN;
+		}
 
 		if(board.getPiece(x, y + direction) == null) {
 			if(!moveStillUnderCheck(source, x, y + direction)) {
@@ -362,11 +364,8 @@ public class Validator implements ValidMoveVisitor {
 		int x = 0, y = 0;
 		for(Piece piece: pieces) {
 			if(piece instanceof King) {
-				System.out.println(piece.getClass().getName());
-				System.out.println(piece.getPlayer().getColor());
 				x = piece.getCoordinate().getX();
 				y = piece.getCoordinate().getY();
-				System.out.println(x + "X      " + y + "Y");
 				return underCheck(board.getBoard(), x, y);
 			}
 		}
@@ -499,7 +498,7 @@ public class Validator implements ValidMoveVisitor {
 		assert xPos >= 0 && xPos <= 7 && yPos >= 0 && yPos <= 7;
 		
 		int horizontal, x, y;
-		if(lookahead[xPos][yPos].getColor().equals("white") ) {
+		if(lookahead[xPos][yPos].getColor().equals("White") ) {
 			y = yPos + UP;
 		}
 		else {
@@ -519,29 +518,31 @@ public class Validator implements ValidMoveVisitor {
 		return false;
 	}
 	
-	public boolean underCheckmate(Player currentPlayer) {
+	private boolean hasValidMoves(Player player) {
 		List<BoardCoordinate> validMoves;
-		if(underCheck(currentPlayer)) {
-			for(Piece piece: currentPlayer.getPieceList()) {
-				System.out.println(piece.getColor());
-				validMoves = piece.accept(this);
-				if(validMoves.size() > 0) {
-					return false;
-				}
+		for(Piece piece: player.getPieceList()) {
+			validMoves = piece.accept(this);
+			if(validMoves.size() > 0) {
+				return true;
 			}
-			System.out.println("checkmate");
-			return true;
 		}
-		System.out.println("not in check");
+		return false;
+	}
+	
+	public boolean underCheckmate(Player waitingPlayer) {
+		if(underCheck(waitingPlayer)) {
+			return !hasValidMoves(waitingPlayer);
+		}
 		return false;
 	}
 
-	public boolean isStalemate() { //private?
-		return false; //If no valid moves but not under check
+	private boolean isStalemate(Player waitingPlayer) { //private?
+		return !hasValidMoves(waitingPlayer);
 	}
 
-	public boolean isDraw() {
-		return false;//stalemate
+	public boolean isDraw(Player waitingPlayer) {
+		return isStalemate(waitingPlayer);//stalemate
+		//three-fold repetition
 		//fifty-move rule
 		/*dead position? no sequence of legal moves can lead to checkmate, 
 		 * most commonly when neither player has sufficient 
