@@ -60,8 +60,8 @@ public class Validator implements ValidMoveVisitor {
 			) {
 			coordinates.add(board.getPiece(x + LEFT, y + direction).getCoordinate());
 		}
-		legalEnPassant(pawn, coordinates, direction, x, y);
-		legalPromotion(pawn, x, y);
+		//legalEnPassant(pawn, coordinates, direction, x, y);
+		//legalPromotion(pawn, x, y);
 		return coordinates;
 	}
 	
@@ -106,10 +106,7 @@ public class Validator implements ValidMoveVisitor {
 		if(color.equals("Black"))
 			pos = 7;
 		
-		if(x == pos)
-			return true;
-		
-		return false;
+		return x == pos;
 	}
 
 	public List<BoardCoordinate> calculateValidMoves(final Rook rook) {

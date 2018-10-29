@@ -40,8 +40,8 @@ public class Display extends JPanel {
 		g2d = (Graphics2D) g;
 		drawBoard();
 		highlightTiles(sourceHighlight, enemyHighlights, highlights);
-		drawPieces();
 		drawMovingPiece();
+		drawPieces();
 	}
 
 	private void drawBoard() {
