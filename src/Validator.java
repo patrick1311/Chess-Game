@@ -81,7 +81,7 @@ public class Validator implements ValidMoveVisitor {
 				System.out.println(((Pawn) toCapture).getFirstMove());
 
 				if(toCapture != null && toCapture instanceof Pawn && !isSameColor(pawn, toCapture) && !((Pawn) toCapture).getFirstMove()) 
-					coordinates.add(new BoardCoordinate(x + direction, toCapture.getCoordinate().getY() + direction));
+					coordinates.add(new BoardCoordinate(toCapture.getCoordinate().getX(), toCapture.getCoordinate().getY() + direction));
 
 			}
 
