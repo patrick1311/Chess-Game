@@ -68,19 +68,15 @@ public class Validator implements ValidMoveVisitor {
 		if(color.equals("black"))
 			fifthRank += 1;
 
-		if(y == fifthRank) {
-
-			MoveHistory capture = board.getPreviousMove();
+		MoveHistory capture = board.getPreviousMove();
+		
+		if(y == fifthRank && capture.getPiece() instanceof Pawn) {
 
 			if(capture.getMove().getY() == y && capture.getMove().getX() == x+1 || capture.getMove().getX() == x-1) {
-				System.out.println("Empty Stack: " + board.getPreviousMoves().isEmpty());
 
 				Piece toCapture = capture.getPiece();
 
-				System.out.println(toCapture.getColor());
-				System.out.println(((Pawn) toCapture).getFirstMove());
-
-				if(toCapture != null && toCapture instanceof Pawn && !isSameColor(pawn, toCapture) && !((Pawn) toCapture).getFirstMove()) 
+				if(toCapture != null && !isSameColor(pawn, toCapture) && !((Pawn) toCapture).getFirstMove()) 
 					coordinates.add(new BoardCoordinate(toCapture.getCoordinate().getX(), toCapture.getCoordinate().getY() + direction));
 
 			}
@@ -89,7 +85,6 @@ public class Validator implements ValidMoveVisitor {
 		}
 
 		return false;
-
 	}
 
 	public boolean legalPromotion(Pawn pawn, int x, int y) {
