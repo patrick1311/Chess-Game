@@ -1,3 +1,4 @@
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 public class Window {
@@ -11,5 +12,10 @@ public class Window {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(game);
 		frame.setVisible(true);
+	}
+	
+	public void promoteFrame(JFrame frame) {
+		JDialog promote = new JDialog(frame);
+		
 	}
 }

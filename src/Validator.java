@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Validator implements ValidMoveVisitor {
 	public static final int LEFT = -1;
@@ -62,8 +63,7 @@ public class Validator implements ValidMoveVisitor {
 			coordinates.add(board.getPiece(x + LEFT, y + direction).getCoordinate());
 		}
 		legalEnPassant(pawn, coordinates, direction, x, y);
-		legalPromotion(pawn, y);
-
+		
 		return coordinates;
 	}
 
@@ -80,20 +80,19 @@ public class Validator implements ValidMoveVisitor {
 
 		int fifthRank = 3;
 
-		if(color.equals("black"))
+		if(color.equals("Black"))
 			fifthRank += 1;
 
 		MoveHistory capture = board.getPreviousMove();
 		
 		if(y == fifthRank && capture.getPiece() instanceof Pawn) {
 
-			if(capture.getMove().getY() == y && capture.getMove().getX() == x+1 || capture.getMove().getX() == x-1) {
+			if(capture.getMove().getY() - (2*direction) == y && (capture.getMove().getX() == x+1 || capture.getMove().getX() == x-1)) {
 
 				Piece toCapture = capture.getPiece();
 
 				if(toCapture != null && !isSameColor(pawn, toCapture) && !((Pawn) toCapture).getFirstMove()) 
 					coordinates.add(new BoardCoordinate(toCapture.getCoordinate().getX(), toCapture.getCoordinate().getY() + direction));
-
 			}
 
 			return true;	
@@ -101,16 +100,21 @@ public class Validator implements ValidMoveVisitor {
 
 		return false;
 	}
+	
+	/*
+	 * After move if at promotion edge
+	 * If pawn promote
+	 */
 
-	private boolean legalPromotion(Pawn pawn, int y) {
+	public boolean legalPromotion(Pawn pawn, BoardCoordinate tile) {
 		String color = pawn.getColor(); 
 
-		int pos = 0;
+		int pos = 0, y = tile.getY();
 
 		if(color.equals("Black"))
 			pos = 7;
-
-		return y==pos;
+		
+		return y == pos;
 
 	}
 
@@ -227,17 +231,20 @@ public class Validator implements ValidMoveVisitor {
 		BoardCoordinate piece1 = p1.getCoordinate();
 		BoardCoordinate piece2 = p2.getCoordinate();
 
-		int start = piece1.getY(), end = piece2.getY();
+		int start = piece1.getX(), end = piece2.getX();
 
 		if(start > end) {
 			int temp = end;
 			end = start;
 			start = temp;
 		}
+		
+		System.out.println(start + " " + end + " " + piece1.getY());
 
-		for(; start < end; start++ ) {
-			if(board.getPiece(piece1.getX(), start) != null)
+		for(; start < end - 1; start++ ) {
+			if(board.getPiece(start + 1, piece1.getY()) != null) {
 				return false;
+			}
 		}
 
 		return true;
@@ -258,7 +265,7 @@ public class Validator implements ValidMoveVisitor {
 
 		int row = 0;
 
-		if(color.equals("Black")) {
+		if(color.equals("White")) {
 			row = 7;
 		}
 
@@ -266,26 +273,25 @@ public class Validator implements ValidMoveVisitor {
 		// If current player is in check and king has moved
 		if(true && !king.getHasMoved()) {
 
-			Piece leftRook = board.getPiece(row, 0);
-			Piece rightRook = board.getPiece(row, 7);
+			Piece leftRook = board.getPiece(0, row);
+			Piece rightRook = board.getPiece(7, row);
+			
+			System.out.println("CASTLING");
+			
+			System.out.println(emptyBetweenRow(leftRook,king));
 
-			if(leftRook instanceof Rook && isSameColor(king, board.getPiece(row, 0)) && ((Rook) leftRook).getHasMoved() && emptyBetweenRow(leftRook, king)) {
-				coordinates.add(new BoardCoordinate(x, y - 2));
+			if(leftRook instanceof Rook && isSameColor(king, leftRook) && !((Rook) leftRook).getHasMoved() && emptyBetweenRow(leftRook, king)) {
+				coordinates.add(new BoardCoordinate(x - 2, y));
 
 				//Check if moving king will create a check 
 				//This needs to be done after checking whether castling is done
-				BoardCoordinate rook = leftRook.getCoordinate();
-				rook.setY(y + 3);
 			}
 
-			if(rightRook instanceof Rook && isSameColor(king, board.getPiece(row, 7)) && ((Rook) rightRook).getHasMoved() && emptyBetweenRow(king, rightRook)) {	
-				coordinates.add(new BoardCoordinate(x, y + 2));
+			if(rightRook instanceof Rook && isSameColor(king, rightRook) && !((Rook) rightRook).getHasMoved() && emptyBetweenRow(king, rightRook)) {	
+				coordinates.add(new BoardCoordinate(x + 2, y));
 
 				//Check if moving king will create a check 
 				//This needs to be done after checking whether castling is done
-				BoardCoordinate rook = leftRook.getCoordinate();
-				rook.setY(y - 2);
-
 			}
 			return true;
 
