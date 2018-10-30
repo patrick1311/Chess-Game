@@ -36,13 +36,17 @@ public class Display extends JPanel {
 		inAnimation = false;
 	}
 	
+	public boolean isAnimating() {
+		return inAnimation;
+	}
+	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		g2d = (Graphics2D) g;
 		drawBoard();
 		highlightTiles(sourceHighlight, enemyHighlights, highlights);
-		drawMovingPiece();
 		drawPieces();
+		drawMovingPiece();
 	}
 
 	private void drawBoard() {
@@ -67,6 +71,10 @@ public class Display extends JPanel {
 		for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board.length; j++) {
 				if(board[i][j] != null) {
+					if(currentMovingPiece != null) { //if there is piece moving
+						if(currentMovingPiece.getPiece() == board[i][j])	//if this is moving piece
+							continue;										//do not draw
+					}
 					drawPiece(board[i][j], i, j);
 				}
 			}
@@ -159,8 +167,8 @@ public class Display extends JPanel {
 		final double srcY = piece.getCoordinate().getY() * ChessBoard.TILE_SIZE;
 		final double desX = tile.getX() * ChessBoard.TILE_SIZE;
 		final double desY = tile.getY() * ChessBoard.TILE_SIZE;
-		currentMovingPiece = new MovingPiece(piece, srcX, srcY, desX, desY);
-		final int totalAnimationTime = 250; // 1/4 second
+		currentMovingPiece = new MovingPiece(piece);
+		final int totalAnimationTime = 200; // 1/4 second
 		final int FPS = 50;	
 		int frameRate = totalAnimationTime / FPS;	//each 10ms will fire an action
 		double deltaX = desX - srcX;	//total displacement of
@@ -192,9 +200,7 @@ public class Display extends JPanel {
             		counter++;
             		x = x + incrementX;
             		y = y + incrementY;
-            		
             		currentMovingPiece.update(x, y);
-            	//	drawMovingPiece(currentMovingPiece, x, y,counter);
             	}
             	
             	repaint();
