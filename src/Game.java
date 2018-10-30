@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Scanner;
 
 public class Game {
 	private Player white;
@@ -103,12 +104,16 @@ public class Game {
 	private void move(Piece piece, BoardCoordinate tile) {
 		int graveyardSize = waitingPlayer.getGraveyard().size();
 		board.move(piece, tile);
+		
 		if(piece instanceof Pawn) {
 			lastPawnMove = turn;
+			promote(piece, validator.legalPromotion((Pawn) piece, tile));
 		}
+		
 		if(waitingPlayer.getGraveyard().size() > graveyardSize) {
 			lastCapture = turn;
 		}
+		
 		checkGameStatus();
 		changeTurn();
 	}
@@ -138,5 +143,26 @@ public class Game {
 			waitingPlayer = black;
 			turn++;
 		}
+	}
+	
+	private void promote(Piece piece, boolean legalPromotion) {
+		
+		if(legalPromotion) {
+			BoardCoordinate coor = piece.getCoordinate();
+			int x = coor.getX(), y = coor.getY();
+			
+			board.getBoard()[x][y] = new Queen(piece.getPlayer(),piece.getColor());
+			board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));
+			
+//			board.getBoard()[x][y] = new Knight(piece.getPlayer(),piece.getColor());
+//			board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));
+//			
+//			board.getBoard()[x][y] = new Bishop(piece.getPlayer(),piece.getColor());
+//			board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));
+//			
+//			board.getBoard()[x][y] = new Rook(piece.getPlayer(),piece.getColor());
+//			board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));
+		}
+		
 	}
 }
