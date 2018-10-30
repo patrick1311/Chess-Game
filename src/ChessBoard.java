@@ -72,6 +72,27 @@ public class ChessBoard {
 				}
 			}	
 			
+		}	
+		else if(piece instanceof King) {
+			((King)piece).setHasMoved(true);
+			
+			if(destX == sourceX + 2 ) {
+				Piece rightRook = board[destX+1][destY];
+				board[destX - 1][destY] = rightRook;
+				rightRook.setCoordinate(new BoardCoordinate(destX-1,destY));
+				
+				board[destX + 1][destY] = null;
+			}
+			else if(destX == sourceX - 2) {
+				Piece leftRook = board[destX-2][destY];
+				board[destX + 1][destY] = leftRook;
+				leftRook.setCoordinate(new BoardCoordinate(destX+1,destY));
+
+				board[destX - 2][destY] = null;
+			}
+		}
+		else if(piece instanceof Rook) {
+			((Rook)piece).setHasMoved(true);
 		}
 		
 		//System.out.println(destX + " " + destY + " " + sourceX + " " + (sourceY - direction));
