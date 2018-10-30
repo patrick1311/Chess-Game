@@ -1,6 +1,5 @@
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Validator implements ValidMoveVisitor {
 	public static final int LEFT = -1;
@@ -276,15 +275,29 @@ public class Validator implements ValidMoveVisitor {
 			Piece leftRook = board.getPiece(0, row);
 			Piece rightRook = board.getPiece(7, row);
 			
-			if(leftRook instanceof Rook && isSameColor(king, leftRook) && !((Rook) leftRook).getHasMoved() && emptyBetweenRow(leftRook, king)) {
-				coordinates.add(new BoardCoordinate(x - 2, y));
+			if(leftRook instanceof Rook 
+				&& isSameColor(king, leftRook) 
+				&& (!((Rook) leftRook).getHasMoved() && !king.getHasMoved()) 
+				&& emptyBetweenRow(leftRook, king)) {
+				
+				if(!moveStillUnderCheck(king, x - 1, y) && !moveStillUnderCheck(king, x - 2, y)) {
+					
+					coordinates.add(new BoardCoordinate(x - 2, y));
+				}
 
 				//Check if moving king will create a check 
 				//This needs to be done after checking whether castling is done
 			}
 
-			if(rightRook instanceof Rook && isSameColor(king, rightRook) && !((Rook) rightRook).getHasMoved() && emptyBetweenRow(king, rightRook)) {	
-				coordinates.add(new BoardCoordinate(x + 2, y));
+			if(rightRook instanceof Rook 
+				&& isSameColor(king, rightRook) 
+				&& (!((Rook) rightRook).getHasMoved() && !king.getHasMoved())
+				&& emptyBetweenRow(king, rightRook)) {
+				
+				if(!moveStillUnderCheck(king, x + 1, y) && !moveStillUnderCheck(king, x + 2, y)) {
+					
+					coordinates.add(new BoardCoordinate(x + 2, y));
+				}
 
 				//Check if moving king will create a check 
 				//This needs to be done after checking whether castling is done
