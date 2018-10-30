@@ -167,8 +167,8 @@ public class Display extends JPanel {
 		final double srcY = piece.getCoordinate().getY() * ChessBoard.TILE_SIZE;
 		final double desX = tile.getX() * ChessBoard.TILE_SIZE;
 		final double desY = tile.getY() * ChessBoard.TILE_SIZE;
-		currentMovingPiece = new MovingPiece(piece, srcX, srcY, desX, desY);
-		final int totalAnimationTime = 500; // 1/4 second
+		currentMovingPiece = new MovingPiece(piece);
+		final int totalAnimationTime = 200; // 1/4 second
 		final int FPS = 50;	
 		int frameRate = totalAnimationTime / FPS;	//each 10ms will fire an action
 		double deltaX = desX - srcX;	//total displacement of
@@ -200,16 +200,13 @@ public class Display extends JPanel {
             		counter++;
             		x = x + incrementX;
             		y = y + incrementY;
-            		
             		currentMovingPiece.update(x, y);
-            	//	drawMovingPiece(currentMovingPiece, x, y,counter);
             	}
             	
             	repaint();
             }
         });
 		timer.restart();
-		//TimeUnit.MILLISECONDS.compareTo(250);
 	}
 	
 	private void drawMovingPiece() {
