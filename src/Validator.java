@@ -1,6 +1,5 @@
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Validator implements ValidMoveVisitor {
 	public static final int LEFT = -1;
