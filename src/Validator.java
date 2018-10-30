@@ -276,10 +276,6 @@ public class Validator implements ValidMoveVisitor {
 			Piece leftRook = board.getPiece(0, row);
 			Piece rightRook = board.getPiece(7, row);
 			
-			System.out.println("CASTLING");
-			
-			System.out.println(emptyBetweenRow(leftRook,king));
-
 			if(leftRook instanceof Rook && isSameColor(king, leftRook) && !((Rook) leftRook).getHasMoved() && emptyBetweenRow(leftRook, king)) {
 				coordinates.add(new BoardCoordinate(x - 2, y));
 
