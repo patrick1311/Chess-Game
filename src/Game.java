@@ -115,12 +115,15 @@ public class Game {
 	
 	private void checkGameStatus() {
 		if(validator.underCheckmate(waitingPlayer)) {
+			//print CHECKMATE
 			System.out.println("Checkmate! " + currentPlayer.getColor() + " wins!");
 		}
 		else if(validator.isStalemate(waitingPlayer)) {
+			//print DRAW
 			System.out.println("Stalemate. Draw.");
 		}
 		else if(validator.isFiftyMove(turn, lastCapture, lastPawnMove)) {
+			//print DRAW
 			System.out.println("Fifty-move rule. Draw.");
 		}
 	}
