@@ -10,8 +10,12 @@ public class MouseInput implements MouseListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-    	if(display.isAnimating()) {
+    public void mouseClicked(MouseEvent e) {    	
+    }
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if(display.isAnimating()) {
     		return;
     	}
     	
@@ -19,15 +23,9 @@ public class MouseInput implements MouseListener {
         int y = e.getY() / 80;
         //System.out.println("mouse click: " + e.getX() + ", " + e.getY());
         System.out.println("highlightX, highlightY: " + x + " " + y);
-        
-        
-        //display.drawHighlight(x, y);
+
         display.getGame().selectTile(new BoardCoordinate(x, y), display);
         display.repaint();    //after everyclick repaint
-    }
-
-	@Override
-	public void mousePressed(MouseEvent e) {
 	}
 
 	@Override
