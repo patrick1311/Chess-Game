@@ -1,7 +1,7 @@
 import java.util.Stack;
 
 public class ChessBoard {
-	public static final int TILE_SIZE = 120;
+	public static final int TILE_SIZE = 80;
 	public static final int BOARD_LENGTH = 8;
 	
 	private Piece board[][] = new Piece[8][8];
