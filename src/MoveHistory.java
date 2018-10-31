@@ -23,5 +23,4 @@ public class MoveHistory {
 	public void setMove(BoardCoordinate move) {
 		this.move = move;
 	}
-	
 }
