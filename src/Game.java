@@ -81,15 +81,15 @@ public class Game {
 	public void selectTile(BoardCoordinate tile, Display display) {
 		List<BoardCoordinate> moves;
 		display.clearHighlights();
-		Piece currentPiece = board.getPiece(tile.getX(), tile.getY());
-		if(currentPiece != null &&
-			currentPlayer.equals(currentPiece.getPlayer()) &&
-			selectedPiece != currentPiece //Don't select same piece
+		Piece tilePiece = board.getPiece(tile.getX(), tile.getY());
+		if(tilePiece != null &&
+			currentPlayer.equals(tilePiece.getPlayer()) &&
+			selectedPiece != tilePiece //Don't select same piece
 		) {
-			selectedPiece = currentPiece;
-			moves = currentPiece.accept(validator);
+			selectedPiece = tilePiece;
+			moves = tilePiece.accept(validator);
 			display.setHighlights(moves);
-			display.setSourceHighlight(currentPiece.getCoordinate());
+			display.setSourceHighlight(tilePiece.getCoordinate());
 			display.setEnemyHighlights(validator.filterForEnemyHighlights(moves));
 		}
 		else if(selectedPiece != null) {

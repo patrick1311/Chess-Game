@@ -97,8 +97,10 @@ public class Display extends JPanel {
 	}
 
 	private Image getPiece(String color, String piece){
-		ImageIcon image = new ImageIcon(getClass().getResource("/images/" + color + "_" + piece + ".png"));
-		return image.getImage();
+		ImageIcon icon = new ImageIcon(getClass().getResource("/images/" + color + "_" + piece + ".png"));
+		Image image = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(image, icon.getDescription());
+		return icon.getImage();
 	}
 	
 	public Game getGame() {
@@ -166,8 +168,8 @@ public class Display extends JPanel {
 		final double desX = tile.getX() * ChessBoard.TILE_SIZE;
 		final double desY = tile.getY() * ChessBoard.TILE_SIZE;
 		currentMovingPiece = new MovingPiece(piece);
-		final int totalAnimationTime = 200; // 1/4 second
-		final int FPS = 50;	
+		final int totalAnimationTime = 0; // 1/4 second
+		final int FPS = 3;	
 		int frameRate = totalAnimationTime / FPS;	//each 10ms will fire an action
 		double deltaX = desX - srcX;	//total displacement of
 		double deltaY = desY - srcY;	//x and y in pixels
