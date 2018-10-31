@@ -25,18 +25,7 @@ public class Display extends JPanel {
 	private Timer timer;
 	private boolean inAnimation;
 	private MovingPiece currentMovingPiece;
-	private Image bb;
-	private Image bk;
-	private Image bn;
-	private Image bp;
-	private Image bq;
-	private Image br;
-	private Image wb;
-	private Image wk;
-	private Image wn;
-	private Image wp;
-	private Image wq;
-	private Image wr;
+	private Image images[][];
 	
 	public Display(Game game) {
 		this.highlights = new LinkedList<BoardCoordinate>();
@@ -44,19 +33,19 @@ public class Display extends JPanel {
 		this.game = game;
 		this.board = game.getBoard();
 		inAnimation = false;
-		
-		bb = getPiece("black", "bishop");
-		bk = getPiece("black", "king");
-		bn = getPiece("black", "knight");
-		bp = getPiece("black", "pawn");
-		bq = getPiece("black", "queen");
-		br = getPiece("black", "rook");
-		wb = getPiece("white", "bishop");
-		wk = getPiece("white", "king");
-		wn = getPiece("white", "knight");
-		wp = getPiece("white", "pawn");
-		wq = getPiece("white", "queen");
-		wr = getPiece("white", "rook");
+		images = new Image[6][6];
+		images[0][0] = getPiece("white", "king");
+		images[0][1] = getPiece("white", "queen");
+		images[0][2] = getPiece("white", "rook");
+		images[0][3] = getPiece("white", "bishop");
+		images[0][4] = getPiece("white", "knight");
+		images[0][5] = getPiece("white", "pawn");
+		images[1][0] = getPiece("black", "king");
+		images[1][1] = getPiece("black", "queen");
+		images[1][2] = getPiece("black", "rook");
+		images[1][3] = getPiece("black", "bishop");
+		images[1][4] = getPiece("black", "knight");
+		images[1][5] = getPiece("black", "pawn");
 	}
 	
 	public boolean isAnimating() {
@@ -106,31 +95,31 @@ public class Display extends JPanel {
 	private void drawPiece(Piece piece, int x, int y) {
 		if(piece.getColor().equals("White")) {
 			if(Pawn.class.isInstance(piece))
-				g2d.drawImage(wp, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[0][5], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
 			else if(Rook.class.isInstance(piece))
-				g2d.drawImage(wr, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
+				g2d.drawImage(images[0][2], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
 			else if(Knight.class.isInstance(piece))
-				g2d.drawImage(wn, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[0][4], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
 			else if(Bishop.class.isInstance(piece))
-				g2d.drawImage(wb, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[0][3], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
 			else if(Queen.class.isInstance(piece))
-				g2d.drawImage(wq, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[0][1], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
 			else if(King.class.isInstance(piece))
-				g2d.drawImage(wk, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[0][0], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
 		}
 		else {
 			if(Pawn.class.isInstance(piece))
-				g2d.drawImage(bp, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[1][5], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
 			else if(Rook.class.isInstance(piece))
-				g2d.drawImage(br, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
+				g2d.drawImage(images[1][2], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
 			else if(Knight.class.isInstance(piece))
-				g2d.drawImage(bn, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[1][4], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
 			else if(Bishop.class.isInstance(piece))
-				g2d.drawImage(bb, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[1][3], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
 			else if(Queen.class.isInstance(piece))
-				g2d.drawImage(bq, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[1][1], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
 			else if(King.class.isInstance(piece))
-				g2d.drawImage(bk, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[1][0], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
 		}
 	}
 
@@ -206,8 +195,8 @@ public class Display extends JPanel {
 		final double desX = tile.getX() * ChessBoard.TILE_SIZE;
 		final double desY = tile.getY() * ChessBoard.TILE_SIZE;
 		currentMovingPiece = new MovingPiece(piece);
-		final int totalAnimationTime = 150; // 1/4 second
-		final int FPS = 60;	
+		final int totalAnimationTime = 150; // 150 milliseconds
+		final int FPS = 200;	
 		int frameRate = totalAnimationTime / FPS;	//each 10ms will fire an action
 		double deltaX = desX - srcX;	//total displacement of
 		double deltaY = desY - srcY;	//x and y in pixels
@@ -247,20 +236,35 @@ public class Display extends JPanel {
 	
 	private void drawMovingPiece() {
 		if(currentMovingPiece == null) return;
-		
 		String color = currentMovingPiece.getPiece().getColor();
 		
-		if(Pawn.class.isInstance(currentMovingPiece.getPiece())) 
-			g2d.drawImage(getPiece(color, "pawn"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);	
-		else if(Rook.class.isInstance(currentMovingPiece.getPiece()))
-			g2d.drawImage(getPiece(color, "rook"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
-		else if(Knight.class.isInstance(currentMovingPiece.getPiece())) 
-			g2d.drawImage(getPiece(color, "knight"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
-		else if(Bishop.class.isInstance(currentMovingPiece.getPiece()))
-			g2d.drawImage(getPiece(color, "bishop"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
-		else if(Queen.class.isInstance(currentMovingPiece.getPiece()))
-			g2d.drawImage(getPiece(color, "queen"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
-		else if(King.class.isInstance(currentMovingPiece.getPiece()))
-			g2d.drawImage(getPiece(color, "king"), (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+		if(color.equals("White")) {
+			if(Pawn.class.isInstance(currentMovingPiece.getPiece())) 
+				g2d.drawImage(images[0][5], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);	
+			else if(Rook.class.isInstance(currentMovingPiece.getPiece()))
+				g2d.drawImage(images[0][2], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+			else if(Knight.class.isInstance(currentMovingPiece.getPiece())) 
+				g2d.drawImage(images[0][4], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+			else if(Bishop.class.isInstance(currentMovingPiece.getPiece()))
+				g2d.drawImage(images[0][3], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+			else if(Queen.class.isInstance(currentMovingPiece.getPiece()))
+				g2d.drawImage(images[0][1], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+			else if(King.class.isInstance(currentMovingPiece.getPiece()))
+				g2d.drawImage(images[0][0], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+		}
+		else {
+			if(Pawn.class.isInstance(currentMovingPiece.getPiece())) 
+				g2d.drawImage(images[1][5], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);	
+			else if(Rook.class.isInstance(currentMovingPiece.getPiece()))
+				g2d.drawImage(images[1][2], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+			else if(Knight.class.isInstance(currentMovingPiece.getPiece())) 
+				g2d.drawImage(images[1][4], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+			else if(Bishop.class.isInstance(currentMovingPiece.getPiece()))
+				g2d.drawImage(images[1][3], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+			else if(Queen.class.isInstance(currentMovingPiece.getPiece()))
+				g2d.drawImage(images[1][1], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+			else if(King.class.isInstance(currentMovingPiece.getPiece()))
+				g2d.drawImage(images[1][0], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+		}
 	}
 }
