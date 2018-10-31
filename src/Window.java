@@ -1,6 +1,4 @@
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 public class Window {
 	//default border size for all operating systems
@@ -33,16 +31,12 @@ public class Window {
 		frame.add(game);
 		frame.setVisible(true);
 	}
-	
-	public void promoteFrame(JFrame frame) {
-		JDialog promote = new JDialog(frame);
-	}
 
-	public boolean isWindows() {
+	private boolean isWindows() {
 		return (OS.indexOf("win") >= 0);
 	}
 
-	public boolean isMac() {
+	private boolean isMac() {
 		return (OS.indexOf("mac") >= 0);
 	}
 }

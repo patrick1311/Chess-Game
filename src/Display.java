@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -183,7 +182,6 @@ public class Display extends JPanel {
 		
 		timer = new Timer(frameRate, new ActionListener() {
 			private int remainingFrame = FPS;
-			private int counter = 0;
 			//initial location
 			private double x = srcX;
 			private double y = srcY;
@@ -197,7 +195,6 @@ public class Display extends JPanel {
             	else {
             		inAnimation = true;
             		remainingFrame--;
-            		counter++;
             		x = x + incrementX;
             		y = y + incrementY;
             		currentMovingPiece.update(x, y);
