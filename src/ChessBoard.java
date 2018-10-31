@@ -47,8 +47,7 @@ public class ChessBoard {
 		this.previousMoves.push(new MoveHistory(piece,new BoardCoordinate(sourceX, sourceY)));
 		
 		if(piece instanceof Pawn) {
-			((Pawn)piece).setFirstMove(false);	
-			
+			((Pawn)piece).setFirstMove(false);
 			String color = piece.getColor(); 
 			
 			if(destX < sourceX || destX > sourceX) {

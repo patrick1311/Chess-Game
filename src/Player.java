@@ -48,7 +48,7 @@ public class Player {
 		return graveyard;
 	}
 	
-	private void removePiece(Piece piece) {
+	public void removePiece(Piece piece) {
 		pieceList.remove(piece);
 	}
 	
