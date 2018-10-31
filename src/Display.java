@@ -70,12 +70,11 @@ public class Display extends JPanel {
 		for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board.length; j++) {
 				if(board[i][j] != null) {
-					if(currentMovingPiece != null &&
-						currentMovingPiece.getPiece() == board[i][j]	
+					if(currentMovingPiece == null ||
+						currentMovingPiece.getPiece() != board[i][j]	
 					) {	//if there is piece moving and if this is moving piece
-							continue;	//do not draw									
+						drawPiece(board[i][j], i, j);								
 					}
-					drawPiece(board[i][j], i, j);
 				}
 			}
 		}
