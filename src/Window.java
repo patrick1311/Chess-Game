@@ -33,10 +33,9 @@ public class Window {
 		frame.add(game);
 		frame.setVisible(true);
 	}
-
+	
 	public void promoteFrame(JFrame frame) {
 		JDialog promote = new JDialog(frame);
-
 	}
 
 	public boolean isWindows() {
