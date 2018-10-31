@@ -47,7 +47,6 @@ public class Validator implements ValidMoveVisitor {
 				coordinates.add(new BoardCoordinate(x, y + (direction * 2)));
 			}
 		}
-
 		
 		if(board.getPiece(x + RIGHT, y + direction) != null && 
 			!isSameColor(source, board.getPiece(x + RIGHT, y + direction)) &&
@@ -76,27 +75,26 @@ public class Validator implements ValidMoveVisitor {
 
 	private boolean legalEnPassant(Pawn pawn, List<BoardCoordinate> coordinates, int direction, int x, int y) {
 		String color = pawn.getColor();
-
+		MoveHistory capture = board.getPreviousMove();
 		int fifthRank = 3;
 
 		if(color.equals("Black"))
 			fifthRank += 1;
 
-		MoveHistory capture = board.getPreviousMove();
-		
 		if(y == fifthRank && capture.getPiece() instanceof Pawn) {
-
-			if(capture.getMove().getY() - (2*direction) == y && (capture.getMove().getX() == x+1 || capture.getMove().getX() == x-1)) {
-
+			if(capture.getMove().getY() - (2*direction) == y && 
+				(capture.getMove().getX() == x+1 || capture.getMove().getX() == x-1)
+			) {
 				Piece toCapture = capture.getPiece();
 
-				if(toCapture != null && !isSameColor(pawn, toCapture) && !((Pawn) toCapture).getFirstMove()) 
+				if(toCapture != null && !isSameColor(pawn, toCapture) && 
+					!((Pawn) toCapture).getFirstMove() &&
+					!moveStillUnderCheck(pawn, toCapture.getCoordinate().getX(), toCapture.getCoordinate().getY() + direction)) {
 					coordinates.add(new BoardCoordinate(toCapture.getCoordinate().getX(), toCapture.getCoordinate().getY() + direction));
+				}
 			}
-
 			return true;	
 		}
-
 		return false;
 	}
 	
@@ -107,14 +105,12 @@ public class Validator implements ValidMoveVisitor {
 
 	public boolean legalPromotion(Pawn pawn, BoardCoordinate tile) {
 		String color = pawn.getColor(); 
-
 		int pos = 0, y = tile.getY();
 
 		if(color.equals("Black"))
 			pos = 7;
 		
 		return y == pos;
-
 	}
 
 	public List<BoardCoordinate> calculateValidMoves(final Rook rook) {
@@ -225,8 +221,7 @@ public class Validator implements ValidMoveVisitor {
 	}
 
 	//Used for castling checking between rook position and king position
-	public boolean emptyBetweenRow(Piece p1, Piece p2) {
-
+	private boolean emptyBetweenRow(Piece p1, Piece p2) {
 		BoardCoordinate piece1 = p1.getCoordinate();
 		BoardCoordinate piece2 = p2.getCoordinate();
 
@@ -245,7 +240,6 @@ public class Validator implements ValidMoveVisitor {
 				return false;
 			}
 		}
-
 		return true;
 	}
 
@@ -258,10 +252,8 @@ public class Validator implements ValidMoveVisitor {
 	 * 
 	 */
 
-	public boolean legalCastling(final King king, List<BoardCoordinate> coordinates, int x, int y) {
-
+	private boolean legalCastling(final King king, List<BoardCoordinate> coordinates, int x, int y) {
 		String color = king.getColor();
-
 		int row = 0;
 
 		if(color.equals("White")) {
@@ -270,8 +262,7 @@ public class Validator implements ValidMoveVisitor {
 
 		// Determine if board for current player is in check
 		// If current player is in check and king has moved
-		if(true && !king.getHasMoved()) {
-
+		if(!moveStillUnderCheck(king, x, y) && !king.getHasMoved()) {
 			Piece leftRook = board.getPiece(0, row);
 			Piece rightRook = board.getPiece(7, row);
 			
@@ -281,10 +272,8 @@ public class Validator implements ValidMoveVisitor {
 				&& emptyBetweenRow(leftRook, king)) {
 				
 				if(!moveStillUnderCheck(king, x - 1, y) && !moveStillUnderCheck(king, x - 2, y)) {
-					
 					coordinates.add(new BoardCoordinate(x - 2, y));
 				}
-
 				//Check if moving king will create a check 
 				//This needs to be done after checking whether castling is done
 			}
@@ -295,19 +284,14 @@ public class Validator implements ValidMoveVisitor {
 				&& emptyBetweenRow(king, rightRook)) {
 				
 				if(!moveStillUnderCheck(king, x + 1, y) && !moveStillUnderCheck(king, x + 2, y)) {
-					
 					coordinates.add(new BoardCoordinate(x + 2, y));
 				}
-
 				//Check if moving king will create a check 
 				//This needs to be done after checking whether castling is done
 			}
 			return true;
-
 		}
-
 		return false;
-
 	}
 
 	private void getValidMoves(List<BoardCoordinate> coordinates, int xPos, int yPos, int horizontal, int vertical) {
@@ -465,14 +449,12 @@ public class Validator implements ValidMoveVisitor {
 		
 		int horizontal, vertical, x, y;
 		for(int a = 0; a < 8; a++) {
+			horizontal = ((a / 2) % 2 == 0) ? LEFT: RIGHT;
+			vertical = (a % 2 == 0) ? UP: DOWN;
 			if(a / 4 == 0) {
-				horizontal = ((a / 2) % 2 == 0) ? LEFT: RIGHT;
 				horizontal *= 2;
-				vertical = (a % 2 == 0) ? UP: DOWN;
 			}
 			else {
-				horizontal = ((a / 2) % 2 == 0) ? LEFT: RIGHT;
-				vertical = (a % 2 == 0) ? UP: DOWN;
 				vertical *= 2;
 			}
 			
