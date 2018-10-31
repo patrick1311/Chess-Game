@@ -1,3 +1,4 @@
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 public class Window {
@@ -31,12 +32,9 @@ public class Window {
 		frame.add(game);
 		frame.setVisible(true);
 	}
-<<<<<<< HEAD
-=======
 	
 	public void promoteFrame(JFrame frame) {
 		JDialog promote = new JDialog(frame);
-		
 	}
 	
 	public boolean isWindows() {
@@ -46,5 +44,4 @@ public class Window {
 	public boolean isMac() {
 		return (OS.indexOf("mac") >= 0);
 	}
->>>>>>> fixed JFrame border to fit for Windows operating system
 }
