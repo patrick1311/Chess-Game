@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -26,6 +25,18 @@ public class Display extends JPanel {
 	private Timer timer;
 	private boolean inAnimation;
 	private MovingPiece currentMovingPiece;
+	private Image bb;
+	private Image bk;
+	private Image bn;
+	private Image bp;
+	private Image bq;
+	private Image br;
+	private Image wb;
+	private Image wk;
+	private Image wn;
+	private Image wp;
+	private Image wq;
+	private Image wr;
 	
 	public Display(Game game) {
 		this.highlights = new LinkedList<BoardCoordinate>();
@@ -33,6 +44,19 @@ public class Display extends JPanel {
 		this.game = game;
 		this.board = game.getBoard();
 		inAnimation = false;
+		
+		bb = getPiece("black", "bishop");
+		bk = getPiece("black", "king");
+		bn = getPiece("black", "knight");
+		bp = getPiece("black", "pawn");
+		bq = getPiece("black", "queen");
+		br = getPiece("black", "rook");
+		wb = getPiece("white", "bishop");
+		wk = getPiece("white", "king");
+		wn = getPiece("white", "knight");
+		wp = getPiece("white", "pawn");
+		wq = getPiece("white", "queen");
+		wr = getPiece("white", "rook");
 	}
 	
 	public boolean isAnimating() {
@@ -80,25 +104,41 @@ public class Display extends JPanel {
 	}
 	
 	private void drawPiece(Piece piece, int x, int y) {
-		String color = piece.getColor().toLowerCase();
-		
-		if(Pawn.class.isInstance(piece))
-			g2d.drawImage(getPiece(color, "pawn"), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
-		else if(Rook.class.isInstance(piece))
-			g2d.drawImage(getPiece(color, "rook"), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
-		else if(Knight.class.isInstance(piece))
-			g2d.drawImage(getPiece(color, "knight"), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
-		else if(Bishop.class.isInstance(piece))
-			g2d.drawImage(getPiece(color, "bishop"), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
-		else if(Queen.class.isInstance(piece))
-			g2d.drawImage(getPiece(color, "queen"), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
-		else if(King.class.isInstance(piece))
-			g2d.drawImage(getPiece(color, "king"), ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
+		if(piece.getColor().equals("White")) {
+			if(Pawn.class.isInstance(piece))
+				g2d.drawImage(wp, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+			else if(Rook.class.isInstance(piece))
+				g2d.drawImage(wr, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
+			else if(Knight.class.isInstance(piece))
+				g2d.drawImage(wn, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+			else if(Bishop.class.isInstance(piece))
+				g2d.drawImage(wb, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+			else if(Queen.class.isInstance(piece))
+				g2d.drawImage(wq, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+			else if(King.class.isInstance(piece))
+				g2d.drawImage(wk, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+		}
+		else {
+			if(Pawn.class.isInstance(piece))
+				g2d.drawImage(bp, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+			else if(Rook.class.isInstance(piece))
+				g2d.drawImage(br, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
+			else if(Knight.class.isInstance(piece))
+				g2d.drawImage(bn, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+			else if(Bishop.class.isInstance(piece))
+				g2d.drawImage(bb, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+			else if(Queen.class.isInstance(piece))
+				g2d.drawImage(bq, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+			else if(King.class.isInstance(piece))
+				g2d.drawImage(bk, ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+		}
 	}
 
 	private Image getPiece(String color, String piece){
-		ImageIcon image = new ImageIcon(getClass().getResource("/images/" + color + "_" + piece + ".png"));
-		return image.getImage();
+		ImageIcon icon = new ImageIcon(getClass().getResource("/images/" + color + "_" + piece + ".png"));
+		Image image = icon.getImage().getScaledInstance(ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(image, icon.getDescription());
+		return icon.getImage();
 	}
 	
 	public Game getGame() {
@@ -166,8 +206,8 @@ public class Display extends JPanel {
 		final double desX = tile.getX() * ChessBoard.TILE_SIZE;
 		final double desY = tile.getY() * ChessBoard.TILE_SIZE;
 		currentMovingPiece = new MovingPiece(piece);
-		final int totalAnimationTime = 200; // 1/4 second
-		final int FPS = 50;	
+		final int totalAnimationTime = 150; // 1/4 second
+		final int FPS = 60;	
 		int frameRate = totalAnimationTime / FPS;	//each 10ms will fire an action
 		double deltaX = desX - srcX;	//total displacement of
 		double deltaY = desY - srcY;	//x and y in pixels

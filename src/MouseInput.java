@@ -19,8 +19,8 @@ public class MouseInput implements MouseListener {
     		return;
     	}
     	
-        int x = e.getX() / 80;
-        int y = e.getY() / 80;
+        int x = e.getX() / ChessBoard.TILE_SIZE;
+        int y = e.getY() / ChessBoard.TILE_SIZE;
         //System.out.println("mouse click: " + e.getX() + ", " + e.getY());
         System.out.println("highlightX, highlightY: " + x + " " + y);
 

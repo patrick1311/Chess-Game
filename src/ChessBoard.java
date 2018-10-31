@@ -3,10 +3,8 @@ import java.util.Stack;
 public class ChessBoard {
 	public static final int TILE_SIZE = 80;
 	public static final int BOARD_LENGTH = 8;
-	
 	private Piece board[][] = new Piece[8][8];
 	private Stack<MoveHistory> previousMoves = new Stack<>();
-
 	
 	public Piece[][] getBoard() {
 		return board;
@@ -50,27 +48,20 @@ public class ChessBoard {
 			((Pawn)piece).setFirstMove(false);
 			String color = piece.getColor(); 
 			
-			if(destX < sourceX || destX > sourceX) {
-				
-				if(tilePiece == null) {
-					
-					if(color.equals("White")) {
-						direction = Validator.UP;
-					}
-					else {
-						direction = Validator.DOWN;
-					}
-					
-					board[sourceX][sourceY] = null;
-					tilePiece = getPiece(destX, destY-direction);
-					tilePiece.getPlayer().addToGraveyard(tilePiece);
-
-					sourceX = destX;
-					sourceY = destY-direction;
-					
+			if((destX < sourceX || destX > sourceX) && tilePiece == null) {
+				if(color.equals("White")) {
+					direction = Validator.UP;
 				}
-			}	
-			
+				else {
+					direction = Validator.DOWN;
+				}
+				
+				board[sourceX][sourceY] = null;
+				tilePiece = getPiece(destX, destY-direction);
+				tilePiece.getPlayer().addToGraveyard(tilePiece);
+				sourceX = destX;
+				sourceY = destY-direction; 
+			}
 		}	
 		else if(piece instanceof King) {
 			((King)piece).setHasMoved(true);
