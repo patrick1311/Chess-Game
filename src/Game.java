@@ -82,9 +82,10 @@ public class Game {
 		List<BoardCoordinate> moves;
 		display.clearHighlights();
 		Piece currentPiece = board.getPiece(tile.getX(), tile.getY());
-		if(currentPiece != null 
-				&& currentPlayer.equals(currentPiece.getPlayer())
-				&& selectedPiece != currentPiece) { //Don't select same piece
+		if(currentPiece != null &&
+			currentPlayer.equals(currentPiece.getPlayer()) &&
+			selectedPiece != currentPiece //Don't select same piece
+		) {
 			selectedPiece = currentPiece;
 			moves = currentPiece.accept(validator);
 			display.setHighlights(moves);
@@ -92,7 +93,7 @@ public class Game {
 			display.setEnemyHighlights(validator.filterForEnemyHighlights(moves));
 		}
 		else if(selectedPiece != null) {
-			moves = selectedPiece.accept(validator); //moves == class variable?
+			moves = selectedPiece.accept(validator);
 			if(moves.contains(tile)) {
 				display.drawMove(selectedPiece, tile);
 				move(selectedPiece, tile);
@@ -107,7 +108,9 @@ public class Game {
 		
 		if(piece instanceof Pawn) {
 			lastPawnMove = turn;
-			promote(piece, validator.legalPromotion((Pawn) piece, tile));
+			if(validator.legalPromotion((Pawn) piece, tile)) {
+				promote(piece);
+			}
 		}
 		
 		if(waitingPlayer.getGraveyard().size() > graveyardSize) {
@@ -145,35 +148,34 @@ public class Game {
 		}
 	}
 	
-	private void promote(Piece piece, boolean legalPromotion) {
-		if(legalPromotion) {
-			BoardCoordinate coor = piece.getCoordinate();
-			int x = coor.getX(), y = coor.getY();
-			
-			String[] promote = {"Queen", "Knight", "Rook", "Bishop"};
-			
-			int n = JOptionPane.showOptionDialog(null,
-				    "What do you want to promote to?",
-				    "Choose a piece:",
-				    JOptionPane.DEFAULT_OPTION,
-				    JOptionPane.QUESTION_MESSAGE,
-				    null, promote, promote[0]);
-			
-			System.out.println(n);
-
-			if(n == 0) {
-				board.getBoard()[x][y] = new Queen(piece.getPlayer(),piece.getColor());
-			}
-			else if(n == 1) {
-				board.getBoard()[x][y] = new Knight(piece.getPlayer(),piece.getColor());
-			}
-			else if(n == 2) {
-				board.getBoard()[x][y] = new Rook(piece.getPlayer(),piece.getColor());
-			}
-			else if(n == 3) {
-				board.getBoard()[x][y] = new Bishop(piece.getPlayer(),piece.getColor());
-			}
-			board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));	
+	private void promote(Piece piece) {
+		BoardCoordinate coor = piece.getCoordinate();
+		int x = coor.getX(), y = coor.getY();
+		
+		String[] promote = {"Queen", "Knight", "Rook", "Bishop"};
+		
+		int n = JOptionPane.showOptionDialog(null,
+			    "What do you want to promote to?",
+			    "Choose a piece:",
+			    JOptionPane.DEFAULT_OPTION,
+			    JOptionPane.QUESTION_MESSAGE,
+			    null, promote, promote[0]);
+		
+		System.out.println(n);
+		
+		if(n == 0) {
+			board.getBoard()[x][y] = new Queen(piece.getPlayer(),piece.getColor());
 		}
+		else if(n == 1) {
+			board.getBoard()[x][y] = new Knight(piece.getPlayer(),piece.getColor());
+		}
+		else if(n == 2) {
+			board.getBoard()[x][y] = new Rook(piece.getPlayer(),piece.getColor());
+		}
+		else if(n == 3) {
+			board.getBoard()[x][y] = new Bishop(piece.getPlayer(),piece.getColor());
+		}
+		currentPlayer.removePiece(piece);
+		board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));
 	}
 }

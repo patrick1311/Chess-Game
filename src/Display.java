@@ -69,11 +69,10 @@ public class Display extends JPanel {
 		Piece[][] board = this.board.getBoard();
 		for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board.length; j++) {
-				if(board[i][j] != null) {
-					if(currentMovingPiece != null) { //if there is piece moving
-						if(currentMovingPiece.getPiece() == board[i][j])	//if this is moving piece
-							continue;										//do not draw
-					}
+				if(board[i][j] != null &&
+					(currentMovingPiece == null ||
+					currentMovingPiece.getPiece() != board[i][j])
+				) {	//if board location is not null and there is not a piece moving or if this is not a moving piece
 					drawPiece(board[i][j], i, j);
 				}
 			}
