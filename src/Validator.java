@@ -93,6 +93,7 @@ public class Validator implements ValidMoveVisitor {
 					coordinates.add(new BoardCoordinate(toCapture.getCoordinate().getX(), toCapture.getCoordinate().getY() + direction));
 				}
 			}
+
 			return true;	
 		}
 		return false;

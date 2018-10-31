@@ -1,5 +1,6 @@
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class Window {
 	//default border size for all operating systems
@@ -8,7 +9,7 @@ public class Window {
 	private static int LEFTBORDER = 50;
 	private static int RIGHTBORDER = 50;
 	private static String OS = System.getProperty("os.name").toLowerCase();
-	
+
 	public Window(Display game) {
 		if(isWindows()) {
 			TOPBORDER = 26;
@@ -25,7 +26,7 @@ public class Window {
 		System.out.println(OS);
 		JFrame frame = new JFrame("Chess");
 		frame.setSize(ChessBoard.TILE_SIZE*8 + LEFTBORDER + RIGHTBORDER
-						, ChessBoard.TILE_SIZE*8 + TOPBORDER + BOTTOMBORDER);
+				, ChessBoard.TILE_SIZE*8 + TOPBORDER + BOTTOMBORDER);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,7 +37,7 @@ public class Window {
 	public void promoteFrame(JFrame frame) {
 		JDialog promote = new JDialog(frame);
 	}
-	
+
 	public boolean isWindows() {
 		return (OS.indexOf("win") >= 0);
 	}
