@@ -1,5 +1,4 @@
 import java.util.List;
-
 import javax.swing.JOptionPane;
 
 public class Game {
@@ -147,7 +146,6 @@ public class Game {
 	}
 	
 	private void promote(Piece piece, boolean legalPromotion) {
-		
 		if(legalPromotion) {
 			BoardCoordinate coor = piece.getCoordinate();
 			int x = coor.getX(), y = coor.getY();
@@ -159,28 +157,23 @@ public class Game {
 				    "Choose a piece:",
 				    JOptionPane.DEFAULT_OPTION,
 				    JOptionPane.QUESTION_MESSAGE,
-				    null, promote, promote[3]);
+				    null, promote, promote[0]);
 			
 			System.out.println(n);
 
 			if(n == 0) {
 				board.getBoard()[x][y] = new Queen(piece.getPlayer(),piece.getColor());
-				board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));			
 			}
 			else if(n == 1) {
 				board.getBoard()[x][y] = new Knight(piece.getPlayer(),piece.getColor());
-				board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));
 			}
 			else if(n == 2) {
 				board.getBoard()[x][y] = new Rook(piece.getPlayer(),piece.getColor());
-				board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));
 			}
 			else if(n == 3) {
 				board.getBoard()[x][y] = new Bishop(piece.getPlayer(),piece.getColor());
-				board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));
-				
 			}
+			board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));	
 		}
-		
 	}
 }
