@@ -78,6 +78,7 @@ public class Validator implements ValidMoveVisitor {
 		MoveHistory capture = board.getPreviousMove();
 		int fifthRank = 3;
 
+<<<<<<< HEAD
 		if(color.equals("Black")) {
 			fifthRank = 4;
 		}
