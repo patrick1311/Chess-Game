@@ -21,7 +21,7 @@ public class Window {
 			LEFTBORDER = 0;
 			RIGHTBORDER = 0;
 		}
-		System.out.println(OS);
+		//System.out.println(OS);
 		JFrame frame = new JFrame("Chess");
 		frame.setSize(Display.TILE_SIZE*8 + LEFTBORDER + RIGHTBORDER
 				,Display.TILE_SIZE*8 + TOPBORDER + BOTTOMBORDER);
