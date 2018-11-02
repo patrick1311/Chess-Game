@@ -78,9 +78,9 @@ public class Validator implements ValidMoveVisitor {
 		MoveHistory capture = board.getPreviousMove();
 		int fifthRank = 3;
 
-		if(color.equals("Black"))
+		if(color.equals("Black")) {
 			fifthRank = 4;
-
+		}
 		if(y == fifthRank && 
 			capture.getPiece() instanceof Pawn && 
 			capture.getPiece().getCoordinate().getY() == y &&
