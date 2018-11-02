@@ -320,7 +320,14 @@ public class Validator implements ValidMoveVisitor {
 				piece instanceof Pawn && 
 				x != piece.getCoordinate().getX()
 			) {
-				enemyHighlights.add(new BoardCoordinate(x, y));
+				if(move.getY() == 2 && piece.getColor().equals("White"))
+					enemyHighlights.add(new BoardCoordinate(x, y + 1));
+				else if(move.getY() == 5 && piece.getColor().equals("Black")) {
+					enemyHighlights.add(new BoardCoordinate(x, y - 1));
+				}
+				else {
+					enemyHighlights.add(new BoardCoordinate(x, y));
+				}
 			}
 		}
 		return enemyHighlights;
