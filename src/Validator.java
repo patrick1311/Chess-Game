@@ -234,7 +234,7 @@ public class Validator implements ValidMoveVisitor {
 			start = temp;
 		}
 		
-		System.out.println(start + " " + end + " " + piece1.getY());
+		//System.out.println(start + " " + end + " " + piece1.getY());
 
 		for(; start < end - 1; start++ ) {
 			if(board.getPiece(start + 1, piece1.getY()) != null) {
@@ -315,7 +315,7 @@ public class Validator implements ValidMoveVisitor {
 		}
 	}
 
-	public List<BoardCoordinate> filterForEnemyHighlights(List<BoardCoordinate> moves) {
+	public List<BoardCoordinate> filterForEnemyHighlights(List<BoardCoordinate> moves, Piece piece) {
 		List<BoardCoordinate> enemyHighlights = new LinkedList<BoardCoordinate>();
 		int x, y;
 		for(BoardCoordinate move: moves) {
@@ -323,6 +323,12 @@ public class Validator implements ValidMoveVisitor {
 			y = move.getY();
 			if(board.getPiece(x, y) != null) {
 				enemyHighlights.add(move);
+			}
+			else if(board.getPiece(x, y) == null && 
+				piece instanceof Pawn && 
+				x != piece.getCoordinate().getX()
+			) {
+				enemyHighlights.add(new BoardCoordinate(x, y));
 			}
 		}
 		return enemyHighlights;

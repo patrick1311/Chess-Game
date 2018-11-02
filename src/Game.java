@@ -90,7 +90,7 @@ public class Game {
 			moves = tilePiece.accept(validator);
 			display.setHighlights(moves);
 			display.setSourceHighlight(tilePiece.getCoordinate());
-			display.setEnemyHighlights(validator.filterForEnemyHighlights(moves));
+			display.setEnemyHighlights(validator.filterForEnemyHighlights(moves, selectedPiece));
 		}
 		else if(selectedPiece != null) {
 			moves = selectedPiece.accept(validator);
@@ -161,7 +161,7 @@ public class Game {
 			    JOptionPane.QUESTION_MESSAGE,
 			    null, promote, promote[0]);
 		
-		System.out.println(n);
+		//System.out.println(n);
 		
 		if(n == 0) {
 			board.getBoard()[x][y] = new Queen(piece.getPlayer(),piece.getColor());
