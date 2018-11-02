@@ -196,18 +196,18 @@ public class Display extends JPanel {
 		final double desX = tile.getX() * TILE_SIZE;
 		final double desY = tile.getY() * TILE_SIZE;
 		currentMovingPiece = new MovingPiece(piece);
-		final int totalAnimationTime = 150; // 150 milliseconds
-		final int FPS = 200;	
+		final int totalAnimationTime = 250; // 250 milliseconds
+		final int FPS = 60;	
 		int frameRate = totalAnimationTime / FPS;	//each 10ms will fire an action
 		double deltaX = desX - srcX;	//total displacement of
 		double deltaY = desY - srcY;	//x and y in pixels
 		final double incrementX = deltaX / FPS;
 		final double incrementY = deltaY / FPS;
-		System.out.println("delta: " + deltaX + ", " + deltaY);
-		System.out.println("increment per frame: " + incrementX + " " + incrementY);
-		System.out.println("src[][]: " + piece.getCoordinate().getX() + ", " + piece.getCoordinate().getY() 
-							+ "\tsrc: " + srcX + ", " + srcY);
-		System.out.println("des[][]: " + tile.getX() + ", " + tile.getY() + "\tdes: " + desX + ", " + desY);
+		//System.out.println("delta: " + deltaX + ", " + deltaY);
+		//System.out.println("increment per frame: " + incrementX + " " + incrementY);
+		//System.out.println("src[][]: " + piece.getCoordinate().getX() + ", " + piece.getCoordinate().getY() 
+		//					+ "\tsrc: " + srcX + ", " + srcY);
+		//System.out.println("des[][]: " + tile.getX() + ", " + tile.getY() + "\tdes: " + desX + ", " + desY);
 		
 		timer = new Timer(frameRate, new ActionListener() {
 			private int remainingFrame = FPS;
