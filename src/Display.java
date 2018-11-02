@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Display extends JPanel {
+	public static final int TILE_SIZE = 80;
 	private static final Color GREEN = new Color(0x96, 0xFF, 0x96);
 	private static final Color LIGHT_BLUE = new Color(0xC8, 0xE6, 0xFF);
 	private static final Color DARK_BLUE = new Color(0x7D, 0xC8, 0xFF);
@@ -73,7 +74,7 @@ public class Display extends JPanel {
 	            } else {
 	                g2d.setColor(Color.LIGHT_GRAY);
 	            }
-	            g2d.fillRect(i * ChessBoard.TILE_SIZE, j * ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE);
+	            g2d.fillRect(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 	        }
 	    }
 	}
@@ -95,37 +96,37 @@ public class Display extends JPanel {
 	private void drawPiece(Piece piece, int x, int y) {
 		if(piece.getColor().equals("White")) {
 			if(Pawn.class.isInstance(piece))
-				g2d.drawImage(images[0][5], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[0][5], TILE_SIZE * x, TILE_SIZE * y, null);	
 			else if(Rook.class.isInstance(piece))
-				g2d.drawImage(images[0][2], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
+				g2d.drawImage(images[0][2], TILE_SIZE * x, TILE_SIZE * y, null);		
 			else if(Knight.class.isInstance(piece))
-				g2d.drawImage(images[0][4], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[0][4], TILE_SIZE * x, TILE_SIZE * y, null);	
 			else if(Bishop.class.isInstance(piece))
-				g2d.drawImage(images[0][3], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[0][3], TILE_SIZE * x, TILE_SIZE * y, null);	
 			else if(Queen.class.isInstance(piece))
-				g2d.drawImage(images[0][1], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[0][1], TILE_SIZE * x, TILE_SIZE * y, null);	
 			else if(King.class.isInstance(piece))
-				g2d.drawImage(images[0][0], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[0][0], TILE_SIZE * x, TILE_SIZE * y, null);	
 		}
 		else {
 			if(Pawn.class.isInstance(piece))
-				g2d.drawImage(images[1][5], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[1][5], TILE_SIZE * x, TILE_SIZE * y, null);	
 			else if(Rook.class.isInstance(piece))
-				g2d.drawImage(images[1][2], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);		
+				g2d.drawImage(images[1][2], TILE_SIZE * x, TILE_SIZE * y, null);		
 			else if(Knight.class.isInstance(piece))
-				g2d.drawImage(images[1][4], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[1][4], TILE_SIZE * x, TILE_SIZE * y, null);	
 			else if(Bishop.class.isInstance(piece))
-				g2d.drawImage(images[1][3], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[1][3], TILE_SIZE * x, TILE_SIZE * y, null);	
 			else if(Queen.class.isInstance(piece))
-				g2d.drawImage(images[1][1], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[1][1], TILE_SIZE * x, TILE_SIZE * y, null);	
 			else if(King.class.isInstance(piece))
-				g2d.drawImage(images[1][0], ChessBoard.TILE_SIZE * x, ChessBoard.TILE_SIZE * y, null);	
+				g2d.drawImage(images[1][0], TILE_SIZE * x, TILE_SIZE * y, null);	
 		}
 	}
 
 	private Image getPiece(String color, String piece){
 		ImageIcon icon = new ImageIcon(getClass().getResource("/images/" + color + "_" + piece + ".png"));
-		Image image = icon.getImage().getScaledInstance(ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE, Image.SCALE_SMOOTH);
+		Image image = icon.getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_SMOOTH);
 		icon = new ImageIcon(image, icon.getDescription());
 		return icon.getImage();
 	}
@@ -157,7 +158,7 @@ public class Display extends JPanel {
 		
 		if(source != null) {
 			g2d.setColor(GREEN);
-			g2d.fillRect(source.getX() * ChessBoard.TILE_SIZE, source.getY() * ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE);
+			g2d.fillRect(source.getX() * TILE_SIZE, source.getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		}
 		for(BoardCoordinate move: moves) {
 			x = move.getX();
@@ -171,7 +172,7 @@ public class Display extends JPanel {
 			} else {
 				g2d.setColor(DARK_BLUE);
 			}
-			g2d.fillRect(x * ChessBoard.TILE_SIZE, y * ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE);
+			g2d.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		}
 		for(BoardCoordinate move: enemyMoves) {
 			x = move.getX();
@@ -185,15 +186,15 @@ public class Display extends JPanel {
 			} else {
 				g2d.setColor(DARK_RED);
 			}
-			g2d.fillRect(x * ChessBoard.TILE_SIZE, y * ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE, ChessBoard.TILE_SIZE);
+			g2d.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		}
 	}
 	
 	public void drawMove(Piece piece, BoardCoordinate tile) { //Animation
-		final double srcX = piece.getCoordinate().getX() * ChessBoard.TILE_SIZE;
-		final double srcY = piece.getCoordinate().getY() * ChessBoard.TILE_SIZE;
-		final double desX = tile.getX() * ChessBoard.TILE_SIZE;
-		final double desY = tile.getY() * ChessBoard.TILE_SIZE;
+		final double srcX = piece.getCoordinate().getX() * TILE_SIZE;
+		final double srcY = piece.getCoordinate().getY() * TILE_SIZE;
+		final double desX = tile.getX() * TILE_SIZE;
+		final double desY = tile.getY() * TILE_SIZE;
 		currentMovingPiece = new MovingPiece(piece);
 		final int totalAnimationTime = 150; // 150 milliseconds
 		final int FPS = 200;	

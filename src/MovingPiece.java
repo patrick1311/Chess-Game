@@ -6,8 +6,8 @@ public class MovingPiece {
 	
 	public MovingPiece(Piece piece) {
 		this.piece = piece;
-		this.currentX = piece.getCoordinate().getX() * ChessBoard.TILE_SIZE;
-		this.currentY = piece.getCoordinate().getY() * ChessBoard.TILE_SIZE;
+		this.currentX = piece.getCoordinate().getX() * Display.TILE_SIZE;
+		this.currentY = piece.getCoordinate().getY() * Display.TILE_SIZE;
 	}
 	
 	public void update(double x, double y) {
