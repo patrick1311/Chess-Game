@@ -228,8 +228,6 @@ public class Validator implements ValidMoveVisitor {
 			start = temp;
 		}
 		
-		//System.out.println(start + " " + end + " " + piece1.getY());
-
 		for(; start < end - 1; start++ ) {
 			if(board.getPiece(start + 1, piece1.getY()) != null) {
 				return false;
