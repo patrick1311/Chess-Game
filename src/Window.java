@@ -23,8 +23,8 @@ public class Window {
 		}
 		System.out.println(OS);
 		JFrame frame = new JFrame("Chess");
-		frame.setSize(ChessBoard.TILE_SIZE*8 + LEFTBORDER + RIGHTBORDER
-				, ChessBoard.TILE_SIZE*8 + TOPBORDER + BOTTOMBORDER);
+		frame.setSize(Display.TILE_SIZE*8 + LEFTBORDER + RIGHTBORDER
+				,Display.TILE_SIZE*8 + TOPBORDER + BOTTOMBORDER);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
