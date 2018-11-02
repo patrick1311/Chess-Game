@@ -39,5 +39,4 @@ public class Window {
 	private boolean isMac() {
 		return (OS.indexOf("mac") >= 0);
 	}
-
 }

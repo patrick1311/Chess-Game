@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Display extends JPanel {
-	public static final int TILE_SIZE = 80;
+	public static final int TILE_SIZE = 200;
 	private static final Color GREEN = new Color(0x96, 0xFF, 0x96);
 	private static final Color LIGHT_BLUE = new Color(0xC8, 0xE6, 0xFF);
 	private static final Color DARK_BLUE = new Color(0x7D, 0xC8, 0xFF);
