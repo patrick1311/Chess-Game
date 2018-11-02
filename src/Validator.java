@@ -79,21 +79,15 @@ public class Validator implements ValidMoveVisitor {
 		int fifthRank = 3;
 
 		if(color.equals("Black"))
-			fifthRank += 1;
+			fifthRank = 4;
 
-		if(y == fifthRank && capture.getPiece() instanceof Pawn) {
-			if(capture.getMove().getY() - (2*direction) == y && 
-				(capture.getMove().getX() == x+1 || capture.getMove().getX() == x-1)
-			) {
-				Piece toCapture = capture.getPiece();
-
-				if(toCapture != null && !isSameColor(pawn, toCapture) && 
-					!((Pawn) toCapture).getFirstMove() &&
-					!moveStillUnderCheck(pawn, toCapture.getCoordinate().getX(), toCapture.getCoordinate().getY() + direction)) {
-					coordinates.add(new BoardCoordinate(toCapture.getCoordinate().getX(), toCapture.getCoordinate().getY() + direction));
-				}
-			}
-
+		if(y == fifthRank && 
+			capture.getPiece() instanceof Pawn && 
+			capture.getPiece().getCoordinate().getY() == y &&
+			capture.getMove().getY() == fifthRank + direction*2 &&
+			(capture.getMove().getX() == x+1 || capture.getMove().getX() == x-1)
+		) {
+			coordinates.add(new BoardCoordinate(capture.getPiece().getCoordinate().getX(), capture.getPiece().getCoordinate().getY() + direction));
 			return true;	
 		}
 		return false;
