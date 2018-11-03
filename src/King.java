@@ -20,5 +20,4 @@ public class King extends Piece {
 	public List<BoardCoordinate> accept(ValidMoveVisitor visitor) {
 		return visitor.calculateValidMoves(this);
 	}
-	
 }

@@ -38,8 +38,6 @@ public class ChessBoard {
 			tilePiece.getPlayer().addToGraveyard(tilePiece);
 		}
 		
-		//System.out.println(destX + " " + destY + " " + sourceX + " " + sourceY);
-		
 		this.previousMoves.push(new MoveHistory(piece,new BoardCoordinate(sourceX, sourceY)));
 		
 		if(piece instanceof Pawn) {
@@ -82,8 +80,6 @@ public class ChessBoard {
 		else if(piece instanceof Rook) {
 			((Rook)piece).setHasMoved(true);
 		}
-		
-		//System.out.println(destX + " " + destY + " " + sourceX + " " + (sourceY - direction));
 		
 		board[sourceX][sourceY] = null;
 		board[destX][destY] = piece;

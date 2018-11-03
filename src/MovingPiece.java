@@ -1,4 +1,3 @@
-
 public class MovingPiece {
 	private Piece piece;
 	private double currentX;
