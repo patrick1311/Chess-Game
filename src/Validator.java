@@ -84,8 +84,8 @@ public class Validator implements ValidMoveVisitor {
 		if(y == fifthRank && 
 			capture.getPiece() instanceof Pawn && 
 			capture.getPiece().getCoordinate().getY() == y &&
-			capture.getMove().getY() == fifthRank + direction*2 &&
-			(capture.getMove().getX() == x+1 || capture.getMove().getX() == x-1)
+			capture.getMove().getY() == fifthRank + direction * 2 &&
+			(capture.getMove().getX() == x + LEFT || capture.getMove().getX() == x + RIGHT)
 		) {
 			coordinates.add(new BoardCoordinate(capture.getPiece().getCoordinate().getX(), capture.getPiece().getCoordinate().getY() + direction));
 			return true;	
@@ -544,13 +544,6 @@ public class Validator implements ValidMoveVisitor {
 	public boolean isFiftyMove(int turn, int lastCapture, int lastPawnMove) { //private?
 		return turn >= lastCapture + 50 && turn >= lastPawnMove + 50;
 	}
-	/*
-	public boolean isDraw(Player waitingPlayer) {
-		return isStalemate(waitingPlayer);//stalemate
-		//three-fold repetition
-		//fifty-move rule
-		//dead position? no sequence of legal moves can lead to checkmate, 
-		// most commonly when neither player has sufficient 
-		// material to checkmate the opponent.
-	}*/
+	//three-fold repetition
+	//dead position? no sequence of legal moves can lead to checkmate, 
 }

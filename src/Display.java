@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -11,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Display extends JPanel {
-	public static final int TILE_SIZE = 200;
+	public static final int TILE_SIZE = 80;
 	private static final Color GREEN = new Color(0x96, 0xFF, 0x96);
 	private static final Color LIGHT_BLUE = new Color(0xC8, 0xE6, 0xFF);
 	private static final Color DARK_BLUE = new Color(0x7D, 0xC8, 0xFF);
@@ -27,6 +29,8 @@ public class Display extends JPanel {
 	private boolean inAnimation;
 	private MovingPiece currentMovingPiece;
 	private Image images[][];
+	private String message1;
+	private String message2;
 	
 	public Display(Game game) {
 		this.highlights = new LinkedList<BoardCoordinate>();
@@ -54,12 +58,13 @@ public class Display extends JPanel {
 	}
 	
 	public void paint(Graphics g) {
-		super.paintComponent(g);
 		g2d = (Graphics2D) g;
+		super.paintComponent(g2d);
 		drawBoard();
 		highlightTiles(sourceHighlight, enemyHighlights, highlights);
 		drawPieces();
 		drawMovingPiece();
+		drawMessage();
 	}
 
 	private void drawBoard() {
@@ -228,7 +233,6 @@ public class Display extends JPanel {
             		y = y + incrementY;
             		currentMovingPiece.update(x, y);
             	}
-            	
             	repaint();
             }
         });
@@ -266,6 +270,28 @@ public class Display extends JPanel {
 				g2d.drawImage(images[1][1], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
 			else if(King.class.isInstance(currentMovingPiece.getPiece()))
 				g2d.drawImage(images[1][0], (int) currentMovingPiece.getX(), (int) currentMovingPiece.getY(), null);
+		}
+	}
+	
+	public void setMessages(String message1, String message2) {
+		this.message1 = message1;
+		this.message2 = message2;
+	}
+	
+	public void drawMessage() {
+		if(message1 != null && message2 != null) {
+			int fontSize = 70;
+			int startingX, startingY;
+			g2d.setFont(new Font("Copperplate Gothic Light", Font.PLAIN, fontSize));
+			g2d.setColor(Color.BLACK);
+			FontMetrics fm = getFontMetrics(g2d.getFont());
+			
+			startingX = Math.abs((TILE_SIZE * 8) - (fm.stringWidth(message1))) / 2;
+			startingY = Math.abs(((TILE_SIZE * 8) - (fm.getHeight() / 2)) / 2);
+			g2d.drawString(message1, startingX, startingY);
+			startingX = Math.abs((TILE_SIZE * 8) - (fm.stringWidth(message2))) / 2;
+			startingY = Math.abs(((TILE_SIZE * 8) - (fm.getHeight() / 2)) / 2) + fm.getHeight();
+			g2d.drawString(message2, startingX, startingY);
 		}
 	}
 }
