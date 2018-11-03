@@ -286,11 +286,11 @@ public class Display extends JPanel {
 			g2d.setColor(Color.BLACK);
 			FontMetrics fm = getFontMetrics(g2d.getFont());
 			
-			startingX = Math.abs((TILE_SIZE * 8) - (fm.stringWidth(message1))) / 2;
-			startingY = Math.abs(((TILE_SIZE * 8) - (fm.getHeight() / 2)) / 2);
+			startingX = ((TILE_SIZE * 8) - (fm.stringWidth(message1))) / 2;
+			startingY = ((TILE_SIZE * 8) - (fm.getHeight() / 2)) / 2;
 			g2d.drawString(message1, startingX, startingY);
-			startingX = Math.abs((TILE_SIZE * 8) - (fm.stringWidth(message2))) / 2;
-			startingY = Math.abs(((TILE_SIZE * 8) - (fm.getHeight() / 2)) / 2) + fm.getHeight();
+			startingX = ((TILE_SIZE * 8) - (fm.stringWidth(message2))) / 2;
+			startingY += fm.getHeight();
 			g2d.drawString(message2, startingX, startingY);
 		}
 	}
