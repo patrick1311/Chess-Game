@@ -69,8 +69,7 @@ public class Validator implements ValidMoveVisitor {
 	 * EnPassant Rules
 	 * 1) Capturing pawn must be on the fifth rank. Fifth row of its respective color.
 	 * 2) Captured piece must be a pawn and have just performed its first move as a two step.
-	 * 3) Must be done immediately after captured pawn move or else it cannot be done again. 
-	 * 
+	 * 3) Must be done immediately after captured pawn move or else it cannot be done again.
 	 */
 
 	private boolean legalEnPassant(Pawn pawn, List<BoardCoordinate> coordinates, int direction, int x, int y) {
@@ -244,7 +243,6 @@ public class Validator implements ValidMoveVisitor {
 	 * 2) Cannot castle when king is in check.
 	 * 3) Cannot castle through a check. 
 	 * 4) Cannot have pieces between castling rook and king.
-	 * 
 	 */
 
 	private boolean legalCastling(final King king, List<BoardCoordinate> coordinates, int x, int y) {

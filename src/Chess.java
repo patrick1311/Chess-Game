@@ -4,7 +4,7 @@ public class Chess {
 		Player p2 = new Player();
 		Game game = new Game(p1, p2);
 		Display display = new Display(game);
-		Window window = new Window(display);
-		MouseInput mouseListener = new MouseInput(display);
+		new Window(display);
+		new MouseInput(display);
 	}
 }
