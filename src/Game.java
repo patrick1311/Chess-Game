@@ -12,6 +12,7 @@ public class Game {
 	private int turn;
 	private int lastCapture;
 	private int lastPawnMove;
+	private boolean isRunning;
 	
 	public Game(Player p1, Player p2) {
 		p1.initialize("White");
@@ -25,6 +26,7 @@ public class Game {
 		validator = new Validator(board);
 		selectedPiece = null;
 		turn = 1;
+		isRunning = true;
 	}
 	
 	private void setupBoard() {
@@ -96,13 +98,13 @@ public class Game {
 			moves = selectedPiece.accept(validator);
 			if(moves.contains(tile)) {
 				display.drawMove(selectedPiece, tile);
-				move(selectedPiece, tile);
+				move(selectedPiece, tile, display);
 			}
 			selectedPiece = null;
 		}
 	}
 	
-	private void move(Piece piece, BoardCoordinate tile) {
+	private void move(Piece piece, BoardCoordinate tile, Display display) {
 		int graveyardSize = waitingPlayer.getGraveyard().size();
 		board.move(piece, tile);
 		
@@ -117,23 +119,31 @@ public class Game {
 			lastCapture = turn;
 		}
 		
-		checkGameStatus();
+		checkGameStatus(display);
 		changeTurn();
 	}
 	
-	private void checkGameStatus() {
+	private void checkGameStatus(Display display) {
+		String message1 = null;
+		String message2 = null;
 		if(validator.underCheckmate(waitingPlayer)) {
-			//print CHECKMATE
-			System.out.println("Checkmate! " + currentPlayer.getColor() + " wins!");
+			message1 = "Checkmate!";
+			message2 = currentPlayer.getColor() + " wins!";
 		}
 		else if(validator.isStalemate(waitingPlayer)) {
-			//print DRAW
-			System.out.println("Stalemate. Draw.");
+			message1 = "Stalemate!";
+			message2 = "Draw!";
 		}
 		else if(validator.isFiftyMove(turn, lastCapture, lastPawnMove)) {
-			//print DRAW
-			System.out.println("Fifty-move rule. Draw.");
+			message1 = "Fifty-move rule!";
+			message2 = "Draw!";
 		}
+		else {
+			return;
+		}
+		isRunning = false;
+		display.setMessages(message1, message2);
+		display.repaint();
 	}
 	
 	private void changeTurn() {
@@ -161,8 +171,6 @@ public class Game {
 			    JOptionPane.QUESTION_MESSAGE,
 			    null, promote, promote[0]);
 		
-		//System.out.println(n);
-		
 		if(n == 0) {
 			board.getBoard()[x][y] = new Queen(piece.getPlayer(),piece.getColor());
 		}
@@ -177,5 +185,9 @@ public class Game {
 		}
 		currentPlayer.removePiece(piece);
 		board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));
+	}
+	
+	public boolean isRunning() {
+		return this.isRunning;
 	}
 }

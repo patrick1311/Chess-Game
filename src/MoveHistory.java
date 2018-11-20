@@ -1,5 +1,4 @@
 public class MoveHistory {
-	
 	private Piece piece;
 	private BoardCoordinate move;
 	

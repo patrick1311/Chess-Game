@@ -24,7 +24,7 @@ public class Validator implements ValidMoveVisitor {
 	public List<BoardCoordinate> calculateValidMoves(final Pawn pawn) {
 		List<BoardCoordinate>coordinates = new LinkedList<BoardCoordinate>();
 		BoardCoordinate coor = pawn.getCoordinate();
-		int x = coor.getX(), y = coor.getY(), direction; 
+		int x = coor.getX(), y = coor.getY(), direction;
 		String color = pawn.getColor();
 		Piece source = board.getPiece(x, y);
 
@@ -48,7 +48,7 @@ public class Validator implements ValidMoveVisitor {
 			}
 		}
 
-		if(board.getPiece(x + RIGHT, y + direction) != null && 
+		if(board.getPiece(x + RIGHT, y + direction) != null &&
 				!isSameColor(source, board.getPiece(x + RIGHT, y + direction)) &&
 				!moveStillUnderCheck(source, x + RIGHT, y + direction)
 				) {
@@ -69,8 +69,7 @@ public class Validator implements ValidMoveVisitor {
 	 * EnPassant Rules
 	 * 1) Capturing pawn must be on the fifth rank. Fifth row of its respective color.
 	 * 2) Captured piece must be a pawn and have just performed its first move as a two step.
-	 * 3) Must be done immediately after captured pawn move or else it cannot be done again. 
-	 * 
+	 * 3) Must be done immediately after captured pawn move or else it cannot be done again.
 	 */
 
 	private boolean legalEnPassant(Pawn pawn, List<BoardCoordinate> coordinates, int direction, int x, int y) {
@@ -81,14 +80,14 @@ public class Validator implements ValidMoveVisitor {
 		if(color.equals("Black")) {
 			fifthRank = 4;
 		}
-		if(y == fifthRank && 
-				capture.getPiece() instanceof Pawn && 
-				capture.getPiece().getCoordinate().getY() == y &&
-				capture.getMove().getY() == fifthRank + direction*2 &&
-				(capture.getMove().getX() == x+1 || capture.getMove().getX() == x-1)
-				) {
+		if(y == fifthRank &&
+			capture.getPiece() instanceof Pawn &&
+			capture.getPiece().getCoordinate().getY() == y &&
+			capture.getMove().getY() == fifthRank + direction * 2 &&
+			(capture.getMove().getX() == x + LEFT || capture.getMove().getX() == x + RIGHT)
+		) {
 			coordinates.add(new BoardCoordinate(capture.getPiece().getCoordinate().getX(), capture.getPiece().getCoordinate().getY() + direction));
-			return true;	
+			return true;
 		}
 		return false;
 	}
@@ -99,7 +98,7 @@ public class Validator implements ValidMoveVisitor {
 	 */
 
 	public boolean legalPromotion(Pawn pawn, BoardCoordinate tile) {
-		String color = pawn.getColor(); 
+		String color = pawn.getColor();
 		int pos = 0, y = tile.getY();
 
 		if(color.equals("Black"))
@@ -120,7 +119,7 @@ public class Validator implements ValidMoveVisitor {
 		getValidMoves(coordinates, x, y, NOOP, UP);
 		getValidMoves(coordinates, x, y, NOOP, DOWN);
 
-		return coordinates;	
+		return coordinates;
 	}
 
 	private void addValid(List<BoardCoordinate> coordinates, Piece source, int x, int y) {
@@ -159,8 +158,8 @@ public class Validator implements ValidMoveVisitor {
 		int x = coor.getX();
 		int y = coor.getY();
 
-		getValidMoves(coordinates, x, y, RIGHT, UP); 
-		getValidMoves(coordinates, x, y, LEFT, DOWN); 
+		getValidMoves(coordinates, x, y, RIGHT, UP);
+		getValidMoves(coordinates, x, y, LEFT, DOWN);
 		getValidMoves(coordinates, x, y, LEFT, UP);
 		getValidMoves(coordinates, x, y, RIGHT, DOWN);
 
@@ -175,8 +174,8 @@ public class Validator implements ValidMoveVisitor {
 		int y = coor.getY();
 
 
-		getValidMoves(coordinates, x, y, RIGHT, UP); 
-		getValidMoves(coordinates, x, y, LEFT, DOWN); 
+		getValidMoves(coordinates, x, y, RIGHT, UP);
+		getValidMoves(coordinates, x, y, LEFT, DOWN);
 		getValidMoves(coordinates, x, y, LEFT, UP);
 		getValidMoves(coordinates, x, y, RIGHT, DOWN);
 		getValidMoves(coordinates, x, y, RIGHT, NOOP);
@@ -194,8 +193,8 @@ public class Validator implements ValidMoveVisitor {
 
 		for(int i = -1; i < 2; i++) {
 			for(int j = -1; j < 2; j++) {
-				if((i == 0 && j == 0) || 
-						(x + i < 0 || x + i > 7) || 
+				if((i == 0 && j == 0) ||
+						(x + i < 0 || x + i > 7) ||
 						(y + j < 0 || y + j > 7)
 						) {
 					continue;
@@ -240,9 +239,8 @@ public class Validator implements ValidMoveVisitor {
 	 * Castling Rules
 	 * 1) Cannot castle when king or castling rook has been moved.
 	 * 2) Cannot castle when king is in check.
-	 * 3) Cannot castle through a check. 
+	 * 3) Cannot castle through a check.
 	 * 4) Cannot have pieces between castling rook and king.
-	 * 
 	 */
 
 	private boolean legalCastling(final King king, List<BoardCoordinate> coordinates, int x, int y) {
@@ -259,24 +257,24 @@ public class Validator implements ValidMoveVisitor {
 			Piece leftRook = board.getPiece(0, row);
 			Piece rightRook = board.getPiece(7, row);
 
-			if(leftRook instanceof Rook 
-					&& isSameColor(king, leftRook) 
-					&& (!((Rook) leftRook).getHasMoved() && !king.getHasMoved()) 
-					&& emptyBetweenRow(leftRook, king) 
-					&& !moveStillUnderCheck(king, x - 1, y) 
+			if(leftRook instanceof Rook
+					&& isSameColor(king, leftRook)
+					&& (!((Rook) leftRook).getHasMoved() && !king.getHasMoved())
+					&& emptyBetweenRow(leftRook, king)
+					&& !moveStillUnderCheck(king, x - 1, y)
 					&& !moveStillUnderCheck(king, x - 2, y)) {
 				coordinates.add(new BoardCoordinate(x - 2, y));
 			}
 
-			if(rightRook instanceof Rook 
-					&& isSameColor(king, rightRook) 
+			if(rightRook instanceof Rook
+					&& isSameColor(king, rightRook)
 					&& (!((Rook) rightRook).getHasMoved() && !king.getHasMoved())
 					&& emptyBetweenRow(king, rightRook)
-					&& !moveStillUnderCheck(king, x + 1, y) 
+					&& !moveStillUnderCheck(king, x + 1, y)
 					&& !moveStillUnderCheck(king, x + 2, y)) {
 				coordinates.add(new BoardCoordinate(x + 2, y));
 			}
-			//Check if moving king will create a check 
+			//Check if moving king will create a check
 			//This needs to be done after checking whether castling is done
 			return true;
 		}
@@ -298,7 +296,7 @@ public class Validator implements ValidMoveVisitor {
 			}
 
 			if(board.getPiece(x, y) != null) {
-				break;            
+				break;
 			}
 		}
 	}
@@ -312,8 +310,8 @@ public class Validator implements ValidMoveVisitor {
 			if(board.getPiece(x, y) != null) {
 				enemyHighlights.add(move);
 			}
-			else if(board.getPiece(x, y) == null && 
-					piece instanceof Pawn && 
+			else if(board.getPiece(x, y) == null &&
+					piece instanceof Pawn &&
 					x != piece.getCoordinate().getX()
 					) {
 				if(move.getY() == 2 && piece.getColor().equals("White"))
@@ -545,13 +543,7 @@ public class Validator implements ValidMoveVisitor {
 	public boolean isFiftyMove(int turn, int lastCapture, int lastPawnMove) { //private?
 		return turn >= lastCapture + 50 && turn >= lastPawnMove + 50;
 	}
-	/*
-	public boolean isDraw(Player waitingPlayer) {
-		return isStalemate(waitingPlayer);//stalemate
-		//three-fold repetition
-		//fifty-move rule
-		//dead position? no sequence of legal moves can lead to checkmate, 
-		// most commonly when neither player has sufficient 
-		// material to checkmate the opponent.
-	}*/
+
+	//three-fold repetition
+	//dead position? no sequence of legal moves can lead to checkmate,
 }
