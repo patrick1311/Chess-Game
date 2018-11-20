@@ -280,7 +280,7 @@ public class Display extends JPanel {
 	
 	public void drawMessage() {
 		if(message1 != null && message2 != null) {
-			int fontSize = 70;
+			int fontSize = (int)(TILE_SIZE * 8.0 / 7);
 			int startingX, startingY;
 			g2d.setFont(new Font("Copperplate Gothic Light", Font.PLAIN, fontSize));
 			g2d.setColor(Color.BLACK);
