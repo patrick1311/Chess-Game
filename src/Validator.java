@@ -273,7 +273,7 @@ public class Validator implements ValidMoveVisitor {
 					&& !moveStillUnderCheck(king, x + 1, y) 
 					&& !moveStillUnderCheck(king, x + 2, y)) {
 				coordinates.add(new BoardCoordinate(x + 2, y));
-			}
+			} 
 			//Check if moving king will create a check 
 			//This needs to be done after checking whether castling is done
 			return true;
