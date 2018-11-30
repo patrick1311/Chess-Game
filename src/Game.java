@@ -201,8 +201,6 @@ public class Game {
 						JOptionPane.QUESTION_MESSAGE,
 						null, promote, promote[0]);
 			}
-
-
 		}
 
 		currentPlayer.removePiece(piece);
