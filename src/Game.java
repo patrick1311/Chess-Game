@@ -1,4 +1,6 @@
 import java.util.List;
+
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class Game {
@@ -13,7 +15,7 @@ public class Game {
 	private int lastCapture;
 	private int lastPawnMove;
 	private boolean isRunning;
-	
+
 	public Game(Player p1, Player p2) {
 		p1.initialize("White");
 		p2.initialize("Black");
@@ -28,7 +30,7 @@ public class Game {
 		turn = 1;
 		isRunning = true;
 	}
-	
+
 	private void setupBoard() {
 		board.getBoard()[4][7] = white.getPieceList().get(0);	//King
 		board.getBoard()[3][7] = white.getPieceList().get(1);	//Queen
@@ -41,7 +43,7 @@ public class Game {
 		for(int i = 0; i < 8; i++) {
 			board.getBoard()[i][6] = white.getPieceList().get(8 + i);	//Pawn
 		}
-		
+
 		board.getBoard()[4][0] = black.getPieceList().get(0);	//King
 		board.getBoard()[3][0] = black.getPieceList().get(1);	//Queen
 		board.getBoard()[0][0] = black.getPieceList().get(2);	//Rook  
@@ -53,7 +55,7 @@ public class Game {
 		for(int i = 0; i < 8; i++) {
 			board.getBoard()[i][1] = black.getPieceList().get(8 + i);	//Pawn
 		}
-		
+
 		board.getBoard()[4][7].setCoordinate(new BoardCoordinate(4, 7));
 		board.getBoard()[3][7].setCoordinate(new BoardCoordinate(3, 7));
 		board.getBoard()[0][7].setCoordinate(new BoardCoordinate(0, 7));
@@ -75,19 +77,19 @@ public class Game {
 			board.getBoard()[i][1].setCoordinate(new BoardCoordinate(i, 1));
 		}
 	}
-	
+
 	public ChessBoard getBoard() {
 		return board;
 	}
-	
+
 	public void selectTile(BoardCoordinate tile, Display display) {
 		List<BoardCoordinate> moves;
 		display.clearHighlights();
 		Piece tilePiece = board.getPiece(tile.getX(), tile.getY());
 		if(tilePiece != null &&
-			currentPlayer.equals(tilePiece.getPlayer()) &&
-			selectedPiece != tilePiece //Don't select same piece
-		) {
+				currentPlayer.equals(tilePiece.getPlayer()) &&
+				selectedPiece != tilePiece //Don't select same piece
+				) {
 			selectedPiece = tilePiece;
 			moves = tilePiece.accept(validator);
 			display.setHighlights(moves);
@@ -103,26 +105,26 @@ public class Game {
 			selectedPiece = null;
 		}
 	}
-	
+
 	private void move(Piece piece, BoardCoordinate tile, Display display) {
 		int graveyardSize = waitingPlayer.getGraveyard().size();
 		board.move(piece, tile);
-		
+
 		if(piece instanceof Pawn) {
 			lastPawnMove = turn;
 			if(validator.legalPromotion((Pawn) piece, tile)) {
 				promote(piece);
 			}
 		}
-		
+
 		if(waitingPlayer.getGraveyard().size() > graveyardSize) {
 			lastCapture = turn;
 		}
-		
+
 		checkGameStatus(display);
 		changeTurn();
 	}
-	
+
 	private void checkGameStatus(Display display) {
 		String message1 = null;
 		String message2 = null;
@@ -145,7 +147,7 @@ public class Game {
 		display.setMessages(message1, message2);
 		display.repaint();
 	}
-	
+
 	private void changeTurn() {
 		if(currentPlayer == white) {
 			currentPlayer = black;
@@ -157,36 +159,54 @@ public class Game {
 			turn++;
 		}
 	}
-	
+
 	private void promote(Piece piece) {
 		BoardCoordinate coor = piece.getCoordinate();
 		int x = coor.getX(), y = coor.getY();
-		
+
 		String[] promote = {"Queen", "Knight", "Rook", "Bishop"};
+
+		JFrame frame = new JFrame();
+		frame.setResizable(true);	
+
+		int n = JOptionPane.showOptionDialog(frame,
+				"What do you want to promote to?",
+				"Choose a piece:",
+				JOptionPane.DEFAULT_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null, promote, promote[0]);
 		
-		int n = JOptionPane.showOptionDialog(null,
-			    "What do you want to promote to?",
-			    "Choose a piece:",
-			    JOptionPane.DEFAULT_OPTION,
-			    JOptionPane.QUESTION_MESSAGE,
-			    null, promote, promote[0]);
-		
-		if(n == 0) {
-			board.getBoard()[x][y] = new Queen(piece.getPlayer(),piece.getColor());
+		while(true) {
+			if(n == 0) {
+				board.getBoard()[x][y] = new Queen(piece.getPlayer(),piece.getColor());
+				break;
+			}
+			else if(n == 1) {
+				board.getBoard()[x][y] = new Knight(piece.getPlayer(),piece.getColor());
+				break;
+			}
+			else if(n == 2) {
+				board.getBoard()[x][y] = new Rook(piece.getPlayer(),piece.getColor());
+				break;
+			}
+			else if(n == 3) {
+				board.getBoard()[x][y] = new Bishop(piece.getPlayer(),piece.getColor());
+				break;
+			}
+			else if(n == JOptionPane.CLOSED_OPTION) {
+				n = JOptionPane.showOptionDialog(frame,
+						"What do you want to promote to?",
+						"Choose a piece:",
+						JOptionPane.DEFAULT_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null, promote, promote[0]);
+			}
 		}
-		else if(n == 1) {
-			board.getBoard()[x][y] = new Knight(piece.getPlayer(),piece.getColor());
-		}
-		else if(n == 2) {
-			board.getBoard()[x][y] = new Rook(piece.getPlayer(),piece.getColor());
-		}
-		else if(n == 3) {
-			board.getBoard()[x][y] = new Bishop(piece.getPlayer(),piece.getColor());
-		}
+
 		currentPlayer.removePiece(piece);
 		board.getBoard()[x][y].setCoordinate(new BoardCoordinate(x,y));
 	}
-	
+
 	public boolean isRunning() {
 		return this.isRunning;
 	}

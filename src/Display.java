@@ -282,7 +282,7 @@ public class Display extends JPanel {
 		if(message1 != null && message2 != null) {
 			int fontSize = (int)(TILE_SIZE * 8.0 / 7);
 			int startingX, startingY;
-			g2d.setFont(new Font("Copperplate Gothic Light", Font.PLAIN, fontSize));
+			g2d.setFont(new Font("Copperplate", Font.PLAIN, fontSize));
 			g2d.setColor(Color.BLACK);
 			FontMetrics fm = getFontMetrics(g2d.getFont());
 			
