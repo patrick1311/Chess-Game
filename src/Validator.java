@@ -80,14 +80,14 @@ public class Validator implements ValidMoveVisitor {
 		if(color.equals("Black")) {
 			fifthRank = 4;
 		}
-		if(y == fifthRank &&
-			capture.getPiece() instanceof Pawn &&
+		if(y == fifthRank && 
+			capture.getPiece() instanceof Pawn && 
 			capture.getPiece().getCoordinate().getY() == y &&
 			capture.getMove().getY() == fifthRank + direction * 2 &&
 			(capture.getMove().getX() == x + LEFT || capture.getMove().getX() == x + RIGHT)
 		) {
 			coordinates.add(new BoardCoordinate(capture.getPiece().getCoordinate().getX(), capture.getPiece().getCoordinate().getY() + direction));
-			return true;
+			return true;	
 		}
 		return false;
 	}
@@ -314,14 +314,7 @@ public class Validator implements ValidMoveVisitor {
 					piece instanceof Pawn &&
 					x != piece.getCoordinate().getX()
 					) {
-				if(move.getY() == 2 && piece.getColor().equals("White"))
-					enemyHighlights.add(new BoardCoordinate(x, y + 1));
-				else if(move.getY() == 5 && piece.getColor().equals("Black")) {
-					enemyHighlights.add(new BoardCoordinate(x, y - 1));
-				}
-				else {
-					enemyHighlights.add(new BoardCoordinate(x, y));
-				}
+				enemyHighlights.add(new BoardCoordinate(x, y));
 			}
 		}
 		return enemyHighlights;
